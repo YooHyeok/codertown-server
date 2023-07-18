@@ -1,11 +1,16 @@
 package io.codertown.web.user;
 
 import io.codertown.support.base.BaseTimeStampEntity;
+import io.codertown.web.user.project.Project;
+import io.codertown.web.user.project.UserProject;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * *****************************************************<p>
@@ -18,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity(name = "USER")
+@Entity
 public class User extends BaseTimeStampEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_NO")
@@ -32,5 +37,8 @@ public class User extends BaseTimeStampEntity {
 
     @Enumerated(EnumType.STRING)
     private UserStatus status; // 회원 상태(using, cancel ,freeze) - 사용중 탈퇴 정지
+
+    @OneToMany(mappedBy = "USER")
+    private List<UserProject> projects = new ArrayList<>();
 
 }
