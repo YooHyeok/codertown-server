@@ -31,6 +31,6 @@ public class User extends BaseTimeStampEntity {
     private char gender;
 
     @Enumerated(EnumType.STRING)
-    private UserStatus status; // 회원 상태(using, cancel ,freeze) - 사용중 탈퇴됨 정지됨
+    private UserStatus status; // 회원 상태(using, cancel ,freeze) - 사용중 탈퇴 정지
 
 }
