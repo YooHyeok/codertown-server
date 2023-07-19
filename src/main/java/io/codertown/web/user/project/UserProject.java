@@ -12,7 +12,7 @@ public class UserProject {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_NO")
-    private User user;
+    private User projectUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PRODUCT_NO")
