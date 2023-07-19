@@ -2,17 +2,13 @@ package io.codertown.web.recruit;
 
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-public class Recruit extends BaseTimeStampEntity {
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "category")
+public abstract class Recruit extends BaseTimeStampEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "recruit_no")
