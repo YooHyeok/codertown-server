@@ -1,4 +1,4 @@
-package io.codertown.web.user.project;
+package io.codertown.web.project;
 
 import org.springframework.stereotype.Service;
 

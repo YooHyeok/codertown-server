@@ -2,7 +2,7 @@ package io.codertown.web.user;
 
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.recruit.Recruit;
-import io.codertown.web.user.project.UserProject;
+import io.codertown.web.userproject.UserProject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

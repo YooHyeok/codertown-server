@@ -1,6 +1,7 @@
-package io.codertown.web.user.project;
+package io.codertown.web.userproject;
 
 
+import io.codertown.web.project.Project;
 import io.codertown.web.user.User;
 import javax.persistence.*;
 

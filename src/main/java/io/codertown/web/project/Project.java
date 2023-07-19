@@ -1,4 +1,6 @@
-package io.codertown.web.user.project;
+package io.codertown.web.project;
+
+import io.codertown.web.userproject.UserProject;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

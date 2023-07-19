@@ -1,4 +1,4 @@
-package io.codertown.web.coggle.comment;
+package io.codertown.web.comment;
 
 import io.codertown.web.coggle.Coggle;
 import io.codertown.web.user.User;
