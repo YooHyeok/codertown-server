@@ -1,7 +1,11 @@
 package io.codertown.web.recruit;
 
 import io.codertown.support.base.BaseTimeStampEntity;
-import lombok.*;
+import io.codertown.web.user.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Builder
@@ -20,4 +24,9 @@ public class Recruit extends BaseTimeStampEntity {
     private String content;
 
     private String link;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_NO")
+    private User user;
+
 }

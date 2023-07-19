@@ -40,4 +40,8 @@ public class User extends BaseTimeStampEntity {
     @OneToMany(mappedBy = "user")
     private List<UserProject> projects = new ArrayList<>();
 
+
+    @OneToMany(mappedBy = "user")
+    private List<User> users = new ArrayList<>();
+
 }
