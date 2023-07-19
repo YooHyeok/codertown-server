@@ -1,7 +1,15 @@
+// 1. queryDsl version 정보 추가
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.1.1'
-	id 'io.spring.dependency-management' version '1.1.0'
+	id 'org.springframework.boot' version '2.7.6'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 group = 'io'
@@ -26,32 +34,34 @@ dependencies {
 	// SpringDataJpa
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	// QueryDSL
-	implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 	// SpringQuartz
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 	// SpringSecurity
 //	implementation 'org.springframework.boot:spring-boot-starter-security'
 	// SpringWebsocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
 	// Swagger - API명세 기능
 //	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 //	implementation 'io.springfox:springfox-swagger-ui:3.0.0'
-	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+//	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+
 	// Lombok
 	compileOnly 'org.projectlombok:lombok'
+
 	// Devtools
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
 	// MySQL
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
 	// p6spy JPA query 개행,하이라이트 기능 - 하이버네이트 로그에서는 개행이 되지만 nativeQuery는 한줄로 출력된다.
 	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.8'
 
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
-	// QueryDSL
-	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
-	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
-	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -60,7 +70,30 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+/* -------------------------------------------------QueryDSL 추가설정 ---------------------------------------------------*/
+// querydsl 사용할 경로 지정합니다. 현재 지정한 부분은 .gitignore에 포함되므로 git에 올라가지 않습니다.
+def querydslDir = "$buildDir/generated/'querydsl'"
 
-clean {
-	delete file('src/main/generated')
+// JPA 사용여부 및 사용 경로 설정
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+
+// build시 사용할 sourceSet 추가 설정
+sourceSets {
+	main.java.srcDir querydslDir
+}
+
+// querydsl 컴파일 시 사용할 옵션 설정
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+
+// querydsl이 compileClassPath를 상속하도록 설정
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+	querydsl.extendsFrom compileClasspath
 }

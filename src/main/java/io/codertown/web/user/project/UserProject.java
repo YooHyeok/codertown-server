@@ -2,7 +2,7 @@ package io.codertown.web.user.project;
 
 
 import io.codertown.web.user.User;
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 public class UserProject {

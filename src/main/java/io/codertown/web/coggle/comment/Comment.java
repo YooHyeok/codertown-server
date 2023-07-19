@@ -1,13 +1,13 @@
-package io.codertown.web.coggle.reply;
+package io.codertown.web.coggle.comment;
 
 import io.codertown.web.coggle.Coggle;
 import io.codertown.web.user.User;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Builder
@@ -16,19 +16,21 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 public class Comment {
-    @Id @GeneratedValue
-    private Long commentNo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "COMMENT_ID")
+    private Long id;
     private String content;
     private LocalDateTime createDate; //작성일자
 
     //상위 작성자
     @ManyToOne
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parent_no")
     private Comment parent;
 
     //댓글 작성자
     @ManyToOne
-    @JoinColumn(name = "comenter")
+    @JoinColumn(name = "commentor_no")
     private User user; //댓글 작성자
 
     @ManyToOne
