@@ -20,6 +20,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COMMENT_ID")
     private Long id;
+    @Column(columnDefinition = "LONGTEXT")
     private String content;
     private LocalDateTime createDate; //작성일자
 

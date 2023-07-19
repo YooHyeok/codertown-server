@@ -22,6 +22,7 @@ public class Coggle extends BaseTimeStampEntity {
     @Check(constraints = "IN ('T', 'C', 'D')")
     private Character category;
     private String title;
+    @Column(columnDefinition = "LONGTEXT")
     private String content;
 
     @ColumnDefault("false")
