@@ -1,6 +1,7 @@
 package io.codertown.web.coggle;
 
 import io.codertown.support.base.BaseTimeStampEntity;
+import io.codertown.web.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,5 +25,10 @@ public class Coggle extends BaseTimeStampEntity {
 
     @ColumnDefault("false")
     private Boolean status; // 글상태 True : 삭제 | False : 정상
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_ID")
+    private User user;
+
 
 }
