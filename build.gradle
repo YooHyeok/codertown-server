@@ -39,7 +39,7 @@ dependencies {
 	// SpringQuartz
 	implementation 'org.springframework.boot:spring-boot-starter-quartz'
 	// SpringSecurity
-//	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	// SpringWebsocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
