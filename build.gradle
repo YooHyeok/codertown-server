@@ -42,6 +42,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	// SpringWebsocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	testImplementation 'org.projectlombok:lombok:1.18.22'
 
 	// Swagger - API명세 기능
 //	implementation 'io.springfox:springfox-boot-starter:3.0.0'

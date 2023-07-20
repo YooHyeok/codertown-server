@@ -23,6 +23,14 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
 
     private final PasswordEncoder passwordEncoder;
 
+
+    public Boolean signUp(CreateUserRequestDto requestDto) {
+        String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
+        LOGGER.info("인코딩된 패스워드 : {}",encodedPassword);
+        requestDto.setPassword(encodedPassword);
+        return null;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;

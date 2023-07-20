@@ -1,6 +1,6 @@
 package io.codertown.web.user;
 
-import lombok.Data;
+import lombok.*;
 
 /**
  * *****************************************************<p>
@@ -12,13 +12,16 @@ import lombok.Data;
  * *****************************************************<p>
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class CreateUserRequestDto {
     private String emailId;
     private String emailAddress;
     private String fullEmail;
+    private String password;
     private String nickname;
     private String profileIcon;
-    private String password;
-    private char gender;
+    private Character gender;
 
 }
