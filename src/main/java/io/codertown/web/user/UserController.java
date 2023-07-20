@@ -1,5 +1,6 @@
 package io.codertown.web.user;
 
+import io.codertown.support.base.CommonLoggerComponent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequiredArgsConstructor
-public class UserController {
+public class UserController extends CommonLoggerComponent {
     private final UserService userService;
-
 }
