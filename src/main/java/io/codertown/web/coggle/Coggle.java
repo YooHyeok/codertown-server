@@ -18,6 +18,7 @@ import javax.persistence.*;
 @Entity
 public class Coggle extends BaseTimeStampEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long coggleNo;
     @Check(constraints = "IN ('T', 'C', 'D')")
     private Character category;

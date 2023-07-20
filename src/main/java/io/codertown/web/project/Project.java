@@ -10,7 +10,9 @@ import java.util.List;
 @Entity
 public class Project {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long projectNo;
+    @Column(name = "project_no")
+    private Long id;
+
     private String projectTitle;
 
     @Enumerated

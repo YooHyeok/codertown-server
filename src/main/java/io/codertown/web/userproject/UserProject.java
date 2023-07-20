@@ -9,7 +9,8 @@ import javax.persistence.*;
 public class UserProject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userProjectId;
+    @Column(name = "USER_PROJECT_NO")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_NO")
