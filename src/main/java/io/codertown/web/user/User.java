@@ -34,7 +34,7 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     private String nickname;
     private String profileIcon;
     private String password;
-    private char gender;
+    private Character gender;
 
     @Enumerated(EnumType.STRING)
     private UserStatus status; // 회원 상태(using, cancel ,freeze) - 사용중 탈퇴 정지

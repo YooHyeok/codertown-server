@@ -20,7 +20,7 @@ public class CreateUserRequestDto {
     private String password;
     private String nickname;
     private String profileIcon;
-    private char gender;
+    private Character gender;
 
     public void setNickname(String email) {
         this.nickname = email.split("@")[0];
