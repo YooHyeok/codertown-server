@@ -1,6 +1,9 @@
 package io.codertown.web.user;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * *****************************************************<p>
@@ -11,9 +14,9 @@ import lombok.*;
  * 담당 : 유재혁<p>
  * *****************************************************<p>
  */
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Data
 @Builder
 public class CreateUserRequestDto {
     private String email;
@@ -23,12 +26,7 @@ public class CreateUserRequestDto {
     private Character gender;
 
     public void setNickname(String email) {
-        this.nickname = email.split("@")[0];
-    }
+        this.nickname = email; //중복이 아니면 그대로 저장
 
-    public String getNickname() { //커맨드 객체 파라미터 받을때 호출된다.
-        setNickname(getEmail());
-        return nickname;
     }
-
 }
