@@ -29,8 +29,14 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         LOGGER.info("인코딩된 패스워드 : {}",encodedPassword);
         requestDto.setPassword(encodedPassword);
         User user = User.userDtoToEntity(requestDto);
-        userRepository.save(user);
-        return null;
+        try {
+            String savedNickname = userRepository.save(user).getNickname();
+            if(savedNickname != user.getNickname()) throw new RuntimeException("nickname mismatch save failed");
+        } catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
     @Override
