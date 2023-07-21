@@ -22,13 +22,14 @@ import org.springframework.stereotype.Service;
 public class UserService extends CommonLoggerComponent implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
-
+    private final UserRepository userRepository;
 
     public Boolean signUp(CreateUserRequestDto requestDto) {
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
         LOGGER.info("인코딩된 패스워드 : {}",encodedPassword);
         requestDto.setPassword(encodedPassword);
         User user = User.userDtoToEntity(requestDto);
+        userRepository.save(user);
         return null;
     }
 
