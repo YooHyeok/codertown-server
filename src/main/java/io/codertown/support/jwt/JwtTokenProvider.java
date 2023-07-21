@@ -11,7 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +19,6 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
-@Component
 @RequiredArgsConstructor
 public class JwtTokenProvider extends CommonLoggerComponent {
     private final UserDetailsService userDetailsService;
@@ -59,6 +57,9 @@ public class JwtTokenProvider extends CommonLoggerComponent {
 
     /**
      * refreshToken
+     * Client에서 Cookie에 저장해둔다.
+     * createToken을 통해 생성/발급된 토큰과 비교한다. 만료되었을 때 새로운 토큰을 발급해주는 토큰이다.
+     *
      * @param nickname
      * @param roles
      * @return
