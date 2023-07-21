@@ -28,6 +28,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
         LOGGER.info("인코딩된 패스워드 : {}",encodedPassword);
         requestDto.setPassword(encodedPassword);
+        User user = User.userDtoToEntity(requestDto);
         return null;
     }
 

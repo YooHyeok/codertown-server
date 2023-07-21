@@ -47,6 +47,17 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     @OneToMany(mappedBy = "recruitUser")
     private List<Recruit> recruitUsers = new ArrayList<>();
 
+    /* === DTO Entity 변환 === */
+    public static User userDtoToEntity(CreateUserRequestDto requestDto) {
+        return User.builder()
+                .email(requestDto.getFullEmail())
+                .nickname(requestDto.getNickname())
+                .profileIcon(requestDto.getProfileIcon())
+                .password(requestDto.getPassword())
+                .gender(requestDto.getGender())
+                .build();
+    }
+
     /* === Security UserDetails 구현 === */
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
