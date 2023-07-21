@@ -1,12 +1,15 @@
 package io.codertown.web.user;
 
 import io.codertown.support.base.CommonLoggerComponent;
+import io.codertown.support.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Map;
 
 /**
  * *****************************************************<p>
@@ -24,6 +27,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
+    private final JwtTokenProvider jwtTokenProvider;
     /**
      * 회원 가입
      * @param request Client 요청 DTO 객체
@@ -37,7 +41,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * @return Boolean 저장 성공/실패 여부
      * @throws RuntimeException 저장중 닉네임 불일치 저장실패 예외
      */
-    public Boolean signUp(CreateUserRequest request) {
+    public Boolean signUp(SignUpRequest request) {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         request.setPassword(encodedPassword);
         existsNickname(request); //닉네임 중복 체크 및 난수 부여 메소드
@@ -50,6 +54,19 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             return false;
         }
         return true;
+    }
+
+    public Map<String, String> signIn(SignInRequest request) {
+        try {
+            User user = (User) loadUserByUsername(request.getEmail());
+            boolean matches = passwordEncoder.matches(request.getPassword(), user.getPassword());
+            if (user != null && matches) {
+                jwtTokenProvider.createToken(user.getNickname(), user.getRoles());
+            }
+        } catch (Exception e) {
+
+        }
+        return null;
     }
 
     @Override
@@ -69,7 +86,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * @param request
      * @return
      */
-    private CreateUserRequest existsNickname(CreateUserRequest request) {
+    private SignUpRequest existsNickname(SignUpRequest request) {
         String splitNickname = request.getEmail().split("@")[0]; // 1. email split
         Boolean existResult = userRepository.existsByNickname(splitNickname); //2. 중복체크
         String completedNickname = null; //완료된 닉네임

@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 /**
  * *****************************************************<p>
  * 패키지:io.codertown.web.user<p>
@@ -35,7 +37,7 @@ public class UserController extends CommonLoggerComponent {
      * @return Boolean 저장 성공/실패 여부
      */
     @PostMapping("/signUp")
-    public ResponseEntity<Boolean> signUp(@RequestBody CreateUserRequest request) {
+    public ResponseEntity<Boolean> signUp(@RequestBody SignUpRequest request) {
         try {
             Boolean signUpResult = userService.signUp(request);
             return ResponseEntity.ok(signUpResult);
@@ -43,6 +45,18 @@ public class UserController extends CommonLoggerComponent {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/signIn")
+    public ResponseEntity<Map<String, String>> signIn(@RequestBody SignInRequest request) {
+        try {
+            Map<String, String> loginInfo = userService.signIn(request);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return null;
     }
 
 }

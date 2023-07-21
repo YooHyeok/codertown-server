@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -36,6 +37,10 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     private String password;
     private Character gender;
 
+    @ElementCollection(fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<String> roles = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private UserStatus status; // 회원 상태(using, cancel ,freeze) - 사용중 탈퇴 정지
 
@@ -46,13 +51,15 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     private List<Recruit> recruitUsers = new ArrayList<>();
 
     /* === DTO Entity 변환 === */
-    public static User userDtoToEntity(CreateUserRequest requestDto) {
+    public static User userDtoToEntity(SignUpRequest requestDto) {
+        String role = requestDto.getRole() == null ? "ROLE_USER" : requestDto.getRole(); //null이면 USER정보, 아니면 그외 권한
         return User.builder()
                 .email(requestDto.getEmail())
                 .nickname(requestDto.getNickname())
                 .profileIcon(requestDto.getProfileIcon())
                 .password(requestDto.getPassword())
                 .gender(requestDto.getGender())
+                .roles(Collections.singletonList(role))
                 .build();
     }
 

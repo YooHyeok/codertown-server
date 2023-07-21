@@ -3,7 +3,7 @@ package io.codertown;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codertown.support.configuration.SecurityConfig;
 import io.codertown.support.configuration.WebConfig;
-import io.codertown.web.user.CreateUserRequest;
+import io.codertown.web.user.SignUpRequest;
 import io.codertown.web.user.UserController;
 import io.codertown.web.user.UserService;
 import org.junit.jupiter.api.DisplayName;
@@ -36,11 +36,11 @@ public class UserControllerTest {
     void createUserTest() throws Exception {
         BDDMockito.given(
                 userService.signUp(
-                        new CreateUserRequest("webdevyoo@gmail.com", "1234", null, "1234", null)
+                        new SignUpRequest("webdevyoo@gmail.com", "1234", null, "1234", null)
                 )
         ).willReturn(Boolean.TRUE);
 
-        CreateUserRequest buildDto = CreateUserRequest.builder()
+        SignUpRequest buildDto = SignUpRequest.builder()
                 .email("webdevyoo@gmail.com")
                 .nickname(null)
                 .profileIcon(null)
@@ -61,7 +61,7 @@ public class UserControllerTest {
                 .andDo(MockMvcResultHandlers.print());
 
         // 모의객체인 userService로부터 signUp 메소드가 1회 호출되었는지 확인.
-        Mockito.verify(userService, Mockito.times(1)).signUp(new CreateUserRequest("webdevyoo@gmail.com", "1234", null, null, null));
+        Mockito.verify(userService, Mockito.times(1)).signUp(new SignUpRequest("webdevyoo@gmail.com", "1234", null, null, null));
 //        Mockito.verify(userService).signUp(new CreateUserRequestDto("webdevyoo","gmail.com", null, "1234", "유혁스쿨", null, null));
     }
 }

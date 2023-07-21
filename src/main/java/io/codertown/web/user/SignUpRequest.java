@@ -18,12 +18,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class CreateUserRequest {
+public class SignUpRequest {
     private String email;
     private String password;
     private String nickname;
     private String profileIcon;
     private Character gender;
+    private String role;
 
     public void setNickname(String email) {
         this.nickname = email; //중복이 아니면 그대로 저장

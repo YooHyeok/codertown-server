@@ -12,7 +12,7 @@ import lombok.Data;
  * *****************************************************<p>
  */
 @Data
-public class LoginRequest {
+public class SignInRequest {
     private String email;
     private String password;
 
