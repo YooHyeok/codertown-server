@@ -16,12 +16,19 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class CreateUserRequestDto {
-    private String emailId;
-    private String emailAddress;
-    private String fullEmail;
+    private String email;
     private String password;
     private String nickname;
     private String profileIcon;
-    private Character gender;
+    private char gender;
+
+    public void setNickname(String email) {
+        this.nickname = email.split("@")[0];
+    }
+
+    public String getNickname() { //커맨드 객체 파라미터 받을때 호출된다.
+        setNickname(getEmail());
+        return nickname;
+    }
 
 }

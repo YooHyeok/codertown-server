@@ -3,10 +3,7 @@ package io.codertown.web.user;
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.recruit.Recruit;
 import io.codertown.web.userproject.UserProject;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,6 +23,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @Entity
 public class User extends BaseTimeStampEntity implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,7 +48,7 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     /* === DTO Entity 변환 === */
     public static User userDtoToEntity(CreateUserRequestDto requestDto) {
         return User.builder()
-                .email(requestDto.getFullEmail())
+                .email(requestDto.getEmail())
                 .nickname(requestDto.getNickname())
                 .profileIcon(requestDto.getProfileIcon())
                 .password(requestDto.getPassword())
