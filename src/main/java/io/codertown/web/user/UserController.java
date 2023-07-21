@@ -23,8 +23,8 @@ public class UserController extends CommonLoggerComponent {
     private final UserService userService;
 
     /**
-     * 회원 가입
-     * @param requestDto Client 요청 DTO 객체
+     * 회원 가입 API
+     * @param request Client JSON 데이터
      * <pre>
      *       email : 이메일 (로그인계정) <br/>
      *    password : 비밀번호 <br/>
@@ -35,16 +35,14 @@ public class UserController extends CommonLoggerComponent {
      * @return Boolean 저장 성공/실패 여부
      */
     @PostMapping("/signUp")
-    public ResponseEntity<Boolean> signUp(@RequestBody CreateUserRequestDto requestDto) {
-        ResponseEntity<Boolean> result = null;
+    public ResponseEntity<Boolean> signUp(@RequestBody CreateUserRequest request) {
         try {
-            Boolean signUpResult = userService.signUp(requestDto);
-            result = new ResponseEntity<>(signUpResult, HttpStatus.OK);
+            Boolean signUpResult = userService.signUp(request);
+            return ResponseEntity.ok(signUpResult);
         } catch (Exception e) {
             e.printStackTrace();
-            result = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return result;
     }
 
 }

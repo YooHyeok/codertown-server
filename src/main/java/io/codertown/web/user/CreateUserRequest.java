@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Builder
-public class CreateUserRequestDto {
+public class CreateUserRequest {
     private String email;
     private String password;
     private String nickname;

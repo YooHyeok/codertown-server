@@ -26,7 +26,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
 
     /**
      * 회원 가입
-     * @param requestDto Client 요청 DTO 객체
+     * @param request Client 요청 DTO 객체
      * <pre>
      *       email : 이메일 (로그인계정) <br/>
      *    password : 비밀번호 <br/>
@@ -37,11 +37,11 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * @return Boolean 저장 성공/실패 여부
      * @throws RuntimeException 저장중 닉네임 불일치 저장실패 예외
      */
-    public Boolean signUp(CreateUserRequestDto requestDto) {
-        String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
-        requestDto.setPassword(encodedPassword);
-        existsNickname(requestDto); //닉네임 중복 체크 및 난수 부여 메소드
-        User user = User.userDtoToEntity(requestDto);
+    public Boolean signUp(CreateUserRequest request) {
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+        request.setPassword(encodedPassword);
+        existsNickname(request); //닉네임 중복 체크 및 난수 부여 메소드
+        User user = User.userDtoToEntity(request);
         try {
             String savedNickname = userRepository.save(user).getNickname();
             if(savedNickname != user.getNickname()) throw new RuntimeException("nickname mismatch save failed");
@@ -66,11 +66,11 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * 3-2) 난수를 부여한 닉네임이 중복인지 확인 <br/>
      * 3-3) 닉네임이 중복이 아니면 변수에 저장후 loop탈출 <br/>
      * 3-3) 닉네임이 중복이면 loop의 처음인 3-1로 재귀
-     * @param requestDto
+     * @param request
      * @return
      */
-    private CreateUserRequestDto existsNickname(CreateUserRequestDto requestDto) {
-        String splitNickname = requestDto.getEmail().split("@")[0]; // 1. email split
+    private CreateUserRequest existsNickname(CreateUserRequest request) {
+        String splitNickname = request.getEmail().split("@")[0]; // 1. email split
         Boolean existResult = userRepository.existsByNickname(splitNickname); //2. 중복체크
         String completedNickname = null; //완료된 닉네임
 
@@ -83,7 +83,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             continue; // 난수를 부여한 닉네임이 중복이면 loop continue
         }
         if(!existResult) completedNickname = splitNickname; // 3.중복이 아니면 그대로 저장
-        requestDto.setNickname(completedNickname);
-        return requestDto;
+        request.setNickname(completedNickname);
+        return request;
     }
 }

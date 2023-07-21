@@ -12,10 +12,8 @@ import lombok.Data;
  * *****************************************************<p>
  */
 @Data
-public class CreateUserResponseDto {
-    private String id;
+public class LoginRequest {
+    private String email;
+    private String password;
 
-    public CreateUserResponseDto(String id) {
-        this.id = id;
-    }
 }

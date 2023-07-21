@@ -46,7 +46,7 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     private List<Recruit> recruitUsers = new ArrayList<>();
 
     /* === DTO Entity 변환 === */
-    public static User userDtoToEntity(CreateUserRequestDto requestDto) {
+    public static User userDtoToEntity(CreateUserRequest requestDto) {
         return User.builder()
                 .email(requestDto.getEmail())
                 .nickname(requestDto.getNickname())
