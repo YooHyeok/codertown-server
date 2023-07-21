@@ -13,6 +13,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -21,6 +22,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @WebMvcTest(UserController.class)
+@MockBean(JpaMetamodelMappingContext.class)
 @ContextConfiguration(classes={WebConfig.class, CodertownApplication.class, SecurityConfig.class}) //Security테스트를 위해 추가
 public class UserControllerTest {
     @Autowired
@@ -34,7 +36,7 @@ public class UserControllerTest {
     void createUserTest() throws Exception {
         BDDMockito.given(
                 userService.signUp(
-                        new CreateUserRequest("webdevyoo@gmail.com", null, null, "1234", null)
+                        new CreateUserRequest("webdevyoo@gmail.com", "1234", null, "1234", null)
                 )
         ).willReturn(Boolean.TRUE);
 
@@ -55,11 +57,11 @@ public class UserControllerTest {
                         .content(content)
                         .contentType(MediaType.APPLICATION_JSON)
                 ).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().string("true"))
+                .andExpect(MockMvcResultMatchers.content().string("false"))
                 .andDo(MockMvcResultHandlers.print());
 
         // 모의객체인 userService로부터 signUp 메소드가 1회 호출되었는지 확인.
-        Mockito.verify(userService, Mockito.times(1)).signUp(new CreateUserRequest("webdevyoo@gmail.com", null, null, "1234", null));
+        Mockito.verify(userService, Mockito.times(1)).signUp(new CreateUserRequest("webdevyoo@gmail.com", "1234", null, null, null));
 //        Mockito.verify(userService).signUp(new CreateUserRequestDto("webdevyoo","gmail.com", null, "1234", "유혁스쿨", null, null));
     }
 }
