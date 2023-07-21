@@ -24,9 +24,21 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
 
+    /**
+     * 회원 가입
+     * @param requestDto Client 요청 DTO 객체
+     * <pre>
+     *       email : 이메일 (로그인계정) <br/>
+     *    password : 비밀번호 <br/>
+     *    nickname : 닉네임 <br/>
+     * profileIcon : 프로필 아이콘 <br/>
+     *      gender : 성별
+     * </pre>
+     * @return Boolean 저장 성공/실패 여부
+     * @throws RuntimeException 저장중 닉네임 불일치 저장실패 예외
+     */
     public Boolean signUp(CreateUserRequestDto requestDto) {
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
-        LOGGER.info("인코딩된 패스워드 : {}",encodedPassword);
         requestDto.setPassword(encodedPassword);
         User user = User.userDtoToEntity(requestDto);
         try {

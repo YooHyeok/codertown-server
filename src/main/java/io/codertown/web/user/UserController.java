@@ -23,9 +23,16 @@ public class UserController extends CommonLoggerComponent {
     private final UserService userService;
 
     /**
-     *
-     * @param requestDto - Client로부터 formData 형식으로 받는다.
-     * @return Boolean 가입 성공시 true를 반환한다.
+     * 회원 가입
+     * @param requestDto Client 요청 DTO 객체
+     * <pre>
+     *       email : 이메일 (로그인계정) <br/>
+     *    password : 비밀번호 <br/>
+     *    nickname : 닉네임 <br/>
+     * profileIcon : 프로필 아이콘 <br/>
+     *      gender : 성별
+     * </pre>
+     * @return Boolean 저장 성공/실패 여부
      */
     @PostMapping("/signUp")
     public ResponseEntity<Boolean> signUp(@RequestBody CreateUserRequestDto requestDto) {
