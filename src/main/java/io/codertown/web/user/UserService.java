@@ -1,7 +1,6 @@
 package io.codertown.web.user;
 
 import io.codertown.support.base.CommonLoggerComponent;
-import io.codertown.support.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -26,8 +25,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-
-    private final JwtTokenProvider jwtTokenProvider;
+//    private final JwtTokenProvider jwtTokenProvider;
     /**
      * 회원 가입
      * @param request Client 요청 DTO 객체
@@ -41,19 +39,35 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * @return Boolean 저장 성공/실패 여부
      * @throws RuntimeException 저장중 닉네임 불일치 저장실패 예외
      */
-    public Boolean signUp(SignUpRequest request) {
+    public SignUpResult signUp(SignUpRequest request) {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         request.setPassword(encodedPassword);
         existsNickname(request); //닉네임 중복 체크 및 난수 부여 메소드
         User user = User.userDtoToEntity(request);
+        SignUpResult signUpResult = new SignUpResult();
         try {
             String savedNickname = userRepository.save(user).getNickname();
-            if(savedNickname != user.getNickname()) throw new RuntimeException("nickname mismatch save failed");
+            if(savedNickname != user.getNickname() || savedNickname.isEmpty()) {
+                throw new RuntimeException("nickname mismatch save failed");
+            }
+            setSuccessResult(signUpResult); //성공코드 객체반환
         } catch (Exception e){
             e.printStackTrace();
-            return false;
+            setFailResult(signUpResult); //실패코드 객체반환
         }
-        return true;
+        return signUpResult;
+    }
+
+    private void setSuccessResult(SignUpResult result) {
+       result.setSuccess(true);
+       result.setCode(CommonResponse.SUCCESS.getCode());
+       result.setMsg(CommonResponse.SUCCESS.getMsg());
+    }
+
+    private void setFailResult(SignUpResult result) {
+        result.setSuccess(false);
+        result.setCode(CommonResponse.FAIL.getCode());
+        result.setMsg(CommonResponse.FAIL.getMsg());
     }
 
     public Map<String, String> signIn(SignInRequest request) {
@@ -61,7 +75,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             User user = (User) loadUserByUsername(request.getEmail());
             boolean matches = passwordEncoder.matches(request.getPassword(), user.getPassword());
             if (user != null && matches) {
-                jwtTokenProvider.createToken(user.getNickname(), user.getRoles());
+//                jwtTokenProvider.createToken(user.getNickname(), user.getRoles());
             }
         } catch (Exception e) {
 
