@@ -99,8 +99,8 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email);
     }
 
     /**
