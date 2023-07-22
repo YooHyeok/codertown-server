@@ -2,7 +2,8 @@ package io.codertown.web.user;
 
 import io.codertown.support.base.CommonLoggerComponent;
 import io.codertown.support.jwt.JwtTokenProvider;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,11 +22,17 @@ import java.util.Map;
  * *****************************************************<p>
  */
 @Service
-@RequiredArgsConstructor
 public class UserService extends CommonLoggerComponent implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+
+    @Autowired
+    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, @Lazy JwtTokenProvider jwtTokenProvider) {
+        this.passwordEncoder = passwordEncoder;
+        this.userRepository = userRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
+    }
 
     /**
      * 회원 가입
