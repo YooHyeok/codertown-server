@@ -8,7 +8,7 @@ public enum CommonResponse {
     int code;
     String msg;
 
-    CommonResponse(int i, String msg) {
+    CommonResponse(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }
