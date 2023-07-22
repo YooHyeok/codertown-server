@@ -10,8 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
-
 /**
  * *****************************************************<p>
  * 패키지:io.codertown.user<p>
@@ -78,17 +76,26 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         result.setMsg(CommonResponse.FAIL.getMsg());
     }
 
-    public Map<String, String> signIn(SignInRequest request) {
+    public SignInResult signIn(SignInRequest request) {
+        SignInResult signInResult;
         try {
             User user = (User) loadUserByUsername(request.getEmail());
             boolean matches = passwordEncoder.matches(request.getPassword(), user.getPassword());
-            if (user != null && matches) {
-                jwtTokenProvider.createToken(user.getNickname(), user.getRoles());
+            if (user == null || !matches) { //사용자 정보가 null이거나 패스워드가 일치하지 않으면 Exception 후 catch이동
+                throw new RuntimeException("User information entered is incorrect");
             }
+            signInResult = SignInResult
+                    .builder()
+                    .token(jwtTokenProvider.createToken(user.getNickname(), user.getRoles()))
+                    .build();
+            setSuccessResult(signInResult);
+            return signInResult;
         } catch (Exception e) {
-
+            e.printStackTrace();
+            signInResult = SignInResult.builder().build();
+            setFailResult(signInResult);
         }
-        return null;
+        return signInResult;
     }
 
     @Override
