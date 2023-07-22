@@ -57,7 +57,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
                 throw new RuntimeException("nickname mismatch save failed");
             }
             setSuccessResult(signUpResult); //성공코드 객체반환
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             setFailResult(signUpResult); //실패코드 객체반환
         }
@@ -77,7 +77,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
     }
 
     public SignInResult signIn(SignInRequest request) {
-        SignInResult signInResult;
+        SignInResult signInResult = SignInResult.builder().build();
         try {
             User user = (User) loadUserByUsername(request.getEmail());
             boolean matches = passwordEncoder.matches(request.getPassword(), user.getPassword());
@@ -88,14 +88,14 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
                     .builder()
                     .token(jwtTokenProvider.createToken(user.getNickname(), user.getRoles()))
                     .build();
+            LOGGER.info("UserService signInResult: {}", signInResult);
             setSuccessResult(signInResult);
             return signInResult;
         } catch (Exception e) {
             e.printStackTrace();
-            signInResult = SignInResult.builder().build();
             setFailResult(signInResult);
+            return signInResult;
         }
-        return signInResult;
     }
 
     @Override

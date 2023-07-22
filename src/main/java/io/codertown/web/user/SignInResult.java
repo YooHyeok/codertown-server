@@ -1,7 +1,11 @@
 package io.codertown.web.user;
 
-import lombok.Builder;
+import lombok.*;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class SignInResult extends SignUpResult{
     private String token;
 
