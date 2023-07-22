@@ -1,6 +1,7 @@
 package io.codertown.web.user;
 
 import io.codertown.support.base.CommonLoggerComponent;
+import io.codertown.support.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,10 +23,10 @@ import java.util.Map;
 @Service
 @RequiredArgsConstructor
 public class UserService extends CommonLoggerComponent implements UserDetailsService {
-
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-//    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenProvider jwtTokenProvider;
+
     /**
      * 회원 가입
      * @param request Client 요청 DTO 객체
@@ -75,7 +76,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             User user = (User) loadUserByUsername(request.getEmail());
             boolean matches = passwordEncoder.matches(request.getPassword(), user.getPassword());
             if (user != null && matches) {
-//                jwtTokenProvider.createToken(user.getNickname(), user.getRoles());
+                jwtTokenProvider.createToken(user.getNickname(), user.getRoles());
             }
         } catch (Exception e) {
 
