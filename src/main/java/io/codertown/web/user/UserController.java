@@ -34,7 +34,7 @@ public class UserController extends CommonLoggerComponent {
      * </pre>
      * @return Boolean 저장 성공/실패 여부
      */
-    @PostMapping("/signUp")
+    @PostMapping("/sign-up")
     public ResponseEntity<SignUpResult> signUp(@RequestBody SignUpRequest request) {
         try {
             SignUpResult signUpResult = userService.signUp(request);
@@ -45,7 +45,7 @@ public class UserController extends CommonLoggerComponent {
         }
     }
 
-    @PostMapping("/signIn")
+    @PostMapping("/sign-in")
     public ResponseEntity<SignInResult> signIn(@RequestBody SignInRequest request) {
         try {
             SignInResult signInResult = userService.signIn(request);
