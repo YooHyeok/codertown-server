@@ -6,12 +6,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class SignInResult extends SignUpResult{
-    private String token;
+@Builder
+public class SignInResult {
+    private String createToken;
+    private String refreshToken;
+    private String rememberMeToken;
+    private String email;
+    private String nickname;
 
-    @Builder
-    public SignInResult(boolean success, int code, String msg, String token) {
-        super(success, code, msg);
-        this.token = token;
-    }
 }

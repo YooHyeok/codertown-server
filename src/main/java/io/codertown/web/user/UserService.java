@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * *****************************************************<p>
  * 패키지:io.codertown.user<p>
@@ -45,57 +48,52 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * @return Boolean 저장 성공/실패 여부
      * @throws RuntimeException 저장중 닉네임 불일치 저장실패 예외
      */
-    public SignUpResult signUp(SignUpRequest request) {
+    public StatusResponse signUp(SignUpRequest request) {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         request.setPassword(encodedPassword);
         existsNickname(request); //닉네임 중복 체크 및 난수 부여 메소드
         User user = User.userDtoToEntity(request);
-        SignUpResult signUpResult = new SignUpResult();
+        StatusResponse responseStatus = new StatusResponse();
         try {
             String savedNickname = userRepository.save(user).getNickname();
             if(savedNickname != user.getNickname() || savedNickname.isEmpty()) {
                 throw new RuntimeException("nickname mismatch save failed");
             }
-            setSuccessResult(signUpResult); //성공코드 객체반환
+            responseStatus.setSuccessResult(responseStatus); //성공코드 객체반환
         } catch (Exception e) {
             e.printStackTrace();
-            setFailResult(signUpResult); //실패코드 객체반환
+            responseStatus.setFailResult(responseStatus); //실패코드 객체반환
         }
-        return signUpResult;
+        return responseStatus;
     }
 
-    private void setSuccessResult(SignUpResult result) {
-       result.setSuccess(true);
-       result.setCode(CommonResponse.SUCCESS.getCode());
-       result.setMsg(CommonResponse.SUCCESS.getMsg());
-    }
-
-    private void setFailResult(SignUpResult result) {
-        result.setSuccess(false);
-        result.setCode(CommonResponse.FAIL.getCode());
-        result.setMsg(CommonResponse.FAIL.getMsg());
-    }
-
-    public SignInResult signIn(SignInRequest request) {
-        SignInResult signInResult = SignInResult.builder().build();
+    public Map<String, Object> signIn(SignInRequest request) {
+        Map<String, Object> signInObject = new HashMap<>();
+        StatusResponse statusResponse = StatusResponse.builder().build();
+        SignInResult loginInfo = SignInResult.builder().build();
         try {
             User user = (User) loadUserByUsername(request.getEmail());
             boolean matches = passwordEncoder.matches(request.getPassword(), user.getPassword());
             if (user == null || !matches) { //사용자 정보가 null이거나 패스워드가 일치하지 않으면 Exception 후 catch이동
                 throw new RuntimeException("User information entered is incorrect");
             }
-            signInResult = SignInResult
+            loginInfo = SignInResult
                     .builder()
-                    .token(jwtTokenProvider.createToken(user.getNickname(), user.getRoles()))
+                    .createToken(jwtTokenProvider.createToken(user.getNickname(), user.getRoles()))
+                    .refreshToken(jwtTokenProvider.refreshToken(user.getNickname(), user.getRoles()))
+                    .email(user.getEmail())
+                    .nickname(user.getNickname())
                     .build();
-            LOGGER.info("UserService signInResult: {}", signInResult);
-            setSuccessResult(signInResult);
-            return signInResult;
+            LOGGER.info("UserService signInResult: {}", loginInfo);
+            statusResponse.setSuccessResult(statusResponse);
+
         } catch (Exception e) {
             e.printStackTrace();
-            setFailResult(signInResult);
-            return signInResult;
+            statusResponse.setFailResult(statusResponse);
         }
+        signInObject.put("loginInfo", loginInfo);
+        signInObject.put("status", statusResponse);
+        return signInObject;
     }
 
     @Override
