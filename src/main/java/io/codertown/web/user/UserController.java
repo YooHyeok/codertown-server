@@ -37,9 +37,9 @@ public class UserController extends CommonLoggerComponent {
      * @return Boolean 저장 성공/실패 여부
      */
     @PostMapping("/sign-up")
-    public ResponseEntity<StatusResponse> signUp(@RequestBody SignUpRequest request) {
+    public ResponseEntity<SignStatus> signUp(@RequestBody SignUpRequest request) {
         try {
-            StatusResponse signUpResult = userService.signUp(request);
+            SignStatus signUpResult = userService.signUp(request);
             return ResponseEntity.ok(signUpResult);
         } catch (Exception e) {
             e.printStackTrace();

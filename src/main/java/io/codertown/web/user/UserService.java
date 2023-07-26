@@ -48,12 +48,12 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * @return Boolean 저장 성공/실패 여부
      * @throws RuntimeException 저장중 닉네임 불일치 저장실패 예외
      */
-    public StatusResponse signUp(SignUpRequest request) {
+    public SignStatus signUp(SignUpRequest request) {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         request.setPassword(encodedPassword);
         existsNickname(request); //닉네임 중복 체크 및 난수 부여 메소드
         User user = User.userDtoToEntity(request);
-        StatusResponse responseStatus = new StatusResponse();
+        SignStatus responseStatus = new SignStatus();
         try {
             String savedNickname = userRepository.save(user).getNickname();
             if(savedNickname != user.getNickname() || savedNickname.isEmpty()) {
@@ -69,29 +69,29 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
 
     public Map<String, Object> signIn(SignInRequest request) {
         Map<String, Object> signInObject = new HashMap<>();
-        StatusResponse statusResponse = StatusResponse.builder().build();
-        SignInResult loginInfo = SignInResult.builder().build();
+        SignStatus statusResponse = SignStatus.builder().build();
+        SignInResult signInInfo = SignInResult.builder().build();
         try {
             User user = (User) loadUserByUsername(request.getEmail());
             boolean matches = passwordEncoder.matches(request.getPassword(), user.getPassword());
             if (user == null || !matches) { //사용자 정보가 null이거나 패스워드가 일치하지 않으면 Exception 후 catch이동
                 throw new RuntimeException("User information entered is incorrect");
             }
-            loginInfo = SignInResult
+            signInInfo = SignInResult
                     .builder()
                     .createToken(jwtTokenProvider.createToken(user.getNickname(), user.getRoles()))
                     .refreshToken(jwtTokenProvider.refreshToken(user.getNickname(), user.getRoles()))
                     .email(user.getEmail())
                     .nickname(user.getNickname())
                     .build();
-            LOGGER.info("UserService signInResult: {}", loginInfo);
+            LOGGER.info("UserService signInResult: {}", signInInfo);
             statusResponse.setSuccessResult(statusResponse);
 
         } catch (Exception e) {
             e.printStackTrace();
             statusResponse.setFailResult(statusResponse);
         }
-        signInObject.put("loginInfo", loginInfo);
+        signInObject.put("signInInfo", signInInfo);
         signInObject.put("status", statusResponse);
         return signInObject;
     }

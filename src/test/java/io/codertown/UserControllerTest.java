@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codertown.support.configuration.SecurityConfig;
 import io.codertown.support.configuration.WebConfig;
 import io.codertown.support.jwt.JwtTokenProvider;
+import io.codertown.web.user.SignStatus;
 import io.codertown.web.user.SignUpRequest;
-import io.codertown.web.user.SignUpResult;
 import io.codertown.web.user.UserController;
 import io.codertown.web.user.UserService;
 import org.junit.jupiter.api.DisplayName;
@@ -43,7 +43,7 @@ public class UserControllerTest {
                 userService.signUp(
                         new SignUpRequest("webdevyoo@gmail.com", "1234", null, null, null, "USER_ROLE")
                 )
-        ).willReturn(new SignUpResult(true, 0, "Success"));
+        ).willReturn(new SignStatus(true, 0, "Success"));
 
         SignUpRequest buildDto = SignUpRequest.builder()
                 .email("webdevyoo@gmail.com")
