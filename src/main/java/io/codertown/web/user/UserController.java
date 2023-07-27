@@ -46,7 +46,6 @@ public class UserController extends CommonLoggerComponent {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
     @PostMapping("/sign-in")
     public ResponseEntity<Map<String,Object>> signIn(@RequestBody SignInRequest request) {
         try {
