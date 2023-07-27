@@ -65,6 +65,16 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         return responseStatus;
     }
 
+    /**
+     * 로그인
+     * @param request Client 요청 DTO 객체
+     * <pre>
+     *       email : 이메일 (로그인계정) <br/>
+     *    password : 비밀번호
+     * </pre>
+     * @return SignUpResponse - [로그인정보/성공여부]
+     * @throws RuntimeException 저장중 닉네임 불일치 저장실패 예외
+     */
     public SignUpResponse signIn(SignInRequest request) {
         SignStatus statusResponse = SignStatus.builder().build();
         SignInResult signInInfo = SignInResult.builder().build();
@@ -127,5 +137,18 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         if(!existResult) completedNickname = splitNickname; // 3.중복이 아니면 그대로 저장
         request.setNickname(completedNickname);
         return request;
+    }
+
+    public UserDto userInfo(String loginEmail) {
+        User user = (User)loadUserByUsername(loginEmail);
+        UserDto userDto = UserDto.builder()
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .nickname(user.getNickname())
+                .profileIcon(user.getProfileIcon())
+                .gender(user.getGender())
+                .role(user.getRolesToString())
+                .build();
+        return userDto;
     }
 }

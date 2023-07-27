@@ -25,7 +25,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"projectUsers", "recruitUsers"})
 @Entity
 public class User extends BaseTimeStampEntity implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,6 +41,18 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
+    public String getRolesToString() {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < roles.size(); i++) {
+            sb.append(roles.get(i));
+            if (i < roles.size() - 1) {
+                sb.append(", ");
+            }
+        }
+        return sb.toString();
+    }
 
     @Enumerated(EnumType.STRING)
     private UserStatus status; // 회원 상태(using, cancel ,freeze) - 사용중 탈퇴 정지

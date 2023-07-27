@@ -1,7 +1,10 @@
 package io.codertown.web.user;
 
-import io.codertown.support.base.CommonLoggerComponent;
-import io.codertown.web.user.payload.*;
+import io.codertown.web.user.payload.SignInRequest;
+import io.codertown.web.user.payload.SignStatus;
+import io.codertown.web.user.payload.SignUpRequest;
+import io.codertown.web.user.payload.SignUpResponse;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -11,8 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 /**
  * *****************************************************<p>
@@ -25,7 +26,8 @@ import java.util.Map;
  */
 @RestController
 @RequiredArgsConstructor
-public class UserController extends CommonLoggerComponent {
+//public class UserController extends CommonLoggerComponent {
+public class UserController {
     private final UserService userService;
 
     /**
@@ -41,6 +43,8 @@ public class UserController extends CommonLoggerComponent {
      * @return Boolean 저장 성공/실패 여부
      */
 
+    @ApiOperation(value="회원가입", notes="회원가입 기능")
+    @ApiResponse(description = "회원가입 성공",responseCode = "200")
     @PostMapping("/sign-up")
     public ResponseEntity<SignStatus> signUp(@RequestBody SignUpRequest request) {
         try {
@@ -52,8 +56,9 @@ public class UserController extends CommonLoggerComponent {
         }
     }
 
-    @PostMapping("/sign-in")
+    @ApiOperation(value="로그인", notes="로그인 기능")
     @ApiResponse(description = "로그인 성공",responseCode = "200",content = @Content(schema = @Schema(implementation = SignUpResponse.class)))
+    @PostMapping("/sign-in")
     public ResponseEntity<SignUpResponse> signIn(@RequestBody SignInRequest request) {
         try {
             SignUpResponse signUpResponse = userService.signIn(request);
@@ -63,5 +68,16 @@ public class UserController extends CommonLoggerComponent {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    @PostMapping("/mypage")
+    public ResponseEntity<Object> signIn(@RequestBody String loginEmail) {
+        try {
+            UserDto userDto = userService.userInfo(loginEmail);
+            return ResponseEntity.ok(userDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
 }

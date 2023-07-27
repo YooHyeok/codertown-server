@@ -1,7 +1,7 @@
 package io.codertown.web.user.payload;
 
-import io.codertown.web.user.CommonResponse;
 import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 @Data
@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @ToString
 @Builder
-@ApiModel(description = "가입 및 로그인 상태 정보")
+@ApiModel(description = "회원가입 및 로그인 상태 정보")
 public class SignStatus {
     private boolean success;
     private int code;

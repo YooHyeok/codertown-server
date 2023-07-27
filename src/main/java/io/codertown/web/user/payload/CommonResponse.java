@@ -1,4 +1,4 @@
-package io.codertown.web.user;
+package io.codertown.web.user.payload;
 
 import lombok.Getter;
 

@@ -19,7 +19,6 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         String token = jwtTokenProvider.resolveToken(request); //request header로 부터 토큰 가져오기
-        System.out.println(token);
         if(token == null) return true; //1. 토큰이 비어있을 때 : 로그인시 토큰 생성 전이기 때문에 로그인 처리로 보낸다.
         String[] tokens = token.split(",");
         if(jwtTokenProvider.validateToken(tokens[0])) { //2.access token이 유효한 경우, 정상처리
