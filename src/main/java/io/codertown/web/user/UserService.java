@@ -2,6 +2,7 @@ package io.codertown.web.user;
 
 import io.codertown.support.base.CommonLoggerComponent;
 import io.codertown.support.jwt.JwtTokenProvider;
+import io.codertown.web.user.payload.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,9 +10,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * *****************************************************<p>
@@ -67,8 +65,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         return responseStatus;
     }
 
-    public Map<String, Object> signIn(SignInRequest request) {
-        Map<String, Object> signInObject = new HashMap<>();
+    public SignUpResponse signIn(SignInRequest request) {
         SignStatus statusResponse = SignStatus.builder().build();
         SignInResult signInInfo = SignInResult.builder().build();
         try {
@@ -91,9 +88,10 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             e.printStackTrace();
             statusResponse.setFailResult(statusResponse);
         }
-        signInObject.put("signInInfo", signInInfo);
-        signInObject.put("status", statusResponse);
-        return signInObject;
+        return SignUpResponse.builder()
+                .signInResult(signInInfo)
+                .signStatus(statusResponse)
+                .build();
     }
 
     @Override

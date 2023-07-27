@@ -2,6 +2,7 @@ package io.codertown.web.user;
 
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.recruit.Recruit;
+import io.codertown.web.user.payload.SignUpRequest;
 import io.codertown.web.userproject.UserProject;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

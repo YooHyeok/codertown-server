@@ -1,6 +1,10 @@
 package io.codertown.web.user;
 
 import io.codertown.support.base.CommonLoggerComponent;
+import io.codertown.web.user.payload.*;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +40,7 @@ public class UserController extends CommonLoggerComponent {
      * </pre>
      * @return Boolean 저장 성공/실패 여부
      */
+
     @PostMapping("/sign-up")
     public ResponseEntity<SignStatus> signUp(@RequestBody SignUpRequest request) {
         try {
@@ -46,11 +51,13 @@ public class UserController extends CommonLoggerComponent {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
     @PostMapping("/sign-in")
-    public ResponseEntity<Map<String,Object>> signIn(@RequestBody SignInRequest request) {
+    @ApiResponse(description = "로그인 성공",responseCode = "200",content = @Content(schema = @Schema(implementation = SignUpResponse.class)))
+    public ResponseEntity<SignUpResponse> signIn(@RequestBody SignInRequest request) {
         try {
-            Map<String,Object> signInResult = userService.signIn(request);
-            return ResponseEntity.ok(signInResult);
+            SignUpResponse signUpResponse = userService.signIn(request);
+            return ResponseEntity.ok(signUpResponse);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
