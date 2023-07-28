@@ -52,7 +52,10 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     @OneToMany(mappedBy = "recruitUser")
     private List<Recruit> recruitUsers = new ArrayList<>();
 
-//    @Builder
+    /**
+     * 회원정보 수정 - 변경감지 메소드
+     * @param userEdit
+     */
     public void updateUser(UserEditRequest userEdit) {
         this.email = userEdit.getChangeEmail();
         this.nickname = userEdit.getNickname();
