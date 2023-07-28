@@ -19,7 +19,10 @@ public class Project {
     @Column(name = "PROJECT_NO")
     private Long id;
 
-    private String projectTitle;
+
+    private String subject; //프로젝트주제
+    private String projectTitle; //프로젝트명
+    private String teamName; //프로젝트팀명
 
     @Enumerated
     private TotalStatus projectStatus; //프로젝트 전체 상태 - 모집(RECURUIT), 진행(RUN), 무산(FAIL), 종료(CLOSED)

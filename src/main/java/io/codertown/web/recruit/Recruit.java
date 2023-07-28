@@ -16,10 +16,10 @@ public abstract class Recruit extends BaseTimeStampEntity {
 
     private String title;
 
+    private String link;
+
     @Column(columnDefinition = "LONGTEXT")
     private String content;
-
-    private String link;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_NO")
