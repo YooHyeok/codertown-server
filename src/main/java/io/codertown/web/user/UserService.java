@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * *****************************************************<p>
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
  * *****************************************************<p>
  */
 @Service
+@Transactional(readOnly = true)
 public class UserService extends CommonLoggerComponent implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -59,6 +61,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * @return Boolean 저장 성공/실패 여부
      * @throws RuntimeException 저장중 닉네임 불일치 저장실패 예외
      */
+    @Transactional(readOnly = false)
     public SignStatus signUp(SignUpRequest request) {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         request.setPassword(encodedPassword);
@@ -173,4 +176,17 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         return userDto;
     }
 
+    @Transactional(readOnly = false)
+    public UserDto userEdit(UserEditRequest userEdit) {
+        try {
+            /* 변경감지 구현 */
+            User findUser = (User)userRepository.findByEmail(userEdit.getOriginEmail());
+            findUser.updateUser(userEdit);
+            UserDto userDto = UserDto.builder().build().userEntityToDto(findUser);
+            return userDto;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -12,4 +12,15 @@ public class UserDto {
     private String profileIcon;
     private Character gender;
     private String role;
+
+    /* === Entity DTO 변환 === */
+    public static UserDto userEntityToDto(User user) {
+        return UserDto.builder()
+                .email(user.getEmail())
+                .nickname(user.getNickname())
+                .profileIcon(user.getProfileIcon())
+                .password(user.getPassword())
+                .gender(user.getGender())
+                .build();
+    }
 }

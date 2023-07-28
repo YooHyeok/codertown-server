@@ -1,9 +1,6 @@
 package io.codertown.web.user;
 
-import io.codertown.web.user.payload.SignInRequest;
-import io.codertown.web.user.payload.SignStatus;
-import io.codertown.web.user.payload.SignUpRequest;
-import io.codertown.web.user.payload.SignUpResponse;
+import io.codertown.web.user.payload.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -103,7 +100,7 @@ public class UserController {
     }
 
     /**
-     * 마이페이지 API
+     * 마이페이지 회원정보 API
      * @param loginEmail Client 파라미터
      * <pre>
      *       email : 이메일 (로그인계정) <br/>
@@ -112,8 +109,8 @@ public class UserController {
      */
     @ApiOperation(value="마이페이지", notes="회원 정보")
     @ApiResponse(description = "정상 출력",responseCode = "200")
-    @PostMapping(path = "/mypage", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> signIn(@RequestBody String loginEmail) {
+    @PostMapping(path = "/mypage/userInfo", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> mypage(@RequestBody String loginEmail) {
         try {
             UserDto userDto = userService.userInfo(loginEmail);
             return ResponseEntity.ok(userDto);
@@ -123,4 +120,25 @@ public class UserController {
         }
     }
 
+    /**
+     * 마이페이지 회원정보 수정 API
+     * @param userEdit Client 파라미터
+     * <pre>
+     *       originEmail : 기존 이메일 (로그인계정) <br/>
+     *       changeEmail : 변경 이메일  <br/>
+     *          nickname : 변경 닉네임 <br/>
+     *          password : 변경 패스워드 <br/>
+     *          profile : 변경 프로필 <br/>
+     * </pre>
+     * @return UserDto - [회원정보]
+     */
+    @PostMapping("/mypage/userEdit")
+    public ResponseEntity<UserDto> userEdit(@RequestBody UserEditRequest userEdit) {
+        try {
+            UserDto editResult = userService.userEdit(userEdit);
+            return ResponseEntity.ok(editResult);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

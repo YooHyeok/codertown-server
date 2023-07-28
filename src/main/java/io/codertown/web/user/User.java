@@ -3,6 +3,7 @@ package io.codertown.web.user;
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.recruit.Recruit;
 import io.codertown.web.user.payload.SignUpRequest;
+import io.codertown.web.user.payload.UserEditRequest;
 import io.codertown.web.userproject.UserProject;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,7 +32,7 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_NO")
     private Long id;
-    @Column(unique = true, updatable = false, nullable = false)
+    @Column(unique = true, nullable = false)
     private String email;
     private String nickname;
     private String profileIcon;
@@ -41,6 +42,23 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     @ElementCollection(fetch = FetchType.LAZY)
     @Builder.Default
     private List<String> roles = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    private UserStatus status; // 회원 상태(using, cancel ,freeze) - 사용중 탈퇴 정지
+
+    @OneToMany(mappedBy = "projectUser")
+    private List<UserProject> projectUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recruitUser")
+    private List<Recruit> recruitUsers = new ArrayList<>();
+
+//    @Builder
+    public void updateUser(UserEditRequest userEdit) {
+        this.email = userEdit.getChangeEmail();
+        this.nickname = userEdit.getNickname();
+        this.profileIcon = userEdit.getProfileIcon();
+        this.password = userEdit.getPassword();
+    }
 
     public String getRolesToString() {
         StringBuilder sb = new StringBuilder();
@@ -53,15 +71,6 @@ public class User extends BaseTimeStampEntity implements UserDetails {
         }
         return sb.toString();
     }
-
-    @Enumerated(EnumType.STRING)
-    private UserStatus status; // 회원 상태(using, cancel ,freeze) - 사용중 탈퇴 정지
-
-    @OneToMany(mappedBy = "projectUser")
-    private List<UserProject> projectUsers = new ArrayList<>();
-
-    @OneToMany(mappedBy = "recruitUser")
-    private List<Recruit> recruitUsers = new ArrayList<>();
 
     /* === DTO Entity 변환 === */
     public static User userDtoToEntity(SignUpRequest requestDto) {
