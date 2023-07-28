@@ -42,7 +42,7 @@ public class UserController {
     @PostMapping(path = "/email-exists", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, Object>> emailExists(@RequestBody String email) {
         try {
-            Boolean exists = userService.emailExists(email);
+            Boolean exists = userService.existsByEmail(email);
             Map<String, Object> result = new HashMap<>();
             result.put("exists", exists);
             return ResponseEntity.ok(result);
@@ -114,6 +114,27 @@ public class UserController {
         try {
             UserDto userDto = userService.userInfo(loginEmail);
             return ResponseEntity.ok(userDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * 닉네임 중복 확인 API
+     * @param email Client Text/Plain 파라미터
+     * <pre>
+     *       email : 이메일 (로그인계정) <br/>
+     * </pre>
+     * @return Map("existstu",Boolean) - true : 중복
+     */
+    @PostMapping(path = "/mypage/nickname-exists", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> nicknameExists(@RequestBody String email) {
+        try {
+            Boolean exists = userService.existsByNickname(email);
+            Map<String, Object> result = new HashMap<>();
+            result.put("exists", exists);
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

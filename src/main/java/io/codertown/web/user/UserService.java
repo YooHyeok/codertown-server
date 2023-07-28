@@ -44,7 +44,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * </pre>
      * @return Boolean - true : 중복
      */
-    public Boolean emailExists(String email) {
+    public Boolean existsByEmail(String email) {
         return userRepository.existsByEmail(email);
     }
 
@@ -65,7 +65,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
     public SignStatus signUp(SignUpRequest request) {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         request.setPassword(encodedPassword);
-        existsNickname(request); //닉네임 중복 체크 및 난수 부여 메소드
+        setNickname(request); //닉네임 중복 체크 및 난수 부여 메소드
         User user = User.userDtoToEntity(request);
         SignStatus responseStatus = new SignStatus();
         try {
@@ -137,9 +137,9 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * @param request
      * @return
      */
-    private SignUpRequest existsNickname(SignUpRequest request) {
+    private SignUpRequest setNickname(SignUpRequest request) {
         String splitNickname = request.getEmail().split("@")[0]; // 1. email split
-        Boolean existResult = userRepository.existsByNickname(splitNickname); //2. 중복체크
+        Boolean existResult = existsByNickname(splitNickname); //2. 중복체크
         String completedNickname = null; //완료된 닉네임
 
         while (existResult) { // 3. 중복이면 난수 루프 시작
@@ -153,6 +153,15 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         if(!existResult) completedNickname = splitNickname; // 3.중복이 아니면 그대로 저장
         request.setNickname(completedNickname);
         return request;
+    }
+
+    /**
+     * 닉네임 중복 확인
+     * @param nickname
+     * @return Boolean
+     */
+    public Boolean existsByNickname(String nickname){
+        return userRepository.existsByNickname(nickname);
     }
 
     /**
