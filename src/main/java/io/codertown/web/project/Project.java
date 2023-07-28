@@ -1,6 +1,7 @@
 package io.codertown.web.project;
 
 import io.codertown.web.userproject.UserProject;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -8,9 +9,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class Project {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "project_no")
+    @Column(name = "PROJECT_NO")
     private Long id;
 
     private String projectTitle;

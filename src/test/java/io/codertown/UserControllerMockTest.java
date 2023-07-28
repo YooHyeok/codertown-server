@@ -26,7 +26,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @WebMvcTest(UserController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @ContextConfiguration(classes={WebConfig.class, CodertownApplication.class, SecurityConfig.class}) //Security테스트를 위해 추가
-public class UserControllerTest {
+public class UserControllerMockTest {
     @Autowired
     private MockMvc mockMvc; // 컨트롤러의 API를 테스트하기 위해 사용되는 객체
 
