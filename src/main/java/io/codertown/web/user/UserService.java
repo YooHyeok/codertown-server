@@ -33,6 +33,19 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
+
+    /**
+     * Eamil 중복 확인
+     * @param email Client Text/Plain 파라미터
+     * <pre>
+     *       email : 이메일 (로그인계정) <br/>
+     * </pre>
+     * @return Boolean - true : 중복
+     */
+    public Boolean emailExists(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
     /**
      * 회원 가입
      * @param request Client 요청 DTO 객체
@@ -159,4 +172,5 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
                 .build();
         return userDto;
     }
+
 }
