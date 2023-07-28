@@ -139,6 +139,14 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         return request;
     }
 
+    /**
+     * 마이페이지 - 회원정보 반환 메소드 <br/>
+     * @param loginEmail Client 파라미터
+     * <pre>
+     *       email : 이메일 (로그인계정) <br/>
+     * </pre>
+     * @return UserDto - [회원정보]
+     */
     public UserDto userInfo(String loginEmail) {
         User user = (User)loadUserByUsername(loginEmail);
         UserDto userDto = UserDto.builder()

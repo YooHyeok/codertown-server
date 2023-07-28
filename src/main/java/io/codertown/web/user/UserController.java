@@ -56,6 +56,15 @@ public class UserController {
         }
     }
 
+    /**
+     * 로그인 API
+     * @param request Client 요청 DTO 객체
+     * <pre>
+     *       email : 이메일 (로그인계정) <br/>
+     *    password : 비밀번호
+     * </pre>
+     * @return SignUpResponse - [로그인정보/성공여부]
+     */
     @ApiOperation(value="로그인", notes="로그인 기능")
     @ApiResponse(description = "로그인 성공",responseCode = "200",content = @Content(schema = @Schema(implementation = SignUpResponse.class)))
     @PostMapping("/sign-in")
@@ -68,8 +77,17 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    /**
+     * 마이페이지 API
+     * @param loginEmail Client 파라미터
+     * <pre>
+     *       email : 이메일 (로그인계정) <br/>
+     * </pre>
+     * @return UserDto - [회원정보]
+     */
     @PostMapping("/mypage")
-    public ResponseEntity<Object> signIn(@RequestBody String loginEmail) {
+    public ResponseEntity<UserDto> signIn(@RequestBody String loginEmail) {
         try {
             UserDto userDto = userService.userInfo(loginEmail);
             return ResponseEntity.ok(userDto);
