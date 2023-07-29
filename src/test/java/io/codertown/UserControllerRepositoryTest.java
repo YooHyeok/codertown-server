@@ -1,11 +1,11 @@
 package io.codertown;
 
-import io.codertown.web.project.Project;
-import io.codertown.web.project.ProjectRepository;
-import io.codertown.web.user.User;
-import io.codertown.web.user.UserRepository;
-import io.codertown.web.userproject.UserProject;
-import io.codertown.web.userproject.UserProjectRepository;
+import io.codertown.web.entity.project.Project;
+import io.codertown.web.repository.ProjectRepository;
+import io.codertown.web.entity.user.User;
+import io.codertown.web.repository.UserRepository;
+import io.codertown.web.entity.UserProject;
+import io.codertown.web.repository.UserProjectRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
