@@ -7,6 +7,6 @@ package io.codertown.web.project;
  * 담당 : 유재혁<p>
  * *****************************************************<p>
  */
-public enum TotalStatus {
+public enum TotalStatusEnum {
     RECURUIT, RUN, FAIL, CLOSED
 }

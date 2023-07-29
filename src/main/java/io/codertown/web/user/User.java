@@ -44,7 +44,7 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     private List<String> roles = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    private UserStatus status; // 회원 상태(using, cancel ,freeze) - 사용중 탈퇴 정지
+    private UserStatusEnum status; // 회원 상태(using, cancel ,freeze) - 사용중 탈퇴 정지
 
     @OneToMany(mappedBy = "projectUser")
     private List<UserProject> projectUsers = new ArrayList<>();

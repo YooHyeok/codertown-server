@@ -7,6 +7,6 @@ package io.codertown.web.project;
  * 담당 : 유재혁<p>
  * *****************************************************<p>
  */
-public enum PersonalStatus {
+public enum PersonalStatusEnum {
     WAIT, RUN, QUIT, CLOSED
 }

@@ -7,7 +7,7 @@ package io.codertown.web.user;
  * 담당 : 유재혁<p>
  * *****************************************************<p>
  */
-public enum UserStatus {
+public enum UserStatusEnum {
     USING, CANCEL, FREEZE
 
 }
