@@ -15,4 +15,6 @@ public class ProjectPart {
     @JoinColumn(name = "COKKIRI_ID")
     private Cokkiri cokkiri;
 
+    private int count;
+
 }

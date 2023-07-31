@@ -28,4 +28,18 @@ public class UserProject {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PROJECT_NO")
     private Project project;
+
+    /**
+     * [회원 프로젝트 생성]
+     * @param projectUser
+     * @param project
+     * @return
+     */
+    public static UserProject createUserProject(User projectUser, Project project) {
+        UserProject userProject = UserProject.builder()
+                .projectUser(projectUser)
+                .project(project)
+                .build();
+        return userProject;
+    }
 }
