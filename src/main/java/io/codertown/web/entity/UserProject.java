@@ -29,6 +29,27 @@ public class UserProject {
     @JoinColumn(name = "PROJECT_NO")
     private Project project;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "PROJECT_PART_ID")
+    private ProjectPart projectPart; //프로젝트별 파트 번호
+
+    /**
+     * 양방향 연관관계 <br/>
+     * projectPart 값을 초기화 하면서 참여자목록에 현재객체를 추가한다.
+     * @param projectPart
+     */
+    public void addProjectPart(ProjectPart projectPart) {
+        this.projectPart = projectPart;
+        projectPart.getUserProjects().add(this);
+        projectPart.increaseUserCount();
+    }
+
+    public void removeProjectPart() {
+        projectPart.getUserProjects().remove(this);
+        projectPart.decreaseUserCount();
+    }
+
+
     /**
      * [회원 프로젝트 생성]
      * @param projectUser
