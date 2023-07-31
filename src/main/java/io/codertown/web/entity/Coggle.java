@@ -2,20 +2,18 @@ package io.codertown.web.entity;
 
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @ToString(callSuper = true) // 부모 클래스인 AuditingBaseEntity 필드를 포함하는 역할 수행
 @Entity
+@SuperBuilder
+@NoArgsConstructor
 public class Coggle extends BaseTimeStampEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 
