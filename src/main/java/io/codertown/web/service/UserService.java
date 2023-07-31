@@ -188,6 +188,11 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         return userDto;
     }
 
+    /**
+     * 마이페이지 - 회원 수정 메소드
+     * @param userEdit
+     * @return
+     */
     @Transactional(readOnly = false)
     public UserDto userEdit(UserEditRequest userEdit) {
         try {

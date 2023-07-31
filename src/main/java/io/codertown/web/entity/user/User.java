@@ -63,6 +63,10 @@ public class User extends BaseTimeStampEntity implements UserDetails {
         this.password = userEdit.getPassword();
     }
 
+    /**
+     * Roles 필드 문자열 Split 함수
+     * @return
+     */
     public String getRolesToString() {
         StringBuilder sb = new StringBuilder();
 
