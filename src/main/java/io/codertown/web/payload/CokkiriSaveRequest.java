@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -22,6 +23,6 @@ public class CokkiriSaveRequest {
     private String projectTitle; // 프로젝트 제목
     private String teamname; // 프로젝트 팀명
     private Integer objectWeek; // 목표 소요 기간(주)
-    private List<ProjectPartDto> projectParts; // 파트
+    private List<ProjectPartDto> projectParts = new ArrayList<>(); // 파트
     private String content;
 }

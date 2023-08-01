@@ -1,6 +1,5 @@
 package io.codertown.web.entity.project;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.UserProject;
 import io.codertown.web.entity.recruit.Cokkiri;
@@ -38,7 +37,6 @@ public class Project {
     private LocalDateTime expectedEndDate; // 종료 예정 일자
     private LocalDateTime lastClosingDate; // 최종 종료 일자 (목표)
 
-    @JsonIgnore
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<ProjectPart> projectParts = new ArrayList<>();
 

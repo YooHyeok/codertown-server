@@ -19,7 +19,7 @@ public class Swagger2Config {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("io.codertown"))
+                .apis(RequestHandlerSelectors.basePackage("io.codertown.web.controller"))
                                                      // [Group + Artifact] ex) com.example.demo
                 .paths(PathSelectors.any())
                 .build();

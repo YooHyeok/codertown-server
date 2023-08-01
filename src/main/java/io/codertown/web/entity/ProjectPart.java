@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = "project")
 public class ProjectPart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

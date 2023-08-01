@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
-@ToString
+@ToString(callSuper = true, exclude = "project")
 @SuperBuilder
 @Getter
 @NoArgsConstructor
@@ -20,7 +20,7 @@ public class Cokkiri extends Recruit {
 
     private Integer objectWeek; //목표 기간(주)
 
-    @OneToOne(cascade = CascadeType.ALL) // Project도 함께 저장한다.
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) // Project도 함께 저장한다.
     @JoinColumn(name = "PROJECT_NO")
     private Project project;
 

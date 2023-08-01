@@ -3,6 +3,7 @@ package io.codertown.web.entity.recruit;
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.user.User;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -15,6 +16,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
+@Getter
 @ToString
 public abstract class Recruit extends BaseTimeStampEntity {
 
