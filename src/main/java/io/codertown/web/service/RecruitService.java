@@ -9,6 +9,7 @@ import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.CokkiriDetailResponse;
 import io.codertown.web.payload.CokkiriSaveRequest;
+import io.codertown.web.payload.ProjectJoinRequest;
 import io.codertown.web.repository.PartRepository;
 import io.codertown.web.repository.RecruitRepository;
 import io.codertown.web.repository.UserRepository;
@@ -107,5 +108,12 @@ public class RecruitService {
             e.printStackTrace();
         }
         throw new RuntimeException("게시글 없음");
+    }
+
+    /**
+     * 프로젝트 참가 요청
+     * @param request
+     */
+    public void projectJoinRequest(ProjectJoinRequest request) {
     }
 }

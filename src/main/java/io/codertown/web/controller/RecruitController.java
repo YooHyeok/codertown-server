@@ -2,6 +2,7 @@ package io.codertown.web.controller;
 
 import io.codertown.web.payload.CokkiriDetailResponse;
 import io.codertown.web.payload.CokkiriSaveRequest;
+import io.codertown.web.payload.ProjectJoinRequest;
 import io.codertown.web.service.RecruitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -52,10 +53,19 @@ public class RecruitController {
     public ResponseEntity<CokkiriDetailResponse> cokkiriDetail(@PathVariable(required = true) Long recruitNo) {
         try {
             CokkiriDetailResponse cokkiriDetailResponse = recruitService.cokkiriDetail(recruitNo);
-            System.out.println("cokkiriDetailResponse = " + cokkiriDetailResponse);
             return ResponseEntity.ok(cokkiriDetailResponse);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    /**
+     * 프로젝트 참가 요청 API
+     * 요청 회원 정보, 원하는 파트 정보에 대한 DM을 전송한다.
+     * @param request
+     */
+    @PostMapping("/cokkiri/join-request")
+    public void projectJoinRequest(@RequestBody ProjectJoinRequest request) {
+        recruitService.projectJoinRequest(request);
     }
 }
