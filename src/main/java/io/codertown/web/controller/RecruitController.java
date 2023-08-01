@@ -14,20 +14,20 @@ public class RecruitController {
 
     private final RecruitService recruitService;
     /**
-     *
+     * 코끼리 저장 API <br/>
      * @param request : JSON 데이터 <br/>
-     * {
-     *     "userId": String,
-     *     "coggleTitle": String,
-     *     "projectSubject": String,
-     *     "projectTitle": String,
-     *     "teamname": String,
+     * { <br/>
+     *     "userId": String, <br/>
+     *     "coggleTitle": String, <br/>
+     *     "projectSubject": String, <br/>
+     *     "projectTitle": String, <br/>
+     *     "teamname": String, <br/>
      *     "objectWeek": String(int), <br/>
-     *     "partList": [
-     *         {
-     * 			 "partNo" : String(int),
-     * 			 "count" : String(int)
-     *         },{}
+     *     "partList": [ <br/>
+     *         { <br/>
+     * 			 "partNo" : String(int), <br/>
+     * 			 "count" : String(int) <br/>
+     *         },{} <br/>
      *     ], <br/>
      *     "content" : String(text) <br/>
      * }
@@ -43,6 +43,11 @@ public class RecruitController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * 코끼리 상세보기 API
+     * @param recruitNo
+     * @return
+     */
     @GetMapping("/cokkiri/{recruitNo}")
     public ResponseEntity<CokkiriDetailResponse> cokkiriDetail(@PathVariable(required = true) Long recruitNo) {
         try {

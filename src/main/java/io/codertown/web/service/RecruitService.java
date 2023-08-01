@@ -30,7 +30,12 @@ public class RecruitService {
     private final PartRepository partRepository;
     private final ProjectPartRepository projectPartRepository;
 
-    @Transactional(readOnly = false)
+    /**
+     * 코끼리 저장
+     * @param request
+     * @return Boolean
+     */
+    @Transactional
     public Boolean cokkiriSave(CokkiriSaveRequest request) {
 
         try {
@@ -57,6 +62,11 @@ public class RecruitService {
 
     }
 
+    /**
+     * 코끼리 상세보기
+     * @param recruitNo
+     * @return
+     */
     public CokkiriDetailResponse cokkiriDetail(Long recruitNo) throws RuntimeException {
         try {
             Optional<Recruit> oRecruit = recruitRepository.findById(recruitNo);

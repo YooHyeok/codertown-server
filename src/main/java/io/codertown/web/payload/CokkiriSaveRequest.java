@@ -2,6 +2,7 @@ package io.codertown.web.payload;
 
 import io.codertown.web.dto.ProjectPartDto;
 import io.codertown.web.entity.user.User;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,6 +18,7 @@ import java.util.List;
 public class CokkiriSaveRequest {
 
     private String writer;
+    @Schema(hidden = true)
     private User user;
     private String cokkiriTitle; // 코글 제목
     private String projectSubject; // 프로젝트 주제
