@@ -2,6 +2,7 @@ package io.codertown.web.entity.recruit;
 
 import io.codertown.web.entity.project.Project;
 import io.codertown.web.payload.CokkiriSaveRequest;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 
 @ToString
 @SuperBuilder
+@Getter
 @NoArgsConstructor
 @Entity
 public class Cokkiri extends Recruit {

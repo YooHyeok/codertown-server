@@ -39,13 +39,13 @@ public class Project {
     private LocalDateTime lastClosingDate; // 최종 종료 일자 (목표)
 
     @JsonIgnore
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<ProjectPart> projectParts = new ArrayList<>();
 
     @OneToOne(mappedBy = "project", orphanRemoval = true)
     private Cokkiri cokkiri;
 
-    public static Project createProject(CokkiriSaveRequest request) {
+    public Project createProject(CokkiriSaveRequest request) {
         return Project.builder()
                 .subject(request.getProjectSubject())
                 .teamName(request.getTeamname())

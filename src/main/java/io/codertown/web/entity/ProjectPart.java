@@ -15,7 +15,7 @@ import java.util.List;
 @ToString
 public class ProjectPart {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PROJECT_PART_ID")
     private Long id;
 
@@ -23,10 +23,22 @@ public class ProjectPart {
     @JoinColumn(name = "PROJECT_NO")
     private Project project;
 
+    @OneToOne
+    @JoinColumn(name = "PART_NO")
+    private Part part;
+
     @OneToMany(mappedBy = "projectPart")
     private List<UserProject> userProjects = new ArrayList<>(); //참여자 목록
     private int recruitCount; // 모집 인원
     private int currentCount; // 지원 인원
+
+    public ProjectPart createProjectPart(Project project, int recruitCount, Part part) {
+        return ProjectPart.builder()
+                .part(part)
+                .recruitCount(recruitCount)
+                .project(project)
+                .build();
+    }
 
     public void increaseUserCount() {
         int resultCount  = this.currentCount + 1;
@@ -43,5 +55,6 @@ public class ProjectPart {
         }
         this.currentCount = resultCount;
     }
+
 
 }
