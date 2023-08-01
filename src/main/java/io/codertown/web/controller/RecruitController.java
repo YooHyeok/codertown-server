@@ -1,5 +1,6 @@
 package io.codertown.web.controller;
 
+import io.codertown.web.payload.CokkiriUpdateRequest;
 import io.codertown.web.payload.CokkiriDetailResponse;
 import io.codertown.web.payload.CokkiriSaveRequest;
 import io.codertown.web.payload.ProjectJoinRequest;
@@ -15,7 +16,7 @@ public class RecruitController {
 
     private final RecruitService recruitService;
     /**
-     * 코끼리 저장 API <br/>
+     * 코끼리 & 프로젝트 저장 API <br/>
      * @param request : JSON 데이터 <br/>
      * { <br/>
      *     "userId": String, <br/>
@@ -45,7 +46,7 @@ public class RecruitController {
     }
 
     /**
-     * 코끼리 상세보기 API
+     * 코끼리 & 프로젝트 상세보기 API
      * @param recruitNo
      * @return
      */
@@ -68,4 +69,26 @@ public class RecruitController {
     public void projectJoinRequest(@RequestBody ProjectJoinRequest request) {
         recruitService.projectJoinRequest(request);
     }
+
+
+    /**
+     * 코끼리 & 프로젝트 수정(삭제) API
+     */
+    @PostMapping("/cokkiri/edit-delete")
+    public void cokkiriEdit(@RequestBody CokkiriUpdateRequest request) {
+        System.out.println("request = " + request);
+    }
+
+    /**
+     * 맘모스 저장 API
+     */
+
+
+    /**
+     * 맘모스 상세보기 API
+     */
+
+    /**
+     * 맘모스 글 수정 API
+     */
 }

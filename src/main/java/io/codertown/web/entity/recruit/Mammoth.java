@@ -1,10 +1,8 @@
 package io.codertown.web.entity.recruit;
 
-import io.codertown.web.entity.recruit.Recruit;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;

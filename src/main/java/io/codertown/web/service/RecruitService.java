@@ -32,7 +32,7 @@ public class RecruitService {
     private final ProjectPartRepository projectPartRepository;
 
     /**
-     * 코끼리 저장
+     * 코끼리 & 프로젝트 저장
      * @param request
      * @return Boolean
      */
@@ -64,7 +64,7 @@ public class RecruitService {
     }
 
     /**
-     * 코끼리 상세보기
+     * 코끼리 & 프로젝트 상세보기
      * @param recruitNo
      * @return
      */
@@ -116,4 +116,17 @@ public class RecruitService {
      */
     public void projectJoinRequest(ProjectJoinRequest request) {
     }
+
+    /**
+     * 맘모스 저장
+     */
+
+
+    /**
+     * 맘모스 상세보기
+     */
+
+    /**
+     * 맘모스 글 수정
+     */
 }
