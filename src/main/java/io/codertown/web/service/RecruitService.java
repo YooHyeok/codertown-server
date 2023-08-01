@@ -25,7 +25,7 @@ public class RecruitService {
     private final ProjectPartRepository projectPartRepository;
 
     @Transactional(readOnly = false)
-    public void cokkiriSave(CokkiriSaveRequest request) {
+    public Boolean cokkiriSave(CokkiriSaveRequest request) {
 
         try {
             User findUser = (User) userRepository.findByEmail(request.getWriter());
@@ -42,11 +42,11 @@ public class RecruitService {
                     )
                     .collect(Collectors.toList());
             collect.forEach(projectPartRepository::save);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-
-
 
     }
 }

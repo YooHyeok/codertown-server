@@ -3,6 +3,7 @@ package io.codertown.web.controller;
 import io.codertown.web.payload.CokkiriSaveRequest;
 import io.codertown.web.service.RecruitService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,12 +35,13 @@ public class RecruitController {
      * @return
      */
     @PostMapping("/cokkiri-save")
-    public ResponseEntity<Object> cokkiriSave(@RequestBody CokkiriSaveRequest request) {
+    public ResponseEntity<Boolean> cokkiriSave(@RequestBody CokkiriSaveRequest request) {
         try {
             System.out.println("request = " + request);
-            recruitService.cokkiriSave(request);
+            Boolean result = recruitService.cokkiriSave(request);
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
         }
-        return null;
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
