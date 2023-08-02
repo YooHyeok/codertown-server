@@ -7,6 +7,7 @@ import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.CoggleSaveRequest;
 import io.codertown.web.payload.request.CommentRequest;
 import io.codertown.web.repository.CoggleRepository;
+import io.codertown.web.repository.CommentRepository;
 import io.codertown.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class CoggleService {
 
     private final CoggleRepository coggleRepository;
     private final UserRepository userRepository;
-//    private final CommentRepository commentRepository;
+    private final CommentRepository commentRepository;
 
     /**
      * 코글 저장
@@ -82,7 +83,7 @@ public class CoggleService {
                         .coggle(findCoggle)
                         .content(request.getContent())
                         .build();
-//                commentRepository.save(buildComment);
+                commentRepository.save(buildComment);
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
