@@ -1,9 +1,9 @@
 package io.codertown.web.service;
 
-import io.codertown.web.entity.Comment;
-import io.codertown.web.payload.request.CoggleEditRequest;
 import io.codertown.web.entity.Coggle;
+import io.codertown.web.entity.Comment;
 import io.codertown.web.entity.user.User;
+import io.codertown.web.payload.request.CoggleEditRequest;
 import io.codertown.web.payload.request.CoggleSaveRequest;
 import io.codertown.web.payload.request.CommentRequest;
 import io.codertown.web.repository.CoggleRepository;
@@ -91,6 +91,27 @@ public class CoggleService {
 //                    System.out.println("buildComment.getParent().getChildren() = " + buildComment.getParent().getChildren());
                 }
                 commentRepository.save(buildComment);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("코글 댓글 작성 실패"); //Controller에서 Catch
+            }
+        }
+        throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
+    }
+
+    /**
+     * 코글-댓글 수정
+     * @param request
+     * @return 성공: TRUE | 실패: FALSE
+     */
+    @Transactional
+    public Boolean coggleCommentEdit(CommentEditRequset request) {
+        Optional<Comment> oComment = commentRepository.findById(request.getCommentNo());
+        if (oComment.isPresent()) {
+            try {
+                Comment findComment = oComment.get();
+                findComment.updateComment(request);
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();

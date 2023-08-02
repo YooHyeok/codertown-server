@@ -41,4 +41,7 @@ public class Comment extends BaseTimeStampEntity {
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private List<Comment> children = new ArrayList<>();
 
+    public void updateComment(CommentEditRequset request) {
+        this.content = request.getContent();
+    }
 }

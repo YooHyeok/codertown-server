@@ -64,5 +64,20 @@ public class CoggleController {
         }
     }
 
+    /**
+     * 코글-댓글 수정 API
+     * @param request
+     * @return 성공: TRUE | 실패: FALSE
+     */
+    @PostMapping("/coggle/comment-edit")
+    public ResponseEntity<Object> coggleCommentEdit(@RequestBody CommentEditRequset request) {
+        try {
+            Boolean result = coggleService.coggleCommentEdit(request);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
 }
