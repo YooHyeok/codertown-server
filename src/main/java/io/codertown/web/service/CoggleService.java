@@ -1,6 +1,6 @@
 package io.codertown.web.service;
 
-import io.codertown.web.dto.CommentDto;
+import io.codertown.web.dto.CommentFlatDto;
 import io.codertown.web.entity.Coggle;
 import io.codertown.web.entity.Comment;
 import io.codertown.web.entity.user.User;
@@ -12,12 +12,10 @@ import io.codertown.web.repository.CoggleRepository;
 import io.codertown.web.repository.CommentRepository;
 import io.codertown.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -81,8 +79,8 @@ public class CoggleService {
     public Boolean coggleCommentSave(CommentSaveRequest request) {
         User findWriter = (User)userRepository.findByEmail(request.getWriter());
         Optional<Coggle> oCoggle = coggleRepository.findById(request.getCoggleNo());
-        Comment parentComment = commentRepository.findById(request.getParentNo()).get();
-        System.out.println("parentComment = " + parentComment);
+        Comment parentComment = null;
+        if(request.getParentNo() != null) parentComment = commentRepository.findById(request.getParentNo()).get();
         if (oCoggle.isPresent()) {
             Coggle findCoggle = oCoggle.get();
             try {
@@ -92,10 +90,8 @@ public class CoggleService {
                         .parent(parentComment)
                         .content(request.getContent())
                         .build();
-                if (parentComment != null) {
-                    buildComment.getParent().getChildren().add(buildComment);
-//                    System.out.println("buildComment.getParent().getChildren() = " + buildComment.getParent().getChildren());
-                }
+                //                    System.out.println("buildComment.getParent().getChildren() = " + buildComment.getParent().getChildren());
+                if (parentComment != null) parentComment.getChildren().add(buildComment); // 현재자식을 부모의 자식리스트에 저장
                 commentRepository.save(buildComment);
                 return true;
             } catch (Exception e) {
@@ -129,23 +125,30 @@ public class CoggleService {
 
     /**
      * 코글-댓글 출력
+     *
      * @param coggleNo
      * @return
      */
-    public List<CommentDto> coggleCommentJSON(Long coggleNo) throws Exception {
-        Sort sort = Sort.by(Sort.Order.asc("parent.id").nullsFirst());
+//    public Map<Long, CommentDto> coggleCommentJSON(Long coggleNo) throws Exception {
+    public List<CommentFlatDto> coggleCommentJSON(Long coggleNo) throws Exception {
         Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
         if (oCoggle.isPresent()) {
             Coggle coggle = oCoggle.get();
-            List<CommentDto> collect = commentRepository.findByCoggle(coggle).stream()
-                    .map(comment -> CommentDto.builder()
-                            .coggleNo(comment.getCoggle().getCoggleNo())
-                            .parentNo(comment.getParent() == null ? 0 : comment.getParent().getId())
-                            .commentNo(comment.getId())
-                            .writer(comment.getUser().getEmail())
-                            .content(comment.getContent())
-                            .build()).collect(Collectors.toList());
+            List<CommentFlatDto> collect = commentRepository.findByCoggle(coggle).stream()
+                    .map(comment -> {
+                        CommentFlatDto build = CommentFlatDto.builder()
+                                        .coggleNo(comment.getCoggle().getCoggleNo())
+                                        .parentNo(comment.getParent() == null ? 0 : comment.getParent().getId())
+                                        .commentNo(comment.getId())
+                                        .writer(comment.getUser().getEmail())
+                                        .content(comment.getContent().isEmpty() ? null : comment.getContent())
+                                        .build();
+                                return build;
+                            }
+                    ).collect(Collectors.toList());
+
             return collect;
+//            return map;
         }
         throw new Exception("Exception발생!!");
     }

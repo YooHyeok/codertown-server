@@ -10,7 +10,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@ToString(callSuper = true, exclude = "parent")
+@ToString(callSuper = true)
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +24,7 @@ public class Comment extends BaseTimeStampEntity {
     @Column(columnDefinition = "LONGTEXT")
     private String content;
 
+    @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_no", referencedColumnName = "COMMENT_NO")
     private Comment parent; //상위 댓글
