@@ -54,10 +54,15 @@ public class CoggleController {
      * @return 성공: TRUE | 실패: FALSE
      */
     @PostMapping("/coggle/comment-save")
-    public void coggleCommentSave(@RequestBody CommentRequest request) {
+    public ResponseEntity<Boolean> coggleCommentSave(@RequestBody CommentRequest request) {
         try {
             Boolean result = coggleService.coggleCommentSave(request);
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+
 }
