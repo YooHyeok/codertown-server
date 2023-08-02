@@ -48,8 +48,16 @@ public class CoggleController {
         }
     }
 
+    /**
+     * 코글-댓글 저장 API
+     * @param request
+     * @return 성공: TRUE | 실패: FALSE
+     */
     @PostMapping("/coggle/comment-save")
     public void coggleCommentSave(@RequestBody CommentRequest request) {
-        System.out.println("request = " + request);
+        try {
+            Boolean result = coggleService.coggleCommentSave(request);
+        } catch (Exception e) {
+        }
     }
 }
