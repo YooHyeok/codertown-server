@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class SignUpResponse {
+public class SignInResponse {
     private SignInResult signInResult;
     private SignStatus signStatus;
 }

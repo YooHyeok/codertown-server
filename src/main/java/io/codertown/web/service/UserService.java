@@ -4,11 +4,12 @@ import io.codertown.support.base.CommonLoggerComponent;
 import io.codertown.support.jwt.JwtTokenProvider;
 import io.codertown.web.dto.UserDto;
 import io.codertown.web.entity.user.User;
-import io.codertown.web.payload.*;
+import io.codertown.web.payload.SignInResult;
+import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserEditRequest;
-import io.codertown.web.payload.response.SignUpResponse;
+import io.codertown.web.payload.response.SignInResponse;
 import io.codertown.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -98,7 +99,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * @return SignUpResponse - [로그인정보/성공여부]
      * @throws RuntimeException 저장중 닉네임 불일치 저장실패 예외
      */
-    public SignUpResponse signIn(SignInRequest request) {
+    public SignInResponse signIn(SignInRequest request) {
         SignStatus statusResponse = SignStatus.builder().build();
         SignInResult signInInfo = SignInResult.builder().build();
         try {
@@ -121,7 +122,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             e.printStackTrace();
             statusResponse.setFailResult(statusResponse);
         }
-        return SignUpResponse.builder()
+        return SignInResponse.builder()
                 .signInResult(signInInfo)
                 .signStatus(statusResponse)
                 .build();

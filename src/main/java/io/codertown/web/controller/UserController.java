@@ -1,11 +1,12 @@
 package io.codertown.web.controller;
 
 import io.codertown.web.dto.UserDto;
-import io.codertown.web.payload.*;
+import io.codertown.web.payload.ExistsResult;
+import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserEditRequest;
-import io.codertown.web.payload.response.SignUpResponse;
+import io.codertown.web.payload.response.SignInResponse;
 import io.codertown.web.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -94,11 +95,11 @@ public class UserController {
      * @return SignUpResponse - [로그인정보/성공여부]
      */
     @ApiOperation(value="로그인", notes="로그인 기능")
-    @ApiResponse(description = "로그인 성공 결과" , responseCode = "200", content = @Content(schema = @Schema(implementation = SignUpResponse.class)))
+    @ApiResponse(description = "로그인 성공 결과" , responseCode = "200", content = @Content(schema = @Schema(implementation = SignInResponse.class)))
     @PostMapping(path="/sign-in", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SignUpResponse> signIn(@RequestBody SignInRequest request) {
+    public ResponseEntity<SignInResponse> signIn(@RequestBody SignInRequest request) {
         try {
-            SignUpResponse signUpResponse = userService.signIn(request);
+            SignInResponse signUpResponse = userService.signIn(request);
             return ResponseEntity.ok(signUpResponse);
         } catch (Exception e) {
             e.printStackTrace();
