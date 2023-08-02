@@ -1,4 +1,4 @@
-package io.codertown.web.service;
+package io.codertown.web.repository;
 
 import io.codertown.web.entity.ProjectPart;
 import org.springframework.data.jpa.repository.JpaRepository;

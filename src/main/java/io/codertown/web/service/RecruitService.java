@@ -11,6 +11,7 @@ import io.codertown.web.payload.CokkiriDetailResponse;
 import io.codertown.web.payload.CokkiriSaveRequest;
 import io.codertown.web.payload.ProjectJoinRequest;
 import io.codertown.web.repository.PartRepository;
+import io.codertown.web.repository.ProjectPartRepository;
 import io.codertown.web.repository.RecruitRepository;
 import io.codertown.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
