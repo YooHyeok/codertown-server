@@ -1,7 +1,7 @@
 package io.codertown.web.entity;
 
 import io.codertown.support.base.BaseTimeStampEntity;
-import io.codertown.web.controller.CoggleEditRequest;
+import io.codertown.web.payload.request.CoggleEditRequest;
 import io.codertown.web.entity.user.User;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

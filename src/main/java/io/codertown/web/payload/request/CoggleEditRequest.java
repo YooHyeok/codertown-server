@@ -1,4 +1,4 @@
-package io.codertown.web.controller;
+package io.codertown.web.payload.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
