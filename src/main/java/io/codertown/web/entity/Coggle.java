@@ -1,6 +1,7 @@
 package io.codertown.web.entity;
 
 import io.codertown.support.base.BaseTimeStampEntity;
+import io.codertown.web.controller.CoggleEditRequest;
 import io.codertown.web.entity.user.User;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -31,5 +32,14 @@ public class Coggle extends BaseTimeStampEntity {
     @JoinColumn(name = "writer", referencedColumnName = "USER_NO")
     private User user;
 
-
+    /**
+     * 코글 수정 - 변경감지 메소드 <br/>
+     * 제목과 내용만 수정이 가능하다. <br/>
+     * 카테고리 수정 불가 (관리자만 가능)
+     * @param request
+     */
+    public void updateCoggle(CoggleEditRequest request) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+    }
 }
