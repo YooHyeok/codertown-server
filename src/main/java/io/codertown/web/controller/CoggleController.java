@@ -1,6 +1,6 @@
 package io.codertown.web.controller;
 
-import io.codertown.web.payload.CoggleSaveRequest;
+import io.codertown.web.payload.request.CoggleSaveRequest;
 import io.codertown.web.service.CoggleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

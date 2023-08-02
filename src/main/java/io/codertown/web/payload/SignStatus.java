@@ -1,5 +1,6 @@
 package io.codertown.web.payload;
 
+import io.codertown.web.payload.response.CommonResponse;
 import io.swagger.annotations.ApiModel;
 import lombok.*;
 

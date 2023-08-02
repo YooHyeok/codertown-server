@@ -1,5 +1,7 @@
-package io.codertown.web.payload;
+package io.codertown.web.payload.response;
 
+import io.codertown.web.payload.SignInResult;
+import io.codertown.web.payload.SignStatus;
 import lombok.Builder;
 import lombok.Data;
 

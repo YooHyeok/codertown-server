@@ -1,4 +1,4 @@
-package io.codertown.web.payload;
+package io.codertown.web.payload.response;
 
 import io.codertown.web.dto.CokkiriDto;
 import io.codertown.web.dto.ProjectDto;

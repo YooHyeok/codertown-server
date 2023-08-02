@@ -1,7 +1,7 @@
 package io.codertown.web.entity.recruit;
 
 import io.codertown.web.entity.project.Project;
-import io.codertown.web.payload.CokkiriSaveRequest;
+import io.codertown.web.payload.request.CokkiriSaveRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;

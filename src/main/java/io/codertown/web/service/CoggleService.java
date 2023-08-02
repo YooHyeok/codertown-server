@@ -3,7 +3,7 @@ package io.codertown.web.service;
 import io.codertown.web.controller.CoggleEditRequest;
 import io.codertown.web.entity.Coggle;
 import io.codertown.web.entity.user.User;
-import io.codertown.web.payload.CoggleSaveRequest;
+import io.codertown.web.payload.request.CoggleSaveRequest;
 import io.codertown.web.repository.CoggleRepository;
 import io.codertown.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

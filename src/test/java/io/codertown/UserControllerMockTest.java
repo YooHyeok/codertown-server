@@ -5,7 +5,7 @@ import io.codertown.support.configuration.SecurityConfig;
 import io.codertown.support.configuration.WebConfig;
 import io.codertown.support.jwt.JwtTokenProvider;
 import io.codertown.web.payload.SignStatus;
-import io.codertown.web.payload.SignUpRequest;
+import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.controller.UserController;
 import io.codertown.web.service.UserService;
 import org.junit.jupiter.api.DisplayName;

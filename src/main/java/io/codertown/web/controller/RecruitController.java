@@ -1,9 +1,9 @@
 package io.codertown.web.controller;
 
-import io.codertown.web.payload.CokkiriUpdateRequest;
-import io.codertown.web.payload.CokkiriDetailResponse;
-import io.codertown.web.payload.CokkiriSaveRequest;
-import io.codertown.web.payload.ProjectJoinRequest;
+import io.codertown.web.payload.request.CokkiriUpdateRequest;
+import io.codertown.web.payload.response.CokkiriDetailResponse;
+import io.codertown.web.payload.request.CokkiriSaveRequest;
+import io.codertown.web.payload.request.ProjectJoinRequest;
 import io.codertown.web.service.RecruitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

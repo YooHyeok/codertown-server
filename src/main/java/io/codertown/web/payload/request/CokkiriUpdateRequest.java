@@ -1,4 +1,4 @@
-package io.codertown.web.payload;
+package io.codertown.web.payload.request;
 
 public class CokkiriUpdateRequest {
     private Long recruitNo;

@@ -3,7 +3,7 @@ package io.codertown.web.entity.project;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.UserProject;
 import io.codertown.web.entity.recruit.Cokkiri;
-import io.codertown.web.payload.CokkiriSaveRequest;
+import io.codertown.web.payload.request.CokkiriSaveRequest;
 import lombok.*;
 
 import javax.persistence.*;

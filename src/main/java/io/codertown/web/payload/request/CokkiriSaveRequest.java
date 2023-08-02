@@ -1,4 +1,4 @@
-package io.codertown.web.payload;
+package io.codertown.web.payload.request;
 
 import io.codertown.web.dto.ProjectPartDto;
 import io.codertown.web.entity.user.User;
