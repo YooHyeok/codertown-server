@@ -26,7 +26,7 @@ public class Comment extends BaseTimeStampEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_no", referencedColumnName = "COMMENT_NO")
-    private Comment parent; //상위 작성자
+    private Comment parent; //상위 댓글
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_no")
