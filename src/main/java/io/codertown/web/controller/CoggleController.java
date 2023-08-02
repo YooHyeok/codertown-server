@@ -2,7 +2,8 @@ package io.codertown.web.controller;
 
 import io.codertown.web.payload.request.CoggleEditRequest;
 import io.codertown.web.payload.request.CoggleSaveRequest;
-import io.codertown.web.payload.request.CommentRequest;
+import io.codertown.web.payload.request.CommentEditRequset;
+import io.codertown.web.payload.request.CommentSaveRequest;
 import io.codertown.web.service.CoggleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -54,7 +55,7 @@ public class CoggleController {
      * @return 성공: TRUE | 실패: FALSE
      */
     @PostMapping("/coggle/comment-save")
-    public ResponseEntity<Boolean> coggleCommentSave(@RequestBody CommentRequest request) {
+    public ResponseEntity<Boolean> coggleCommentSave(@RequestBody CommentSaveRequest request) {
         try {
             Boolean result = coggleService.coggleCommentSave(request);
             return ResponseEntity.ok(result);
@@ -70,7 +71,7 @@ public class CoggleController {
      * @return 성공: TRUE | 실패: FALSE
      */
     @PostMapping("/coggle/comment-edit")
-    public ResponseEntity<Object> coggleCommentEdit(@RequestBody CommentEditRequset request) {
+    public ResponseEntity<Boolean> coggleCommentEdit(@RequestBody CommentEditRequset request) {
         try {
             Boolean result = coggleService.coggleCommentEdit(request);
             return ResponseEntity.ok(result);

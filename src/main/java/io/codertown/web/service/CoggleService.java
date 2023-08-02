@@ -5,7 +5,8 @@ import io.codertown.web.entity.Comment;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.CoggleEditRequest;
 import io.codertown.web.payload.request.CoggleSaveRequest;
-import io.codertown.web.payload.request.CommentRequest;
+import io.codertown.web.payload.request.CommentEditRequset;
+import io.codertown.web.payload.request.CommentSaveRequest;
 import io.codertown.web.repository.CoggleRepository;
 import io.codertown.web.repository.CommentRepository;
 import io.codertown.web.repository.UserRepository;
@@ -72,7 +73,7 @@ public class CoggleService {
      * @param request
      * @return 성공: TRUE | 실패: FALSE
      */
-    public Boolean coggleCommentSave(CommentRequest request) {
+    public Boolean coggleCommentSave(CommentSaveRequest request) {
         User findWriter = (User)userRepository.findByEmail(request.getWriter());
         Optional<Coggle> oCoggle = coggleRepository.findById(request.getCoggleNo());
         Comment parentComment = commentRepository.findById(request.getParentNo()).get();
@@ -115,7 +116,7 @@ public class CoggleService {
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new RuntimeException("코글 댓글 작성 실패"); //Controller에서 Catch
+                throw new RuntimeException("코글 댓글 수정 실패"); //Controller에서 Catch
             }
         }
         throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch

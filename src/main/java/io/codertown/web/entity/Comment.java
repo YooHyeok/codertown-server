@@ -2,6 +2,7 @@ package io.codertown.web.entity;
 
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.user.User;
+import io.codertown.web.payload.request.CommentEditRequset;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
