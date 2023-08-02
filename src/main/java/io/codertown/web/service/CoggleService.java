@@ -11,9 +11,11 @@ import io.codertown.web.repository.CoggleRepository;
 import io.codertown.web.repository.CommentRepository;
 import io.codertown.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -73,6 +75,7 @@ public class CoggleService {
      * @param request
      * @return 성공: TRUE | 실패: FALSE
      */
+    @Transactional
     public Boolean coggleCommentSave(CommentSaveRequest request) {
         User findWriter = (User)userRepository.findByEmail(request.getWriter());
         Optional<Coggle> oCoggle = coggleRepository.findById(request.getCoggleNo());
@@ -120,5 +123,20 @@ public class CoggleService {
             }
         }
         throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
+    }
+
+    /**
+     * 코글-댓글 출력
+     * @param coggleNo
+     * @return
+     */
+    public List<Comment> coggleCommentJSON(Long coggleNo) throws Exception {
+        Sort sort = Sort.by(Sort.Order.asc("parent.id").nullsFirst());
+        Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
+        if (oCoggle.isPresent()) {
+            Coggle coggle = oCoggle.get();
+            return commentRepository.findByCoggle(coggle);
+        }
+        throw new Exception("Exception발생!!");
     }
 }

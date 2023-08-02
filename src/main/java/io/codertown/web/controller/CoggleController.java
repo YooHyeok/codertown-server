@@ -1,5 +1,6 @@
 package io.codertown.web.controller;
 
+import io.codertown.web.entity.Comment;
 import io.codertown.web.payload.request.CoggleEditRequest;
 import io.codertown.web.payload.request.CoggleSaveRequest;
 import io.codertown.web.payload.request.CommentEditRequset;
@@ -8,9 +9,12 @@ import io.codertown.web.service.CoggleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -79,6 +83,23 @@ public class CoggleController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    /**
+     * 코글-댓글 출력 API
+     * @param coggleNo
+     * @return
+     */
+    @PostMapping("/coggle/{coggleNo}/comment")
+    public ResponseEntity<List<Comment>> coggleCommentEdit(@PathVariable Long coggleNo) {
+        try {
+            List<Comment> result = coggleService.coggleCommentJSON(coggleNo);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return null;
     }
 
 }
