@@ -100,22 +100,17 @@ public class CoggleController {
         try {
             List<CommentFlatDto> result = coggleService.coggleCommentJSON(coggleNo);
             List<CommentQueryDto> collect = result.stream()
-                    .collect(Collectors.groupingBy(
+                    .collect(Collectors.groupingBy( // 그룹핑 parent를 기준으로 그룹핑한다.
                               commentFlatDto -> CommentQueryDto.builder().build().groupingByBuilder(commentFlatDto)
                             , () -> new TreeMap<>(Comparator.comparing(CommentQueryDto::getParentNo))// 부모 댓글 기준 오름차순 정렬
-                            , Collectors.mapping(
+                            , Collectors.mapping( // 매핑할 List - List변환시 매핑할 타입 객체
                                       commentFlatDto -> CommentChildrenQueryDto.builder().build().mappingByBuilder(commentFlatDto)
                                     , Collectors.toList()
                             )
                     )).entrySet().stream()
-                    .map(entry -> new CommentQueryDto(
-                            entry.getKey().getCoggleNo()
-                            , entry.getKey().getParentNo()
-                            , entry.getKey().getCommentNo()
-                            , entry.getKey().getWriter()
-                            , entry.getKey().getContent()
-                            , entry.getValue()
-                    )).collect(Collectors.toList());
+                    //중복 제거 - 매핑한 List의 타입으로 중복을 제거한다.
+                    .map(entry -> CommentQueryDto.builder().build().entrySetToManByBuilder(entry.getKey(), entry.getValue()))
+                    .collect(Collectors.toList());
             return ResponseEntity.ok(collect);
         } catch (Exception e) {
             e.printStackTrace();

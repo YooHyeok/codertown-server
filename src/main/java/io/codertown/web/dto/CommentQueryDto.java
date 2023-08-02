@@ -29,5 +29,14 @@ public class CommentQueryDto {
                 .build();
     }
 
-
+    public CommentQueryDto entrySetToManByBuilder(CommentQueryDto commentQueryDto, List<CommentChildrenQueryDto> children) {
+        return CommentQueryDto.builder()
+                .coggleNo(commentQueryDto.getCoggleNo())
+                .parentNo(commentQueryDto.getParentNo())
+                .commentNo(commentQueryDto.getCommentNo())
+                .writer(commentQueryDto.getWriter())
+                .content(commentQueryDto.getContent())
+                .children(children)
+                .build();
+    }
 }
