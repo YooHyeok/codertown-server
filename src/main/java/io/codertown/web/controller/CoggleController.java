@@ -1,7 +1,7 @@
 package io.codertown.web.controller;
 
 import io.codertown.web.payload.CoggleSaveRequest;
-import io.codertown.web.service.CoogleService;
+import io.codertown.web.service.CoggleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class CoggleController {
 
-    private final CoogleService coggleService;
+    private final CoggleService coggleService;
 
     /**
      * 코글 저장 API

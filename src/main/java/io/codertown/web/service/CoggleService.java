@@ -3,16 +3,16 @@ package io.codertown.web.service;
 import io.codertown.web.entity.Coggle;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.CoggleSaveRequest;
-import io.codertown.web.repository.CoogleRepository;
+import io.codertown.web.repository.CoggleRepository;
 import io.codertown.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class CoogleService {
+public class CoggleService {
 
-    private final CoogleRepository coogleRepository;
+    private final CoggleRepository coggleRepository;
     private final UserRepository userRepository;
 
     /**
@@ -30,7 +30,7 @@ public class CoogleService {
                     .status(false)
                     .user(writer)
                     .build();
-            coogleRepository.save(coggle);
+            coggleRepository.save(coggle);
             return true;
         } catch (Exception e) {
             return false;
