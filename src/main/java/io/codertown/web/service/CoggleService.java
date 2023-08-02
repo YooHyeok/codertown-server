@@ -75,7 +75,8 @@ public class CoggleService {
     public Boolean coggleCommentSave(CommentRequest request) {
         User findWriter = (User)userRepository.findByEmail(request.getWriter());
         Optional<Coggle> oCoggle = coggleRepository.findById(request.getCoggleNo());
-        Comment parentComment = commentRepository.findById(request.getParentNo()).get().getParent();
+        Comment parentComment = commentRepository.findById(request.getParentNo()).get();
+        System.out.println("parentComment = " + parentComment);
         if (oCoggle.isPresent()) {
             Coggle findCoggle = oCoggle.get();
             try {
@@ -85,6 +86,10 @@ public class CoggleService {
                         .parent(parentComment)
                         .content(request.getContent())
                         .build();
+                if (parentComment != null) {
+                    buildComment.getParent().getChildren().add(buildComment);
+//                    System.out.println("buildComment.getParent().getChildren() = " + buildComment.getParent().getChildren());
+                }
                 commentRepository.save(buildComment);
                 return true;
             } catch (Exception e) {

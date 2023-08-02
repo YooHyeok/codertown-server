@@ -2,14 +2,14 @@ package io.codertown.web.entity;
 
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+@ToString(callSuper = true, exclude = "parent")
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,20 +22,23 @@ public class Comment extends BaseTimeStampEntity {
     private Long id;
     @Column(columnDefinition = "LONGTEXT")
     private String content;
-    private LocalDateTime createDate; //작성일자
 
     //상위 작성자
-    @ManyToOne
-    @JoinColumn(name = "parent_no")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_no", referencedColumnName = "COMMENT_NO")
     private Comment parent;
 
     //댓글 작성자
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_no")
     private User user; //댓글 작성자
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coggle_no")
     private Coggle coggle; //게시글 번호
+
+    @Builder.Default
+    @OneToMany(mappedBy = "parent", orphanRemoval = true)
+    private List<Comment> children = new ArrayList<>();
 
 }
