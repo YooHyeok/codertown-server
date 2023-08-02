@@ -19,4 +19,15 @@ public class CommentQueryDto {
     private String content;
     private List<CommentChildrenQueryDto> children = new ArrayList<>();
 
+    public CommentQueryDto groupingByBuilder(CommentFlatDto commentFlatDto) {
+        return CommentQueryDto.builder()
+                .coggleNo(commentFlatDto.getCoggleNo())
+                .parentNo(commentFlatDto.getParentNo())
+                .commentNo(commentFlatDto.getCommentNo())
+                .writer(commentFlatDto.getWriter())
+                .content(commentFlatDto.getContent())
+                .build();
+    }
+
+
 }

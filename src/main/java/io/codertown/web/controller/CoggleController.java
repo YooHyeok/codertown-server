@@ -100,14 +100,8 @@ public class CoggleController {
         try {
             List<CommentFlatDto> result = coggleService.coggleCommentJSON(coggleNo);
             List<CommentQueryDto> collect = result.stream()
-                    .collect(Collectors.groupingBy(commentFlatDto ->
-                                    CommentQueryDto.builder()
-                                            .coggleNo(commentFlatDto.getCoggleNo())
-                                            .parentNo(commentFlatDto.getParentNo())
-                                            .commentNo(commentFlatDto.getCommentNo())
-                                            .writer(commentFlatDto.getWriter())
-                                            .content(commentFlatDto.getContent())
-                                            .build()
+                    .collect(Collectors.groupingBy(
+                              commentFlatDto -> CommentQueryDto.builder().build().groupingByBuilder(commentFlatDto)
                             , () -> new TreeMap<>(Comparator.comparing(CommentQueryDto::getParentNo))// 부모 댓글 기준 오름차순 정렬
                             , Collectors.mapping(
                                     commentFlatDto ->
