@@ -1,6 +1,6 @@
 package io.codertown.web.controller;
 
-import io.codertown.web.entity.Comment;
+import io.codertown.web.dto.CommentDto;
 import io.codertown.web.payload.request.CoggleEditRequest;
 import io.codertown.web.payload.request.CoggleSaveRequest;
 import io.codertown.web.payload.request.CommentEditRequset;
@@ -91,9 +91,9 @@ public class CoggleController {
      * @return
      */
     @PostMapping("/coggle/{coggleNo}/comment")
-    public ResponseEntity<List<Comment>> coggleCommentEdit(@PathVariable Long coggleNo) {
+    public ResponseEntity<List<CommentDto>> coggleCommentEdit(@PathVariable Long coggleNo) {
         try {
-            List<Comment> result = coggleService.coggleCommentJSON(coggleNo);
+            List<CommentDto> result = coggleService.coggleCommentJSON(coggleNo);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             e.printStackTrace();

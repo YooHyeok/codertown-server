@@ -1,5 +1,6 @@
 package io.codertown.web.service;
 
+import io.codertown.web.dto.CommentDto;
 import io.codertown.web.entity.Coggle;
 import io.codertown.web.entity.Comment;
 import io.codertown.web.entity.user.User;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -130,12 +132,20 @@ public class CoggleService {
      * @param coggleNo
      * @return
      */
-    public List<Comment> coggleCommentJSON(Long coggleNo) throws Exception {
+    public List<CommentDto> coggleCommentJSON(Long coggleNo) throws Exception {
         Sort sort = Sort.by(Sort.Order.asc("parent.id").nullsFirst());
         Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
         if (oCoggle.isPresent()) {
             Coggle coggle = oCoggle.get();
-            return commentRepository.findByCoggle(coggle);
+            List<CommentDto> collect = commentRepository.findByCoggle(coggle).stream()
+                    .map(comment -> CommentDto.builder()
+                            .coggleNo(comment.getCoggle().getCoggleNo())
+                            .parentNo(comment.getParent() == null ? 0 : comment.getParent().getId())
+                            .commentNo(comment.getId())
+                            .writer(comment.getUser().getEmail())
+                            .content(comment.getContent())
+                            .build()).collect(Collectors.toList());
+            return collect;
         }
         throw new Exception("Exception발생!!");
     }

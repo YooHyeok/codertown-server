@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CommentDto {
 
-    private Long CoggleNo;
+    private Long coggleNo;
     private Long parentNo;
     private Long commentNo;
     private String writer;

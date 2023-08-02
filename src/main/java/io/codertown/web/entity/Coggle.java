@@ -3,6 +3,7 @@ package io.codertown.web.entity;
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.CoggleEditRequest;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
@@ -15,6 +16,7 @@ import javax.persistence.*;
 @Entity
 @SuperBuilder
 @NoArgsConstructor
+@Getter
 public class Coggle extends BaseTimeStampEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long coggleNo;
