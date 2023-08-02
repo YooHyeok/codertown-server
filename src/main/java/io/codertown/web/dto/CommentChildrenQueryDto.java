@@ -16,5 +16,13 @@ public class CommentChildrenQueryDto {
     private String writer;
     private String content;
 
-
+    public CommentChildrenQueryDto mappingByBuilder(CommentFlatDto commentFlatDto) {
+        return CommentChildrenQueryDto.builder()
+                .coggleNo(commentFlatDto.getCoggleNo())
+                .parentNo(commentFlatDto.getParentNo())
+                .commentNo(commentFlatDto.getCommentNo())
+                .writer(commentFlatDto.getWriter())
+                .content(commentFlatDto.getContent())
+                .build();
+    }
 }

@@ -104,12 +104,8 @@ public class CoggleController {
                               commentFlatDto -> CommentQueryDto.builder().build().groupingByBuilder(commentFlatDto)
                             , () -> new TreeMap<>(Comparator.comparing(CommentQueryDto::getParentNo))// 부모 댓글 기준 오름차순 정렬
                             , Collectors.mapping(
-                                    commentFlatDto ->
-                                            new CommentChildrenQueryDto(commentFlatDto.getCoggleNo(),
-                                                    commentFlatDto.getParentNo(),
-                                                    commentFlatDto.getCommentNo(),
-                                                    commentFlatDto.getWriter(),
-                                                    commentFlatDto.getContent()), Collectors.toList()
+                                      commentFlatDto -> CommentChildrenQueryDto.builder().build().mappingByBuilder(commentFlatDto)
+                                    , Collectors.toList()
                             )
                     )).entrySet().stream()
                     .map(entry -> new CommentQueryDto(
