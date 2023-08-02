@@ -2,6 +2,7 @@ package io.codertown.web.controller;
 
 import io.codertown.web.payload.request.CoggleEditRequest;
 import io.codertown.web.payload.request.CoggleSaveRequest;
+import io.codertown.web.payload.request.CommentRequest;
 import io.codertown.web.service.CoggleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -45,5 +46,10 @@ public class CoggleController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+
+    @PostMapping("/coggle/comment-save")
+    public void coggleCommentSave(@RequestBody CommentRequest request) {
+        System.out.println("request = " + request);
     }
 }
