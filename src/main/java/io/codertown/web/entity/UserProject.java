@@ -33,7 +33,7 @@ public class UserProject {
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "PROJECT_PART_ID")
+    @JoinColumn(name = "PROJECT_PART_NO")
     private ProjectPart projectPart; //프로젝트별 파트 번호
 
     /**

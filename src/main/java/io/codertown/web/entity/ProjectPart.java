@@ -16,7 +16,7 @@ import java.util.List;
 public class ProjectPart {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "PROJECT_PART_ID")
+    @Column(name = "PROJECT_PART_NO")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
