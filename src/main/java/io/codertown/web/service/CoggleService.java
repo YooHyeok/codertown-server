@@ -86,6 +86,16 @@ public class CoggleService {
     }
 
     /**
+     * 코글 목록 출력
+     * @param request 페이지 정보
+     * @return 성공: TRUE | 실패: FALSE
+     */
+    public List<CoggleDto> coggleList() throws RuntimeException {
+        return coggleRepository.findAll().stream().map(coggle -> CoggleDto.builder().build().changeEntityToDto(coggle))
+                .collect(Collectors.toList());
+    }
+
+    /**
      * 코글-댓글 저장
      * @param request
      * @return 성공: TRUE | 실패: FALSE

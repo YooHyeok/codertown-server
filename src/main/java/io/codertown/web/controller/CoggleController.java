@@ -73,6 +73,22 @@ public class CoggleController {
     }
 
     /**
+     * 코글 목록 출력 API
+     * @param request 페이지 정보
+     * @return 성공: TRUE | 실패: FALSE
+     */
+    @GetMapping("/coggle")
+    public ResponseEntity<List<CoggleDto>> coggleList() {
+        try {
+            List<CoggleDto> result = coggleService.coggleList();
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
      * 코글-댓글 저장 API
      * @param request
      * @return 성공: TRUE | 실패: FALSE
