@@ -50,6 +50,18 @@ public class CoggleService {
     }
 
     /**
+     * 코글 상세페이지
+     * @param coggleNo
+     * @return 성공: TRUE | 실패: FALSE
+     */
+    public void coggleDetail(Long coggleNo) {
+        Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
+        if (oCoggle.isPresent()) {
+            Coggle findCoggle = oCoggle.get();
+        }
+    }
+
+    /**
      * 코글 수정
      * @param request
      * @return 성공: TRUE | 실패: FALSE

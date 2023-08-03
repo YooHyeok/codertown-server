@@ -11,10 +11,7 @@ import io.codertown.web.service.CoggleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
 import java.util.List;
@@ -39,6 +36,22 @@ public class CoggleController {
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * 코글 상세페이지 API
+     * @param coggleNo
+     * @return 성공: TRUE | 실패: FALSE
+     */
+    @GetMapping("/coggle/{coggleNo}")
+    public void coggleDetail(@PathVariable Long coggleNo) {
+        try {
+            coggleService.coggleDetail(coggleNo);
+//            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -95,7 +108,7 @@ public class CoggleController {
      * @param coggleNo
      * @return
      */
-    @PostMapping("/coggle/{coggleNo}/comment")
+    @GetMapping("/coggle/{coggleNo}/comment")
     public ResponseEntity<List<CommentQueryDto>> coggleCommentEdit(@PathVariable Long coggleNo) {
         try {
             List<CommentFlatDto> result = coggleService.coggleCommentJSON(coggleNo);
