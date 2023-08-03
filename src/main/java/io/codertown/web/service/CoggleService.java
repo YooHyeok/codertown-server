@@ -5,10 +5,7 @@ import io.codertown.web.dto.CommentFlatDto;
 import io.codertown.web.entity.Coggle;
 import io.codertown.web.entity.Comment;
 import io.codertown.web.entity.user.User;
-import io.codertown.web.payload.request.CoggleEditRequest;
-import io.codertown.web.payload.request.CoggleSaveRequest;
-import io.codertown.web.payload.request.CommentEditRequset;
-import io.codertown.web.payload.request.CommentSaveRequest;
+import io.codertown.web.payload.request.*;
 import io.codertown.web.repository.CoggleRepository;
 import io.codertown.web.repository.CommentRepository;
 import io.codertown.web.repository.UserRepository;
@@ -16,7 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -154,7 +152,7 @@ public class CoggleService {
      * @return 성공: TRUE | 실패: FALSE
      */
     @Transactional
-    public Boolean coggleCommentDelete(CommentEditRequset request) {
+    public Boolean coggleCommentDelete(CoggleDeleteParamRequest request) {
         Optional<Comment> oComment = commentRepository.findById(request.getCommentNo());
         if (oComment.isPresent()) {
             try {

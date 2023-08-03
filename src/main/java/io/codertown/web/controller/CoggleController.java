@@ -4,10 +4,7 @@ import io.codertown.web.dto.CoggleDto;
 import io.codertown.web.dto.CommentChildrenQueryDto;
 import io.codertown.web.dto.CommentFlatDto;
 import io.codertown.web.dto.CommentQueryDto;
-import io.codertown.web.payload.request.CoggleEditRequest;
-import io.codertown.web.payload.request.CoggleSaveRequest;
-import io.codertown.web.payload.request.CommentEditRequset;
-import io.codertown.web.payload.request.CommentSaveRequest;
+import io.codertown.web.payload.request.*;
 import io.codertown.web.service.CoggleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -126,7 +123,7 @@ public class CoggleController {
      * @return 성공: TRUE | 실패: FALSE
      */
     @PostMapping("/coggle/comment-delete")
-    public ResponseEntity<Boolean> coggleCommentDelete(@RequestBody CommentEditRequset request) {
+    public ResponseEntity<Boolean> coggleCommentDelete(@RequestBody CoggleDeleteParamRequest request) {
         try {
             Boolean result = coggleService.coggleCommentDelete(request);
             return ResponseEntity.ok(result);
