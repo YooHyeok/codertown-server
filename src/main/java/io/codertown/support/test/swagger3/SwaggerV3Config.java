@@ -1,7 +1,7 @@
-package io.codertown.support.configuration;
+package io.codertown.support.test.swagger3;
 
 //@Configuration
-public class Swagger3Config {
+public class SwaggerV3Config {
 
     /*@Bean
     public GroupedOpenApi publicApi() {
