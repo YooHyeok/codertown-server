@@ -1,5 +1,6 @@
 package io.codertown.web.dto;
 
+import io.codertown.web.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,4 +18,13 @@ public class CommentFlatDto {
     private String writer;
     private String content;
 
+    public CommentFlatDto changeEntityToDto(Comment comment) {
+        return CommentFlatDto.builder()
+                .coggleNo(comment.getCoggle().getCoggleNo())
+                .parentNo(comment.getParent() == null ? 0 : comment.getParent().getId())
+                .commentNo(comment.getId())
+                .writer(comment.getUser().getEmail())
+                .content(comment.getContent().isEmpty() ? null : comment.getContent())
+                .build();
+    }
 }

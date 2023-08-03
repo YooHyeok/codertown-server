@@ -59,14 +59,7 @@ public class CoggleService {
         Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
         if (oCoggle.isPresent()) {
             Coggle findCoggle = oCoggle.get();
-            return CoggleDto.builder()
-                    .coggleNo(findCoggle.getCoggleNo())
-                    .category(findCoggle.getCategory())
-                    .writer(findCoggle.getUser().getEmail())
-                    .title(findCoggle.getTitle())
-                    .content(findCoggle.getContent())
-                    .status(findCoggle.getStatus())
-                    .build();
+            return CoggleDto.builder().build().changeCoggleDto(findCoggle); //코글 변환후 반환
         }
         throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
     }
@@ -151,26 +144,14 @@ public class CoggleService {
      * @param coggleNo
      * @return
      */
-//    public Map<Long, CommentDto> coggleCommentJSON(Long coggleNo) throws Exception {
     public List<CommentFlatDto> coggleCommentJSON(Long coggleNo) throws Exception {
         Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
         if (oCoggle.isPresent()) {
             Coggle coggle = oCoggle.get();
             List<CommentFlatDto> collect = commentRepository.findByCoggle(coggle).stream()
-                    .map(comment -> {
-                        CommentFlatDto build = CommentFlatDto.builder()
-                                        .coggleNo(comment.getCoggle().getCoggleNo())
-                                        .parentNo(comment.getParent() == null ? 0 : comment.getParent().getId())
-                                        .commentNo(comment.getId())
-                                        .writer(comment.getUser().getEmail())
-                                        .content(comment.getContent().isEmpty() ? null : comment.getContent())
-                                        .build();
-                                return build;
-                            }
-                    ).collect(Collectors.toList());
-
+                    .map(comment ->  CommentFlatDto.builder().build().changeEntityToDto(comment))
+                    .collect(Collectors.toList());
             return collect;
-//            return map;
         }
         throw new Exception("Exception발생!!");
     }
