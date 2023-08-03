@@ -149,6 +149,28 @@ public class CoggleService {
     }
 
     /**
+     * 코글-댓글 삭제 API
+     * @param request
+     * @return 성공: TRUE | 실패: FALSE
+     */
+    @Transactional
+    public Boolean coggleCommentDelete(CommentEditRequset request) {
+        Optional<Comment> oComment = commentRepository.findById(request.getCommentNo());
+        if (oComment.isPresent()) {
+            try {
+                Comment findComment = oComment.get();
+                findComment.deleteComment(request);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("코글 댓글 삭제 실패"); //Controller에서 Catch
+            }
+        }
+        throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
+    }
+
+
+    /**
      * 코글-댓글 출력
      *
      * @param coggleNo

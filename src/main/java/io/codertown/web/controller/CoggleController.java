@@ -121,6 +121,22 @@ public class CoggleController {
     }
 
     /**
+     * 코글-댓글 삭제(블라인드처리) API
+     * @param request
+     * @return 성공: TRUE | 실패: FALSE
+     */
+    @PostMapping("/coggle/comment-delete")
+    public ResponseEntity<Boolean> coggleCommentDelete(@RequestBody CommentEditRequset request) {
+        try {
+            Boolean result = coggleService.coggleCommentDelete(request);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
      * 코글-댓글(무한댓글 계층구조) 출력 API
      * @param coggleNo
      * @return

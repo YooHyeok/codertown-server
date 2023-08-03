@@ -24,6 +24,9 @@ public class Comment extends BaseTimeStampEntity {
     @Column(columnDefinition = "LONGTEXT")
     private String content;
 
+    @Column(columnDefinition = "boolean default false constraint achieve check(achieve in(true,false))")
+    private Boolean status;//댓글 상태 False:정상 | True:삭제
+
     @ToString.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_no", referencedColumnName = "COMMENT_NO")
@@ -43,5 +46,9 @@ public class Comment extends BaseTimeStampEntity {
 
     public void updateComment(CommentEditRequset request) {
         this.content = request.getContent();
+    }
+
+    public void deleteComment(CommentEditRequset request) {
+        this.status = false;
     }
 }

@@ -6,4 +6,6 @@ import lombok.Data;
 public class CommentEditRequset {
     private Long commentNo;
     private String content;
+
+    private Character status;
 }

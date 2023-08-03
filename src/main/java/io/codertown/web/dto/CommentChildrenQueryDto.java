@@ -15,6 +15,8 @@ public class CommentChildrenQueryDto {
     private Long commentNo;
     private String writer;
     private String content;
+    private Boolean status;
+
 
     public CommentChildrenQueryDto mappingByBuilder(CommentFlatDto commentFlatDto) {
         return CommentChildrenQueryDto.builder()
@@ -23,6 +25,7 @@ public class CommentChildrenQueryDto {
                 .commentNo(commentFlatDto.getCommentNo())
                 .writer(commentFlatDto.getWriter())
                 .content(commentFlatDto.getContent())
+                .status(commentFlatDto.getStatus())
                 .build();
     }
 }

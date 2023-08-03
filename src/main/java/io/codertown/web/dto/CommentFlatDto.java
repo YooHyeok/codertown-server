@@ -17,6 +17,7 @@ public class CommentFlatDto {
     private Long commentNo;
     private String writer;
     private String content;
+    private Boolean status;
 
     public CommentFlatDto changeEntityToDto(Comment comment) {
         return CommentFlatDto.builder()
@@ -25,6 +26,7 @@ public class CommentFlatDto {
                 .commentNo(comment.getId())
                 .writer(comment.getUser().getEmail())
                 .content(comment.getContent().isEmpty() ? null : comment.getContent())
+                .status(comment.getStatus())
                 .build();
     }
 }

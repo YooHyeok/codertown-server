@@ -17,6 +17,7 @@ public class CommentQueryDto {
     private Long commentNo;
     private String writer;
     private String content;
+    private Boolean status;
     private List<CommentChildrenQueryDto> children = new ArrayList<>();
 
     public CommentQueryDto groupingByBuilder(CommentFlatDto commentFlatDto) {
@@ -26,6 +27,7 @@ public class CommentQueryDto {
                 .commentNo(commentFlatDto.getCommentNo())
                 .writer(commentFlatDto.getWriter())
                 .content(commentFlatDto.getContent())
+                .status(commentFlatDto.getStatus())
                 .build();
     }
 
@@ -36,6 +38,7 @@ public class CommentQueryDto {
                 .commentNo(commentQueryDto.getCommentNo())
                 .writer(commentQueryDto.getWriter())
                 .content(commentQueryDto.getContent())
+                .status(commentQueryDto.getStatus())
                 .children(children)
                 .build();
     }
