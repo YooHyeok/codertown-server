@@ -59,7 +59,7 @@ public class CoggleService {
         Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
         if (oCoggle.isPresent()) {
             Coggle findCoggle = oCoggle.get();
-            return CoggleDto.builder().build().changeCoggleDto(findCoggle); //코글 변환후 반환
+            return CoggleDto.builder().build().changeEntityToDto(findCoggle); //코글 변환후 반환
         }
         throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
     }

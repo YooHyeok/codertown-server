@@ -15,7 +15,12 @@ public class CoggleDto {
 
     private String writer;
 
-    public CoggleDto changeCoggleDto(Coggle findCoggle) {
+    /**
+     * Coggle 엔터티 -> CoggleDto 변환 메소드 <br/>
+     * @param findCoggle
+     * @return
+     */
+    public CoggleDto changeEntityToDto(Coggle findCoggle) {
         return CoggleDto.builder()
                 .coggleNo(findCoggle.getCoggleNo())
                 .category(findCoggle.getCategory())
