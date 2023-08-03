@@ -1,5 +1,6 @@
 package io.codertown.web.service;
 
+import io.codertown.support.PageInfo;
 import io.codertown.web.dto.CoggleDto;
 import io.codertown.web.dto.CommentFlatDto;
 import io.codertown.web.entity.Coggle;
@@ -10,6 +11,7 @@ import io.codertown.web.repository.CoggleRepository;
 import io.codertown.web.repository.CommentRepository;
 import io.codertown.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -88,9 +90,18 @@ public class CoggleService {
      * @param request 페이지 정보
      * @return 성공: TRUE | 실패: FALSE
      */
-    public List<CoggleDto> coggleList() throws RuntimeException {
-        return coggleRepository.findAll().stream().map(coggle -> CoggleDto.builder().build().changeEntityToDto(coggle))
-                .collect(Collectors.toList());
+    public List<CoggleDto> coggleList(Integer page) throws RuntimeException {
+        page = page == null ? 1 : page;
+        PageInfo pageInfo = PageInfo.builder().build()
+                .createPageRequest(page, "coggleNo", "DESC");
+        System.out.println("pageInfo = " + pageInfo);
+        Page<Coggle> pages = coggleRepository.findAll(pageInfo.getPageRequest());
+        pageInfo.setPageInfo(pages, pageInfo);
+//        pages.forEach(coggle ->System.out.println("pages = " + coggle));
+//        System.out.println("pageInfo = " + pageInfo);
+//        return coggleRepository.findAll(pageRequest).stream().map(coggle -> CoggleDto.builder().build().changeEntityToDto(coggle))
+//                .collect(Collectors.toList());
+        return null;
     }
 
     /**

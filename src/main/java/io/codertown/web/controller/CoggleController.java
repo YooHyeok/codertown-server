@@ -42,7 +42,7 @@ public class CoggleController {
      * @param coggleNo
      * @return 성공: TRUE | 실패: FALSE
      */
-    @GetMapping("/coggle/{coggleNo}")
+    @GetMapping("/coggle/detail/{coggleNo}")
     public ResponseEntity<CoggleDto> coggleDetail(@PathVariable Long coggleNo) {
         try {
             CoggleDto result = coggleService.coggleDetail(coggleNo);
@@ -74,10 +74,10 @@ public class CoggleController {
      * @param request 페이지 정보
      * @return 성공: TRUE | 실패: FALSE
      */
-    @GetMapping("/coggle")
-    public ResponseEntity<List<CoggleDto>> coggleList() {
+    @GetMapping("/coggle/{page}")
+    public ResponseEntity<List<CoggleDto>> coggleList(@PathVariable(required = false) Integer page) {
         try {
-            List<CoggleDto> result = coggleService.coggleList();
+            List<CoggleDto> result = coggleService.coggleList(page);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
