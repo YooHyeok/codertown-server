@@ -1,5 +1,6 @@
 package io.codertown.support;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -15,6 +16,8 @@ public class PageInfo {
     private Integer curPage;
     private Integer startPage;
     private Integer endPage;
+
+    @JsonIgnore
     private PageRequest pageRequest;
 
     public PageInfo createPageRequest(Integer page, String sortColumn, String sortDirection) {

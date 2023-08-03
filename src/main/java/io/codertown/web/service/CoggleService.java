@@ -2,6 +2,7 @@ package io.codertown.web.service;
 
 import io.codertown.support.PageInfo;
 import io.codertown.web.dto.CoggleDto;
+import io.codertown.web.dto.CoggleListDto;
 import io.codertown.web.dto.CommentFlatDto;
 import io.codertown.web.entity.Coggle;
 import io.codertown.web.entity.Comment;
@@ -87,21 +88,20 @@ public class CoggleService {
 
     /**
      * 코글 목록 출력
-     * @param request 페이지 정보
+     * @param page 페이지 정보
      * @return 성공: TRUE | 실패: FALSE
      */
-    public List<CoggleDto> coggleList(Integer page) throws RuntimeException {
+    public CoggleListDto coggleList(Integer page) throws RuntimeException {
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build()
                 .createPageRequest(page, "coggleNo", "DESC");
         System.out.println("pageInfo = " + pageInfo);
         Page<Coggle> pages = coggleRepository.findAll(pageInfo.getPageRequest());
         pageInfo.setPageInfo(pages, pageInfo);
-//        pages.forEach(coggle ->System.out.println("pages = " + coggle));
-//        System.out.println("pageInfo = " + pageInfo);
-//        return coggleRepository.findAll(pageRequest).stream().map(coggle -> CoggleDto.builder().build().changeEntityToDto(coggle))
-//                .collect(Collectors.toList());
-        return null;
+        List<CoggleDto> coggleList = pages.stream()
+                .map(coggle -> CoggleDto.builder().build().changeEntityToDto(coggle))
+                .collect(Collectors.toList());
+        return CoggleListDto.builder().pageInfo(pageInfo).coggleList(coggleList).build();
     }
 
     /**

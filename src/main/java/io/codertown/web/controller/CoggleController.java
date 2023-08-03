@@ -1,9 +1,6 @@
 package io.codertown.web.controller;
 
-import io.codertown.web.dto.CoggleDto;
-import io.codertown.web.dto.CommentChildrenQueryDto;
-import io.codertown.web.dto.CommentFlatDto;
-import io.codertown.web.dto.CommentQueryDto;
+import io.codertown.web.dto.*;
 import io.codertown.web.payload.request.*;
 import io.codertown.web.service.CoggleService;
 import lombok.RequiredArgsConstructor;
@@ -71,13 +68,13 @@ public class CoggleController {
 
     /**
      * 코글 목록 출력 API
-     * @param request 페이지 정보
+     * @param page 페이지 정보
      * @return 성공: TRUE | 실패: FALSE
      */
     @GetMapping("/coggle/{page}")
-    public ResponseEntity<List<CoggleDto>> coggleList(@PathVariable(required = false) Integer page) {
+    public ResponseEntity<CoggleListDto> coggleList(@PathVariable(required = false) Integer page) {
         try {
-            List<CoggleDto> result = coggleService.coggleList(page);
+            CoggleListDto result = coggleService.coggleList(page);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
