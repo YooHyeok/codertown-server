@@ -95,7 +95,6 @@ public class CoggleService {
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build()
                 .createPageRequest(page, "coggleNo", "DESC");
-        System.out.println("pageInfo = " + pageInfo);
         Page<Coggle> pages = coggleRepository.findAll(pageInfo.getPageRequest());
         pageInfo.setPageInfo(pages, pageInfo);
         List<CoggleDto> coggleList = pages.stream()
