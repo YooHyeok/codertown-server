@@ -1,5 +1,6 @@
 package io.codertown.web.service;
 
+import io.codertown.web.dto.CoggleDto;
 import io.codertown.web.dto.CommentFlatDto;
 import io.codertown.web.entity.Coggle;
 import io.codertown.web.entity.Comment;
@@ -54,11 +55,20 @@ public class CoggleService {
      * @param coggleNo
      * @return 성공: TRUE | 실패: FALSE
      */
-    public void coggleDetail(Long coggleNo) {
+    public CoggleDto coggleDetail(Long coggleNo) throws RuntimeException {
         Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
         if (oCoggle.isPresent()) {
             Coggle findCoggle = oCoggle.get();
+            return CoggleDto.builder()
+                    .coggleNo(findCoggle.getCoggleNo())
+                    .category(findCoggle.getCategory())
+                    .writer(findCoggle.getUser().getEmail())
+                    .title(findCoggle.getTitle())
+                    .content(findCoggle.getContent())
+                    .status(findCoggle.getStatus())
+                    .build();
         }
+        throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
     }
 
     /**

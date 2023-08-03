@@ -1,5 +1,6 @@
 package io.codertown.web.controller;
 
+import io.codertown.web.dto.CoggleDto;
 import io.codertown.web.dto.CommentChildrenQueryDto;
 import io.codertown.web.dto.CommentFlatDto;
 import io.codertown.web.dto.CommentQueryDto;
@@ -45,13 +46,13 @@ public class CoggleController {
      * @return 성공: TRUE | 실패: FALSE
      */
     @GetMapping("/coggle/{coggleNo}")
-    public void coggleDetail(@PathVariable Long coggleNo) {
+    public ResponseEntity<CoggleDto> coggleDetail(@PathVariable Long coggleNo) {
         try {
-            coggleService.coggleDetail(coggleNo);
-//            return ResponseEntity.ok(result);
+            CoggleDto result = coggleService.coggleDetail(coggleNo);
+            return ResponseEntity.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
