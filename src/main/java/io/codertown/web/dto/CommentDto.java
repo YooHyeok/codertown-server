@@ -33,10 +33,21 @@ public class CommentDto {
                 .writer(comment.getUser().getEmail())
                 .content(comment.getContent().isEmpty() ? null : comment.getContent())
                 .status(comment.getStatus())
-                .children(comment.getChildren().stream()
-                        .map(childrenComment -> CommentDto.builder().build()
-                                .changeEntityToDto(childrenComment))
-                        .collect(Collectors.toList()))
+                .children(getChildrenMapToList(comment))
                 .build();
+    }
+
+    /**
+     * Comment 엔터티를 CommentDto 객체로 변환할 때 호출한다. <br/>
+     * children List에서 Stream을 통해 한번 더 변환 매핑 처리한다.
+     * @param comment
+     * @return
+     */
+    private static List<CommentDto> getChildrenMapToList(Comment comment) {
+        return comment.getChildren()
+                .stream()
+                .map(childrenComment -> CommentDto.builder().build()
+                        .changeEntityToDto(childrenComment))
+                .collect(Collectors.toList());
     }
 }
