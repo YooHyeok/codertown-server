@@ -3,7 +3,7 @@ package io.codertown.web.service;
 import io.codertown.support.PageInfo;
 import io.codertown.web.dto.CoggleDto;
 import io.codertown.web.dto.CoggleListDto;
-import io.codertown.web.dto.CommentFlatDto;
+import io.codertown.web.dto.CommentDto;
 import io.codertown.web.entity.Coggle;
 import io.codertown.web.entity.Comment;
 import io.codertown.web.entity.user.User;
@@ -184,12 +184,14 @@ public class CoggleService {
      * @param coggleNo
      * @return
      */
-    public List<CommentFlatDto> coggleCommentJSON(Long coggleNo) throws Exception {
+    public List<CommentDto> coggleCommentJSON(Long coggleNo) throws Exception {
         Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
         if (oCoggle.isPresent()) {
             Coggle coggle = oCoggle.get();
-            List<CommentFlatDto> collect = commentRepository.findByCoggle(coggle).stream()
-                    .map(comment ->  CommentFlatDto.builder().build().changeEntityToDto(comment))
+            List<CommentDto> collect = commentRepository.findByCoggle(coggle).stream()
+                    .filter(comment -> comment.getParent() == null) // 1. parent가 null인 최상위 댓글들만 필터한다.
+                    .map(comment ->  CommentDto.builder().build()
+                            .changeEntityToDto(comment)) // 2. Entity를 Dto로 변환함과 동시에 내부적으로 children을 주입한다.
                     .collect(Collectors.toList());
             return collect;
         }
