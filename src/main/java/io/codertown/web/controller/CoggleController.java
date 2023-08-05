@@ -71,9 +71,9 @@ public class CoggleController {
      * @return 성공: TRUE | 실패: FALSE
      */
     @GetMapping("/coggle/{page}")
-    public ResponseEntity<CoggleListDto> coggleList(@PathVariable(required = false) Integer page) {
+    public ResponseEntity<CoggleListDto> coggleList(@PathVariable(required = false) Integer page, @RequestBody CoggleListRequest request) {
         try {
-            CoggleListDto result = coggleService.coggleList(page);
+            CoggleListDto result = coggleService.coggleList(page,request);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             e.printStackTrace();

@@ -91,12 +91,12 @@ public class CoggleService {
      * @param page 페이지 정보
      * @return 성공: TRUE | 실패: FALSE
      */
-    public CoggleListDto coggleList(Integer page) throws RuntimeException {
+    public CoggleListDto coggleList(Integer page, CoggleListRequest request) throws RuntimeException {
+        User writer = (User)userRepository.findByEmail(request.getWriter());
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build()
                 .createPageRequest(page, "coggleNo", "DESC");
-//        Page<Coggle> pages = coggleRepository.findAll(pageInfo.getPageRequest());
-        Page<Coggle> pages = coggleRepository.findByCategoryAndUser(null, null, pageInfo.getPageRequest());
+        Page<Coggle> pages = coggleRepository.findByCategoryAndUser(request.getCategory(), writer, pageInfo.getPageRequest());
         pageInfo.setPageInfo(pages, pageInfo);
         List<CoggleDto> coggleList = pages.stream()
                 .map(coggle -> CoggleDto.builder().build().changeEntityToDto(coggle))
