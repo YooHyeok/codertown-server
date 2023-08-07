@@ -74,15 +74,16 @@ public class RecruitService {
         try {
             Optional<Recruit> oRecruit = recruitRepository.findById(recruitNo);
             if (oRecruit.isPresent()) {
-                Cokkiri recruit = (Cokkiri)oRecruit.get();
+                Cokkiri cokkiri = (Cokkiri)oRecruit.get();
+                UserDto userDto = UserDto.userEntityToDto(cokkiri.getRecruitUser());
                 // 프로젝트별 파트 조회 정보
-                List<ProjectPartDto> projectPartList = recruit.getProject().getProjectParts().stream()
+                List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
                         .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
                         .collect(Collectors.toList());
                 // 프로젝트 조회 정보
-                ProjectDto projectDto = ProjectDto.builder().build().entityToDto(recruit.getProject() ,projectPartList);
+                ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
                 // 코끼리 조회 정보
-                RecruitDto cokkiriDto = RecruitDto.builder().build().entityToDto(recruit);
+                RecruitDto cokkiriDto = RecruitDto.builder().build().entityToDto(cokkiri, userDto);
                 return CokkiriDetailResponse.builder()
                         .projectDto(projectDto)
                         .cokkiriDto(cokkiriDto)
@@ -106,8 +107,9 @@ public class RecruitService {
             pageInfo.setPageInfo(pages, pageInfo);
 
             return pages.getContent().stream().map(recruit -> {
+                UserDto userDto = UserDto.userEntityToDto(recruit.getRecruitUser());
                 Cokkiri cokkiri = (Cokkiri) recruit;
-                RecruitDto cokkiriDto = RecruitDto.builder().build().entityToDto(cokkiri);
+                RecruitDto cokkiriDto = RecruitDto.builder().build().entityToDto(cokkiri, userDto);
                 List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
                         .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
                         .collect(Collectors.toList());
