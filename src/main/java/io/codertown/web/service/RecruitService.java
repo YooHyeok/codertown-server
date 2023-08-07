@@ -15,7 +15,6 @@ import io.codertown.web.repository.PartRepository;
 import io.codertown.web.repository.ProjectPartRepository;
 import io.codertown.web.repository.RecruitRepository;
 import io.codertown.web.repository.UserRepository;
-import io.codertown.web.repository.querydsl.RecruitQuerydslRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,6 @@ import java.util.stream.Collectors;
 public class RecruitService {
 
     private final RecruitRepository recruitRepository;
-    private final RecruitQuerydslRepository recruitQuerydslRepository;
     private final UserRepository userRepository;
     private final PartRepository partRepository;
     private final ProjectPartRepository projectPartRepository;
@@ -123,7 +121,7 @@ public class RecruitService {
         PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, "id", "DESC");
         try {
 //            Page<Recruit> pages = recruitRepository.findByCategory(pageInfo.getPageRequest());
-            Page<Recruit> pages = recruitQuerydslRepository.findByType("Cokkiri", pageInfo.getPageRequest());
+            Page<Recruit> pages = recruitRepository.findByType("Cokkiri", pageInfo.getPageRequest());
             pageInfo.setPageInfo(pages, pageInfo);
             List<Recruit> content = pages.getContent();
             content.forEach(recruit -> {
