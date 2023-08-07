@@ -22,9 +22,9 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
      * -> EntityManager와 querydsl 유틸리티를 함께 사용할 수 있다.
      */
     private final JPAQueryFactory queryFactory;
-    public RecruitQuerydslRepositoryImpl() {
+    public RecruitQuerydslRepositoryImpl(JPAQueryFactory queryFactory) {
         super(Recruit.class);
-        this.queryFactory = new JPAQueryFactory(getEntityManager());
+        this.queryFactory = queryFactory;
     }
 
     @Override
