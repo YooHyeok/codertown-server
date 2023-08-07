@@ -1,9 +1,7 @@
 package io.codertown.web.service;
 
 import io.codertown.support.PageInfo;
-import io.codertown.web.dto.CokkiriDto;
-import io.codertown.web.dto.ProjectDto;
-import io.codertown.web.dto.ProjectPartDto;
+import io.codertown.web.dto.*;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.recruit.Cokkiri;
 import io.codertown.web.entity.recruit.Recruit;
@@ -11,6 +9,7 @@ import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.CokkiriSaveRequest;
 import io.codertown.web.payload.request.ProjectJoinRequest;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
+import io.codertown.web.payload.response.RecruitListResponse;
 import io.codertown.web.repository.PartRepository;
 import io.codertown.web.repository.ProjectPartRepository;
 import io.codertown.web.repository.RecruitRepository;
@@ -116,21 +115,51 @@ public class RecruitService {
     /**
      * Recruit 목록 출력
      */
-    public void recruitList(Integer page) {
+    public List<RecruitListResponse> recruitList(Integer page) {
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, "id", "DESC");
         try {
 //            Page<Recruit> pages = recruitRepository.findByCategory(pageInfo.getPageRequest());
             Page<Recruit> pages = recruitRepository.findByType("Cokkiri", pageInfo.getPageRequest());
             pageInfo.setPageInfo(pages, pageInfo);
-            List<Recruit> content = pages.getContent();
-            content.forEach(recruit -> {
-                System.out.println("recruit = " + recruit);
-            });
+
+            return pages.getContent().stream().map(recruit -> {
+                Cokkiri cokkiri = (Cokkiri) recruit;
+                UserDto userDto = UserDto.userEntityToDto(cokkiri.getRecruitUser());
+                RecruitDto recruitDto = RecruitDto.builder()
+                        .title(cokkiri.getTitle())
+                        .link(cokkiri.getLink())
+                        .content(cokkiri.getContent())
+                        .build();
+                CokkiriDto cokkiriDto = CokkiriDto.builder()
+                        .objectWeek(cokkiri.getObjectWeek())
+                        .build();
+                List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
+                        .map(projectPart -> ProjectPartDto.builder()
+                                .partNo(projectPart.getPart().getId()) // 파트 번호
+                                .partName(projectPart.getPart().getPartName()) // 파트 이름
+                                .recruitCount(projectPart.getRecruitCount()) // 모집 인원
+                                .build())
+                        .collect(Collectors.toList());
+                ProjectDto projectDto = ProjectDto.builder()
+                        .subject(cokkiri.getProject().getSubject()) // 주제
+                        .projectTitle(cokkiri.getProject().getProjectTitle()) // 프로젝트 제목
+                        .teamName(cokkiri.getProject().getTeamName()) // 팀 이름
+                        .projectStatus(cokkiri.getProject().getProjectStatus().name()) // 프로젝트 상태 (대기중)
+                        .projectParts(projectPartList) // 프로젝트별 파트 목록
+                        .build();
+                return RecruitListResponse.builder()
+                        .userDto(userDto)
+                        .recruitDto(recruitDto)
+                        .cokkiriDto(cokkiriDto)
+                        .projectDto(projectDto)
+                        .pageInfo(pageInfo)
+                        .build();
+            }).collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-
     }
 
     /**

@@ -4,11 +4,14 @@ import io.codertown.web.payload.request.CokkiriUpdateRequest;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
 import io.codertown.web.payload.request.CokkiriSaveRequest;
 import io.codertown.web.payload.request.ProjectJoinRequest;
+import io.codertown.web.payload.response.RecruitListResponse;
 import io.codertown.web.service.RecruitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,10 +25,10 @@ public class RecruitController {
      * @return
      */
     @GetMapping("/recruit/{page}")
-    public ResponseEntity<Object> cokkiriList(@PathVariable(required = false) Integer page) {
+    public ResponseEntity<List<RecruitListResponse>> cokkiriList(@PathVariable(required = false) Integer page) {
         try {
-            recruitService.recruitList(page);
-            return null;
+            List<RecruitListResponse> recruitList = recruitService.recruitList(page);
+            return ResponseEntity.ok(recruitList);
         } catch (Exception e) {
             return null;
         }
