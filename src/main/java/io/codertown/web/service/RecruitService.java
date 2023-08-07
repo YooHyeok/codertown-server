@@ -82,13 +82,7 @@ public class RecruitService {
                 // 프로젝트 조회 정보
                 ProjectDto projectDto = ProjectDto.builder().build().entityToDto(recruit.getProject() ,projectPartList);
                 // 코끼리 조회 정보
-                CokkiriDto cokkiriDto = CokkiriDto.builder()
-                        .title(recruit.getTitle()) // 코끼리 글 제목
-                        .content(recruit.getContent()) // 코끼리 글 내용
-//                        .recruiteUser(recruit.getRecruitUser()) // 코끼리 글 작성자 (추후 String값으로 수정)
-                        .recruiteUser(recruit.getRecruitUser().getEmail()) // 코끼리 글 작성자 (추후 String값으로 수정)
-                        .objectWeek(recruit.getObjectWeek()) // 목표 기간(주)
-                        .build();
+                CokkiriDto cokkiriDto = CokkiriDto.builder().build().entityToDto(recruit);
                 CokkiriDetailResponse cokkiriDetailResponse = CokkiriDetailResponse.builder()
                         .projectDto(projectDto)
                         .cokkiriDto(cokkiriDto)
@@ -121,19 +115,11 @@ public class RecruitService {
                         .link(cokkiri.getLink())
                         .content(cokkiri.getContent())
                         .build();
-                CokkiriDto cokkiriDto = CokkiriDto.builder()
-                        .objectWeek(cokkiri.getObjectWeek())
-                        .build();
+                CokkiriDto cokkiriDto = CokkiriDto.builder().build().entityToDto(cokkiri);
                 List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
                         .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
                         .collect(Collectors.toList());
-                ProjectDto projectDto = ProjectDto.builder()
-                        .subject(cokkiri.getProject().getSubject()) // 주제
-                        .projectTitle(cokkiri.getProject().getProjectTitle()) // 프로젝트 제목
-                        .teamName(cokkiri.getProject().getTeamName()) // 팀 이름
-                        .projectStatus(cokkiri.getProject().getProjectStatus().name()) // 프로젝트 상태 (대기중)
-                        .projectParts(projectPartList) // 프로젝트별 파트 목록
-                        .build();
+                ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
                 return RecruitListResponse.builder()
                         .userDto(userDto)
                         .recruitDto(recruitDto)
