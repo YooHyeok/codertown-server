@@ -10,6 +10,8 @@ public class CokkiriDto {
     private String title;
     private String content;
     private String writer;
+//    private UserDto writer; //추후 writer정보 변경가능
+
     private Integer objectWeek;
 
     public static CokkiriDto entityToDto(Cokkiri cokkiri) {

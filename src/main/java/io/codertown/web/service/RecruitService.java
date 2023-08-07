@@ -121,7 +121,6 @@ public class RecruitService {
                         .collect(Collectors.toList());
                 ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
                 return RecruitListResponse.builder()
-                        .userDto(userDto)
                         .recruitDto(recruitDto)
                         .cokkiriDto(cokkiriDto)
                         .projectDto(projectDto)
