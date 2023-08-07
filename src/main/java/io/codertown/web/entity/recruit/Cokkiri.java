@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
-@ToString(callSuper = true, exclude = "project")
+@ToString(callSuper = true)
 @SuperBuilder
 @Getter
 @NoArgsConstructor

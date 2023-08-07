@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = "cokkiri")
 public class Project {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "PROJECT_NO")
