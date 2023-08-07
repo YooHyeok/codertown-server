@@ -77,11 +77,7 @@ public class RecruitService {
                 Cokkiri recruit = (Cokkiri)oRecruit.get();
                 // 프로젝트별 파트 조회 정보
                 List<ProjectPartDto> projectPartList = recruit.getProject().getProjectParts().stream()
-                        .map(projectPart -> ProjectPartDto.builder()
-                                .partNo(projectPart.getPart().getId()) // 파트 번호
-                                .partName(projectPart.getPart().getPartName()) // 파트 이름
-                                .recruitCount(projectPart.getRecruitCount()) // 모집 인원
-                                .build())
+                        .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
                         .collect(Collectors.toList());
                 // 프로젝트 조회 정보
                 ProjectDto projectDto = ProjectDto.builder()
@@ -135,11 +131,7 @@ public class RecruitService {
                         .objectWeek(cokkiri.getObjectWeek())
                         .build();
                 List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
-                        .map(projectPart -> ProjectPartDto.builder()
-                                .partNo(projectPart.getPart().getId()) // 파트 번호
-                                .partName(projectPart.getPart().getPartName()) // 파트 이름
-                                .recruitCount(projectPart.getRecruitCount()) // 모집 인원
-                                .build())
+                        .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
                         .collect(Collectors.toList());
                 ProjectDto projectDto = ProjectDto.builder()
                         .subject(cokkiri.getProject().getSubject()) // 주제
