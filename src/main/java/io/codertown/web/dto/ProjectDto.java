@@ -1,5 +1,6 @@
 package io.codertown.web.dto;
 
+import io.codertown.web.entity.project.Project;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,4 +15,14 @@ public class ProjectDto {
     private String projectStatus; //프로젝트 진행 상태
 
     private List<ProjectPartDto> projectParts; // 파트
+
+    public static ProjectDto entityToDto(Project project, List<ProjectPartDto> projectParts) {
+        return ProjectDto.builder()
+                .subject(project.getSubject()) // 주제
+                .projectTitle(project.getProjectTitle()) // 프로젝트 제목
+                .teamName(project.getTeamName()) // 팀 이름
+                .projectStatus(project.getProjectStatus().name()) // 프로젝트 상태 (대기중)
+                .projectParts(projectParts) // 프로젝트별 파트 목록
+                .build();
+    }
 }

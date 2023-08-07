@@ -80,13 +80,7 @@ public class RecruitService {
                         .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
                         .collect(Collectors.toList());
                 // 프로젝트 조회 정보
-                ProjectDto projectDto = ProjectDto.builder()
-                        .subject(recruit.getProject().getSubject()) // 주제
-                        .projectTitle(recruit.getProject().getProjectTitle()) // 프로젝트 제목
-                        .teamName(recruit.getProject().getTeamName()) // 팀 이름
-                        .projectStatus(recruit.getProject().getProjectStatus().name()) // 프로젝트 상태 (대기중)
-                        .projectParts(projectPartList) // 프로젝트별 파트 목록
-                        .build();
+                ProjectDto projectDto = ProjectDto.builder().build().entityToDto(recruit.getProject() ,projectPartList);
                 // 코끼리 조회 정보
                 CokkiriDto cokkiriDto = CokkiriDto.builder()
                         .title(recruit.getTitle()) // 코끼리 글 제목
