@@ -15,6 +15,22 @@ import org.springframework.web.bind.annotation.*;
 public class RecruitController {
 
     private final RecruitService recruitService;
+
+    /**
+     * 코끼리 & 맘모스 목록 API
+     * @param recruitNo
+     * @return
+     */
+    @GetMapping("/recruit/{page}")
+    public ResponseEntity<Object> cokkiriList(@PathVariable(required = false) Integer page) {
+        try {
+            recruitService.recruitList(page);
+            return null;
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     /**
      * 코끼리 & 프로젝트 저장 API <br/>
      * @param request : JSON 데이터 <br/>

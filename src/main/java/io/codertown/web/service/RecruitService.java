@@ -1,5 +1,6 @@
 package io.codertown.web.service;
 
+import io.codertown.support.PageInfo;
 import io.codertown.web.dto.CokkiriDto;
 import io.codertown.web.dto.ProjectDto;
 import io.codertown.web.dto.ProjectPartDto;
@@ -7,14 +8,15 @@ import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.recruit.Cokkiri;
 import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.entity.user.User;
-import io.codertown.web.payload.response.CokkiriDetailResponse;
 import io.codertown.web.payload.request.CokkiriSaveRequest;
 import io.codertown.web.payload.request.ProjectJoinRequest;
+import io.codertown.web.payload.response.CokkiriDetailResponse;
 import io.codertown.web.repository.PartRepository;
 import io.codertown.web.repository.ProjectPartRepository;
 import io.codertown.web.repository.RecruitRepository;
 import io.codertown.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -109,6 +111,25 @@ public class RecruitService {
             e.printStackTrace();
         }
         throw new RuntimeException("게시글 없음");
+    }
+
+    /**
+     * Recruit 목록 출력
+     */
+    public void recruitList(Integer page) {
+        page = page == null ? 1 : page;
+        PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, "id", "DESC");
+        try {
+            Page<Recruit> pages = recruitRepository.findByCategory(pageInfo.getPageRequest());
+            pageInfo.setPageInfo(pages, pageInfo);
+            List<Recruit> content = pages.getContent();
+            content.forEach(recruit -> {
+                System.out.println("recruit = " + recruit);
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**
