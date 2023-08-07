@@ -82,7 +82,7 @@ public class RecruitService {
                 // 프로젝트 조회 정보
                 ProjectDto projectDto = ProjectDto.builder().build().entityToDto(recruit.getProject() ,projectPartList);
                 // 코끼리 조회 정보
-                CokkiriDto cokkiriDto = CokkiriDto.builder().build().entityToDto(recruit);
+                RecruitDto cokkiriDto = RecruitDto.builder().build().entityToDto(recruit);
                 CokkiriDetailResponse cokkiriDetailResponse = CokkiriDetailResponse.builder()
                         .projectDto(projectDto)
                         .cokkiriDto(cokkiriDto)
@@ -110,19 +110,13 @@ public class RecruitService {
             return pages.getContent().stream().map(recruit -> {
                 Cokkiri cokkiri = (Cokkiri) recruit;
                 UserDto userDto = UserDto.userEntityToDto(cokkiri.getRecruitUser());
-                RecruitDto recruitDto = RecruitDto.builder()
-                        .title(cokkiri.getTitle())
-                        .link(cokkiri.getLink())
-                        .content(cokkiri.getContent())
-                        .build();
-                CokkiriDto cokkiriDto = CokkiriDto.builder().build().entityToDto(cokkiri);
+                RecruitDto cokkiriDto = RecruitDto.builder().build().entityToDto(cokkiri);
                 List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
                         .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
                         .collect(Collectors.toList());
                 ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
                 return RecruitListResponse.builder()
-                        .recruitDto(recruitDto)
-                        .cokkiriDto(cokkiriDto)
+                        .recruitDto(cokkiriDto)
                         .projectDto(projectDto)
                         .pageInfo(pageInfo)
                         .build();
