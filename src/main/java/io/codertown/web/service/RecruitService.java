@@ -98,12 +98,12 @@ public class RecruitService {
     /**
      * Recruit 목록 출력
      */
-    public List<RecruitListResponse> recruitList(Integer page) {
+    public List<RecruitListResponse> recruitList(Integer page, String dType) {
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, "id", "DESC");
         try {
 //            Page<Recruit> pages = recruitRepository.findByCategory(pageInfo.getPageRequest());
-            Page<Recruit> pages = recruitRepository.findByType("Cokkiri", pageInfo.getPageRequest());
+            Page<Recruit> pages = recruitRepository.findByType(dType, pageInfo.getPageRequest());
             pageInfo.setPageInfo(pages, pageInfo);
 
             return pages.getContent().stream().map(recruit -> {

@@ -24,10 +24,11 @@ public class RecruitController {
      * @param recruitNo
      * @return
      */
-    @GetMapping("/recruit/{page}")
-    public ResponseEntity<List<RecruitListResponse>> cokkiriList(@PathVariable(required = false) Integer page) {
+    @GetMapping("/recruit/{page}/{dtype}")
+    public ResponseEntity<List<RecruitListResponse>> cokkiriList(@PathVariable(required = false) Integer page,
+                                                                 @PathVariable(required = false) String dType) {
         try {
-            List<RecruitListResponse> recruitList = recruitService.recruitList(page);
+            List<RecruitListResponse> recruitList = recruitService.recruitList(page, dType);
             return ResponseEntity.ok(recruitList);
         } catch (Exception e) {
             return null;
