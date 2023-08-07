@@ -50,7 +50,7 @@ public class RecruitController {
      * @param recruitNo
      * @return
      */
-    @GetMapping("/cokkiri/{recruitNo}")
+    @GetMapping("/cokkiri-detail/{recruitNo}")
     public ResponseEntity<CokkiriDetailResponse> cokkiriDetail(@PathVariable(required = true) Long recruitNo) {
         try {
             CokkiriDetailResponse cokkiriDetailResponse = recruitService.cokkiriDetail(recruitNo);
