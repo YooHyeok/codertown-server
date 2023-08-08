@@ -55,7 +55,7 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
      * @return
      */
     private static Class<? extends Recruit> dTypeCondition(String dType) {
-        return dType.isEmpty() ? null : (dType.equals("Cokkiri") ? Cokkiri.class : Mammoth.class);
+        return dType.isEmpty() ? null : (dType.equals("cokkiri") ? Cokkiri.class : Mammoth.class);
     }
 
 }
