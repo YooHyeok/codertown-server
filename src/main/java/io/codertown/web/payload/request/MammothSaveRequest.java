@@ -1,4 +1,4 @@
-package io.codertown.web.service;
+package io.codertown.web.payload.request;
 
 import io.codertown.web.entity.user.User;
 import io.swagger.v3.oas.annotations.media.Schema;

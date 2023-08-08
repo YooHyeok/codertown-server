@@ -1,6 +1,6 @@
 package io.codertown.web.entity.recruit;
 
-import io.codertown.web.service.MammothSaveRequest;
+import io.codertown.web.payload.request.MammothSaveRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
