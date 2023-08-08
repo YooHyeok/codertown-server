@@ -84,7 +84,7 @@ public class RecruitService {
                 // 프로젝트 조회 정보
                 ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
                 // 코끼리 조회 정보
-                CokkiriDto cokkiriDto = CokkiriDto.builder().build().entityToDto(cokkiri, userDto);
+                RecruitDto cokkiriDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, null);
                 return CokkiriDetailResponse.builder()
                         .projectDto(projectDto)
                         .cokkiriDto(cokkiriDto)
@@ -107,13 +107,11 @@ public class RecruitService {
             pageInfo.setPageInfo(pages, pageInfo);
             List<RecruitListDto> recruitList = pages.getContent().stream().map(recruit -> {
                 UserDto userDto = UserDto.userEntityToDto(recruit.getRecruitUser());
-                RecruitListDto build;
-                CokkiriDto cokkiriDto = null;
-                MammothDto mammothDto = null;
+                RecruitDto recruitDto = null;
                 ProjectDto projectDto = null;
                 if (recruit instanceof Cokkiri) {
                     Cokkiri cokkiri = (Cokkiri) recruit;
-                    cokkiriDto = CokkiriDto.builder().build().entityToDto(cokkiri, userDto);
+                    recruitDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, "cokkiri");
                     List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
                             .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
                             .collect(Collectors.toList());
@@ -121,11 +119,10 @@ public class RecruitService {
                 }
                 if (recruit instanceof Mammoth) {
                     Mammoth mammoth = (Mammoth) recruit;
-                    mammothDto = MammothDto.builder().build().entityToDto(mammoth, userDto);
+                    recruitDto = RecruitDto.builder().build().mammothEntityToDto(mammoth, userDto, "mammoth");
                 }
                 return RecruitListDto.builder()
-                        .mammothDto(mammothDto)
-                        .cokkiriDto(cokkiriDto)
+                        .recruitDto(recruitDto)
                         .projectDto(projectDto)
                         .build();
             }).collect(Collectors.toList());

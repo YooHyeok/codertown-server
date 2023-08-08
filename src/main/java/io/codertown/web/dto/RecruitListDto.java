@@ -1,12 +1,13 @@
 package io.codertown.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RecruitListDto {
-    private CokkiriDto cokkiriDto;
-    private MammothDto mammothDto;
+    private RecruitDto recruitDto;
     private ProjectDto projectDto;
 }
