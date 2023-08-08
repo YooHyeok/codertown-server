@@ -1,7 +1,10 @@
 package io.codertown.web.service;
 
 import io.codertown.support.PageInfo;
-import io.codertown.web.dto.*;
+import io.codertown.web.dto.CokkiriDto;
+import io.codertown.web.dto.ProjectDto;
+import io.codertown.web.dto.ProjectPartDto;
+import io.codertown.web.dto.UserDto;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.recruit.Cokkiri;
 import io.codertown.web.entity.recruit.Recruit;
@@ -10,7 +13,6 @@ import io.codertown.web.payload.request.CokkiriSaveRequest;
 import io.codertown.web.payload.request.ProjectJoinRequest;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
 import io.codertown.web.payload.response.CokkiriListResponse;
-import io.codertown.web.payload.response.RecruitListResponse;
 import io.codertown.web.repository.PartRepository;
 import io.codertown.web.repository.ProjectPartRepository;
 import io.codertown.web.repository.RecruitRepository;

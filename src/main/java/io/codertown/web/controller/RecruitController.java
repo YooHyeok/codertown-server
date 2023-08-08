@@ -20,11 +20,11 @@ public class RecruitController {
     private final RecruitService recruitService;
 
     /**
-     * 코끼리 & 맘모스 목록 API
-     * @param recruitNo
+     * 코끼리 목록 API
+     * @param page
      * @return
      */
-    @GetMapping("/recruit/{page}/{dtype}")
+    @GetMapping("/recruit/{dType}/{page}")
     public ResponseEntity<List<CokkiriListResponse>> cokkiriList(@PathVariable(required = false) Integer page,
                                                                  @PathVariable(required = false) String dType) {
         try {
