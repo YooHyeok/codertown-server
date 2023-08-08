@@ -1,6 +1,7 @@
 package io.codertown.web.controller;
 
 import io.codertown.web.dto.RecruitDto;
+import io.codertown.web.payload.SuccessBooleanResult;
 import io.codertown.web.payload.request.*;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
 import io.codertown.web.payload.response.RecruitListResponse;
@@ -27,7 +28,6 @@ public class RecruitController {
     @GetMapping("/recruit/{dType}/{page}")
     public ResponseEntity<RecruitListResponse> cokkiriList(@PathVariable(required = false) Integer page,
                                                                  @PathVariable(required = false) String dType) {
-        System.out.println("dType = " + dType);
         try {
             RecruitListResponse recruitList = recruitService.recruitList(page, dType);
             return ResponseEntity.ok(recruitList);
@@ -58,11 +58,11 @@ public class RecruitController {
      */
     @ApiOperation(value="코끼리&프로젝트 저장", notes="코끼리와 프로젝트를 동시에 저장")
     @ApiResponse(description = "저장 성공 결과",responseCode = "200")
-    @PostMapping(path = "/cokkiri-save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<Boolean> cokkiriSave(@RequestBody CokkiriSaveRequest request) {
+    @PostMapping(path = "/cokkiri-save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SuccessBooleanResult> cokkiriSave(@RequestBody CokkiriSaveRequest request) {
         try {
             Boolean result = recruitService.cokkiriSave(request);
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(result));
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
@@ -120,11 +120,11 @@ public class RecruitController {
      */
     @ApiOperation(value="맘모스 게시글 저장 API", notes="맘모스 게시글 저장")
     @ApiResponse(description = "저장 성공 결과",responseCode = "200")
-    @PostMapping(path = "/mammoth-save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<Boolean> mammothSave(@RequestBody MammothSaveRequest request) {
+    @PostMapping(path = "/mammoth-save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SuccessBooleanResult> mammothSave(@RequestBody MammothSaveRequest request) {
         try {
             Boolean result = recruitService.mammothSave(request);
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(result));
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -154,11 +154,11 @@ public class RecruitController {
      */
     @ApiOperation(value="맘모스 게시글 수정 API", notes="맘모스 게시글 수정")
     @ApiResponse(description = "수정 성공 결과",responseCode = "200")
-    @PostMapping(path = "/mammoth-edit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<Boolean> mammothEdit(@RequestBody MammothUpdateRequest request) {
+    @PostMapping(path = "/mammoth-edit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SuccessBooleanResult> mammothEdit(@RequestBody MammothUpdateRequest request) {
         try {
             Boolean result = recruitService.mammothEdit(request);
-            return ResponseEntity.ok(result);
+            return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(result));
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
