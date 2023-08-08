@@ -5,8 +5,11 @@ import io.codertown.web.payload.request.*;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
 import io.codertown.web.payload.response.RecruitListResponse;
 import io.codertown.web.service.RecruitService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,7 +56,9 @@ public class RecruitController {
      * }
      * @return
      */
-    @PostMapping("/cokkiri-save")
+    @ApiOperation(value="코끼리&프로젝트 저장", notes="코끼리와 프로젝트를 동시에 저장")
+    @ApiResponse(description = "저장 성공 결과",responseCode = "200")
+    @PostMapping(path = "/cokkiri-save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<Boolean> cokkiriSave(@RequestBody CokkiriSaveRequest request) {
         try {
             Boolean result = recruitService.cokkiriSave(request);
@@ -67,6 +72,8 @@ public class RecruitController {
     /**
      * 코끼리 & 프로젝트 수정(삭제) API
      */
+    @ApiOperation(value="코끼리&프로젝트 수정", notes="코끼리와 프로젝트를 동시에 수정")
+    @ApiResponse(description = "수정 성공 결과",responseCode = "200")
     @PostMapping("/cokkiri-update")
     public void cokkiriEdit(@RequestBody CokkiriUpdateRequest request) {
         System.out.println("request = " + request);
@@ -93,6 +100,8 @@ public class RecruitController {
      * 요청 회원 정보, 원하는 파트 정보에 대한 DM을 전송한다.
      * @param request
      */
+    @ApiOperation(value="프로젝트 참가 요청 API", notes="프로젝트 참여를 요청한다.")
+    @ApiResponse(description = "참여요청 성공 결과",responseCode = "200")
     @PostMapping("/cokkiri/join-request")
     public void projectJoinRequest(@RequestBody ProjectJoinRequest request) {
         recruitService.projectJoinRequest(request);
@@ -109,7 +118,9 @@ public class RecruitController {
      * }
      * @return
      */
-    @PostMapping("/mammoth-save")
+    @ApiOperation(value="맘모스 게시글 저장 API", notes="맘모스 게시글 저장")
+    @ApiResponse(description = "저장 성공 결과",responseCode = "200")
+    @PostMapping(path = "/mammoth-save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<Boolean> mammothSave(@RequestBody MammothSaveRequest request) {
         try {
             Boolean result = recruitService.mammothSave(request);
@@ -141,7 +152,9 @@ public class RecruitController {
      * @param request
      * @return 성공: TRUE | 실패: FALSE
      */
-    @PostMapping("/mammoth-edit")
+    @ApiOperation(value="맘모스 게시글 수정 API", notes="맘모스 게시글 수정")
+    @ApiResponse(description = "수정 성공 결과",responseCode = "200")
+    @PostMapping(path = "/mammoth-edit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<Boolean> mammothEdit(@RequestBody MammothUpdateRequest request) {
         try {
             Boolean result = recruitService.mammothEdit(request);
