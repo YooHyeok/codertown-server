@@ -47,6 +47,7 @@ public class CoggleService {
             Coggle savedCoggle = coggleRepository.save(coggle);
             return savedCoggle.getCoggleNo()!=null? true:false;
         } catch (Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
@@ -77,18 +78,22 @@ public class CoggleService {
      */
     @Transactional
     public Boolean coggleEdit(CoggleEditRequest request) throws RuntimeException {
-        Optional<Coggle> oCoggle = coggleRepository.findById(request.getCoggleNo());
-        if (oCoggle.isPresent()) {
-            Coggle findCoggle = oCoggle.get();
-            try {
-                findCoggle.updateCoggle(request);
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("코글 수정 실패"); //Controller에서 Catch
+        try {
+            Optional<Coggle> oCoggle = coggleRepository.findById(request.getCoggleNo());
+            if (oCoggle.isPresent()) {
+                Coggle findCoggle = oCoggle.get();
+                try {
+                    findCoggle.updateCoggle(request);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("코글 수정 실패"); //Controller에서 Catch
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
         }
-        throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
+        return true;
     }
 
     /**
