@@ -47,12 +47,14 @@ public class RecruitService {
             //코끼리 & 프로젝트 저장 (Cascade.All)
             Cokkiri cokkiri = Cokkiri.builder().build().createCokkiri(request);
 
-            // 프로젝트 파트 저장
+            // 프로젝트 파트 저장 - 추후 양방향 연관관계에 의해서 저장될수 있도록 수정해야한다.
             List<ProjectPart> collect = request.getProjectParts().stream()
                     .map(projectPartDto -> ProjectPart.builder().build()
-                            .createProjectPart(cokkiri.getProject()
+                            .createProjectPart(
+                                    cokkiri.getProject() // 이곳에서 ProjectPart에 Project가 양방향으로 주입된다.
                                     , projectPartDto.getRecruitCount()
-                                    ,partRepository.findById(projectPartDto.getPartNo()).get())
+                                    ,partRepository.findById(projectPartDto.getPartNo()).get()
+                            )
                     )
                     .collect(Collectors.toList());
             collect.forEach(projectPartRepository::save); //반복 저장

@@ -36,7 +36,7 @@ public class ProjectPart {
         return ProjectPart.builder()
                 .part(part)
                 .recruitCount(recruitCount)
-                .project(project)
+                .project(project) //이곳에서 양방향으로 주입된다.
                 .build();
     }
 
