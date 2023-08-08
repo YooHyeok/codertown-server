@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class RecruitDto {
+public class CokkiriDto {
     private String title;
     private String content;
     private String link;
@@ -15,8 +15,8 @@ public class RecruitDto {
 
     private Integer objectWeek;
 
-    public static RecruitDto entityToDto(Cokkiri cokkiri, UserDto userDto) {
-        return RecruitDto.builder()
+    public static CokkiriDto entityToDto(Cokkiri cokkiri, UserDto userDto) {
+        return CokkiriDto.builder()
                 .title(cokkiri.getTitle()) // 코끼리 글 제목
                 .link(cokkiri.getLink())
                 .content(cokkiri.getContent()) // 코끼리 글 내용

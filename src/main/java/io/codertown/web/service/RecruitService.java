@@ -9,6 +9,7 @@ import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.CokkiriSaveRequest;
 import io.codertown.web.payload.request.ProjectJoinRequest;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
+import io.codertown.web.payload.response.CokkiriListResponse;
 import io.codertown.web.payload.response.RecruitListResponse;
 import io.codertown.web.repository.PartRepository;
 import io.codertown.web.repository.ProjectPartRepository;
@@ -83,7 +84,7 @@ public class RecruitService {
                 // 프로젝트 조회 정보
                 ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
                 // 코끼리 조회 정보
-                RecruitDto cokkiriDto = RecruitDto.builder().build().entityToDto(cokkiri, userDto);
+                CokkiriDto cokkiriDto = CokkiriDto.builder().build().entityToDto(cokkiri, userDto);
                 return CokkiriDetailResponse.builder()
                         .projectDto(projectDto)
                         .cokkiriDto(cokkiriDto)
@@ -98,7 +99,7 @@ public class RecruitService {
     /**
      * Recruit 목록 출력
      */
-    public List<RecruitListResponse> recruitList(Integer page, String dType) {
+    public List<CokkiriListResponse> recruitList(Integer page, String dType) {
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, "id", "DESC");
         try {
@@ -109,12 +110,12 @@ public class RecruitService {
             return pages.getContent().stream().map(recruit -> {
                 UserDto userDto = UserDto.userEntityToDto(recruit.getRecruitUser());
                 Cokkiri cokkiri = (Cokkiri) recruit;
-                RecruitDto cokkiriDto = RecruitDto.builder().build().entityToDto(cokkiri, userDto);
+                CokkiriDto cokkiriDto = CokkiriDto.builder().build().entityToDto(cokkiri, userDto);
                 List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
                         .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
                         .collect(Collectors.toList());
                 ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
-                return RecruitListResponse.builder()
+                return CokkiriListResponse.builder()
                         .recruitDto(cokkiriDto)
                         .projectDto(projectDto)
                         .pageInfo(pageInfo)
