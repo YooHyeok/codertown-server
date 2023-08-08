@@ -45,7 +45,9 @@ public class CoggleController {
      * @param coggleNo
      * @return 성공: TRUE | 실패: FALSE
      */
-    @GetMapping("/coggle/detail/{coggleNo}")
+    @ApiOperation(value="코글 상세페이지 API", notes="코글 상세페이지 출력에 필요한 JSON 데이터 반환")
+    @ApiResponse(description = "코글 상세페이지 JSON 데이터",responseCode = "200")
+    @GetMapping(path = "/coggle/detail/{coggleNo}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CoggleDto> coggleDetail(@PathVariable Long coggleNo) {
         try {
             CoggleDto result = coggleService.coggleDetail(coggleNo);
@@ -63,7 +65,7 @@ public class CoggleController {
      */
     @ApiOperation(value="코글 수정 API", notes="코글 게시글 수정")
     @ApiResponse(description = "수정 성공 결과",responseCode = "200")
-    @PostMapping(path = "/coggle-edit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/coggle-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessBooleanResult> coggleEdit(@RequestBody CoggleEditRequest request) {
         try {
             Boolean result = coggleService.coggleEdit(request);
@@ -79,7 +81,9 @@ public class CoggleController {
      * @param page 페이지 정보
      * @return 성공: TRUE | 실패: FALSE
      */
-    @GetMapping("/coggle/{page}")
+    @ApiOperation(value="코글 목록 출력 API", notes="코글 목록 출력에 필요한 JSON 데이터 반환")
+    @ApiResponse(description = "코글 리스트 JSON 데이터",responseCode = "200")
+    @GetMapping(path = "/coggle/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CoggleListDto> coggleList(@PathVariable(required = false) Integer page, @RequestBody CoggleListRequest request) {
         try {
             CoggleListDto result = coggleService.coggleList(page,request);
@@ -115,7 +119,7 @@ public class CoggleController {
      */
     @ApiOperation(value="코글-댓글 수정 API", notes="코글-댓글 수정")
     @ApiResponse(description = "댓글 수정 성공 결과",responseCode = "200")
-    @PostMapping(path = "/coggle/comment-edit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/coggle/comment-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessBooleanResult> coggleCommentEdit(@RequestBody CommentEditRequset request) {
         try {
             Boolean result = coggleService.coggleCommentEdit(request);
@@ -149,7 +153,9 @@ public class CoggleController {
      * @param coggleNo
      * @return
      */
-    @GetMapping("/coggle/{coggleNo}/comment")
+    @ApiOperation(value="코글-댓글 목록 출력 API", notes="코글-댓글 목록 출력에 필요한 JSON 데이터 반환")
+    @ApiResponse(description = "코글 댓글 리스트 JSON 데이터",responseCode = "200")
+    @GetMapping(path = "/coggle/{coggleNo}/comment", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<CommentDto>> coggleCommentEdit(@PathVariable Long coggleNo) {
         try {
             List<CommentDto> result = coggleService.coggleCommentJSON(coggleNo);

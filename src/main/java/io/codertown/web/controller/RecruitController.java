@@ -25,9 +25,11 @@ public class RecruitController {
      * @param page
      * @return
      */
-    @GetMapping("/recruit/{dType}/{page}")
+    @ApiOperation(value="코끼리 목록 출력 API", notes="코끼리 목록 출력에 필요한 JSON 데이터 반환")
+    @ApiResponse(description = "코끼리 목록 리스트 JSON 데이터",responseCode = "200")
+    @GetMapping(path = "/recruit/{dType}/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RecruitListResponse> cokkiriList(@PathVariable(required = false) Integer page,
-                                                                 @PathVariable(required = false) String dType) {
+                                                           @PathVariable(required = false) String dType) {
         try {
             RecruitListResponse recruitList = recruitService.recruitList(page, dType);
             return ResponseEntity.ok(recruitList);
@@ -56,7 +58,7 @@ public class RecruitController {
      * }
      * @return
      */
-    @ApiOperation(value="코끼리&프로젝트 저장", notes="코끼리와 프로젝트를 동시에 저장")
+    @ApiOperation(value="코끼리&프로젝트 저장 API", notes="코끼리와 프로젝트를 동시에 저장")
     @ApiResponse(description = "저장 성공 결과",responseCode = "200")
     @PostMapping(path = "/cokkiri-save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessBooleanResult> cokkiriSave(@RequestBody CokkiriSaveRequest request) {
@@ -72,7 +74,7 @@ public class RecruitController {
     /**
      * 코끼리 & 프로젝트 수정(삭제) API
      */
-    @ApiOperation(value="코끼리&프로젝트 수정", notes="코끼리와 프로젝트를 동시에 수정")
+    @ApiOperation(value="코끼리&프로젝트 수정 API", notes="코끼리와 프로젝트를 동시에 수정")
     @ApiResponse(description = "수정 성공 결과",responseCode = "200")
     @PostMapping("/cokkiri-update")
     public void cokkiriEdit(@RequestBody CokkiriUpdateRequest request) {
@@ -85,7 +87,9 @@ public class RecruitController {
      * @param recruitNo
      * @return
      */
-    @GetMapping("/cokkiri-detail/{recruitNo}")
+    @ApiOperation(value="코끼리 상세페이지 API", notes="코끼리 상세페이지 출력에 필요한 JSON 데이터 반환")
+    @ApiResponse(description = "코끼리 상세페이지 JSON 데이터",responseCode = "200")
+    @GetMapping(path = "/cokkiri-detail/{recruitNo}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CokkiriDetailResponse> cokkiriDetail(@PathVariable(required = true) Long recruitNo) {
         try {
             CokkiriDetailResponse cokkiriDetailResponse = recruitService.cokkiriDetail(recruitNo);
@@ -136,7 +140,9 @@ public class RecruitController {
      * @param recruitNo
      * @return
      */
-    @GetMapping("/mammoth-detail/{recruitNo}")
+    @ApiOperation(value="맘모스 상세페이지 API", notes="맘모스 상세페이지 출력에 필요한 JSON 데이터 반환")
+    @ApiResponse(description = "맘모스 상세페이지 JSON 데이터",responseCode = "200")
+    @GetMapping(path = "/mammoth-detail/{recruitNo}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RecruitDto> mammothDetail(@PathVariable(required = true) Long recruitNo) {
         try {
             RecruitDto mammothDto = recruitService.mammothDetail(recruitNo);
@@ -154,7 +160,7 @@ public class RecruitController {
      */
     @ApiOperation(value="맘모스 게시글 수정 API", notes="맘모스 게시글 수정")
     @ApiResponse(description = "수정 성공 결과",responseCode = "200")
-    @PostMapping(path = "/mammoth-edit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/mammoth-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessBooleanResult> mammothEdit(@RequestBody MammothUpdateRequest request) {
         try {
             Boolean result = recruitService.mammothEdit(request);

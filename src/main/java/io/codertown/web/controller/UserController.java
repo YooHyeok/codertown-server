@@ -41,9 +41,9 @@ public class UserController {
      * <pre>
      *       email : 이메일 (로그인계정) <br/>
      * </pre>
-     * @return Map("existstu",Boolean) - true : 중복
+     * @return ExistsResult("existst",Boolean) - true : 중복
      */
-    @ApiOperation(value="이메일 중복확인", notes="회원가입시 이메일 중복 확인")
+    @ApiOperation(value="이메일 중복확인 API", notes="회원가입시 이메일 중복 확인")
     @ApiResponse(description = "중복 확인 성공 결과",responseCode = "200")
     @PostMapping(path = "/email-exists", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ExistsResult> emailExists(@RequestBody String email) {
@@ -72,7 +72,7 @@ public class UserController {
      * </pre>
      * @return SignStatus 저장 성공/실패 여부
      */
-    @ApiOperation(value="회원가입", notes="회원가입 기능")
+    @ApiOperation(value="회원가입 API", notes="회원가입 기능")
     @ApiResponse(description = "회원가입 성공 결과",responseCode = "200")
     @PostMapping(path = "/sign-up", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SignStatus> signUp(@RequestBody SignUpRequest request) {
@@ -94,7 +94,7 @@ public class UserController {
      * </pre>
      * @return SignUpResponse - [로그인정보/성공여부]
      */
-    @ApiOperation(value="로그인", notes="로그인 기능")
+    @ApiOperation(value="로그인 API", notes="로그인 기능")
     @ApiResponse(description = "로그인 성공 결과" , responseCode = "200", content = @Content(schema = @Schema(implementation = SignInResponse.class)))
     @PostMapping(path="/sign-in", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SignInResponse> signIn(@RequestBody SignInRequest request) {
@@ -115,7 +115,7 @@ public class UserController {
      * </pre>
      * @return UserDto - [회원정보]
      */
-    @ApiOperation(value="마이페이지 - 회원정보 조회", notes="회원정보 출력")
+    @ApiOperation(value="마이페이지 - 회원정보 조회 API", notes="회원정보 출력")
     @ApiResponse(description = "회원 정보 조회 성공 결과",responseCode = "200")
     @PostMapping(path = "/user-info", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> mypage(@RequestBody String loginEmail) {
@@ -136,7 +136,7 @@ public class UserController {
      * </pre>
      * @return Map("existstu",Boolean) - true : 중복
      */
-    @ApiOperation(value="닉네임 중복확인", notes="회원정보 수정시 닉네임 중복 확인")
+    @ApiOperation(value="닉네임 중복확인 API", notes="회원정보 수정시 닉네임 중복 확인")
     @ApiResponse(description = "중복 확인 성공 결과",responseCode = "200")
     @PostMapping(path = "/nickname-exists", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ExistsResult> nicknameExists(@RequestBody String email) {
@@ -165,9 +165,9 @@ public class UserController {
      * </pre>
      * @return UserDto - [회원정보]
      */
-    @ApiOperation(value="마이페이지 - 회원정보 수정", notes="회원정보 수정")
+    @ApiOperation(value="마이페이지 - 회원정보 수정 API", notes="회원정보 수정")
     @ApiResponse(description = "회원정보 수정 성공 결과",responseCode = "200")
-    @PostMapping(path="/user-edit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path="/user-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> userEdit(@RequestBody UserEditRequest userEdit) {
         try {
             UserDto editResult = userService.userEdit(userEdit);
