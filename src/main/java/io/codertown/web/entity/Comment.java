@@ -3,7 +3,7 @@ package io.codertown.web.entity;
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.CoggleDeleteParamRequest;
-import io.codertown.web.payload.request.CommentEditRequset;
+import io.codertown.web.payload.request.CommentUpdateRequset;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -45,7 +45,7 @@ public class Comment extends BaseTimeStampEntity {
     @OneToMany(mappedBy = "parent", orphanRemoval = true)
     private List<Comment> children = new ArrayList<>();
 
-    public void updateComment(CommentEditRequset request) {
+    public void updateComment(CommentUpdateRequset request) {
         this.content = request.getContent();
     }
 

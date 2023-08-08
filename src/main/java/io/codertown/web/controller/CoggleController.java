@@ -66,9 +66,9 @@ public class CoggleController {
     @ApiOperation(value="코글 수정 API", notes="코글 게시글 수정")
     @ApiResponse(description = "수정 성공 결과",responseCode = "200")
     @PostMapping(path = "/coggle-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessBooleanResult> coggleEdit(@RequestBody CoggleEditRequest request) {
+    public ResponseEntity<SuccessBooleanResult> coggleupdate(@RequestBody CoggleUpdateRequest request) {
         try {
-            Boolean result = coggleService.coggleEdit(request);
+            Boolean result = coggleService.coggleUpdate(request);
             return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(result));
         } catch (Exception e) {
             e.printStackTrace();
@@ -120,9 +120,9 @@ public class CoggleController {
     @ApiOperation(value="코글-댓글 수정 API", notes="코글-댓글 수정")
     @ApiResponse(description = "댓글 수정 성공 결과",responseCode = "200")
     @PostMapping(path = "/coggle/comment-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessBooleanResult> coggleCommentEdit(@RequestBody CommentEditRequset request) {
+    public ResponseEntity<SuccessBooleanResult> coggleCommentUpdate(@RequestBody CommentUpdateRequset request) {
         try {
-            Boolean result = coggleService.coggleCommentEdit(request);
+            Boolean result = coggleService.coggleCommentUpdate(request);
             return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(result));
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,7 +156,7 @@ public class CoggleController {
     @ApiOperation(value="코글-댓글 목록 출력 API", notes="코글-댓글 목록 출력에 필요한 JSON 데이터 반환")
     @ApiResponse(description = "코글 댓글 리스트 JSON 데이터",responseCode = "200")
     @GetMapping(path = "/coggle/{coggleNo}/comment", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<CommentDto>> coggleCommentEdit(@PathVariable Long coggleNo) {
+    public ResponseEntity<List<CommentDto>> coggleComment(@PathVariable Long coggleNo) {
         try {
             List<CommentDto> result = coggleService.coggleCommentJSON(coggleNo);
             return ResponseEntity.ok(result);

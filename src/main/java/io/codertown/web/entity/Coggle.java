@@ -2,7 +2,7 @@ package io.codertown.web.entity;
 
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.user.User;
-import io.codertown.web.payload.request.CoggleEditRequest;
+import io.codertown.web.payload.request.CoggleUpdateRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -39,7 +39,7 @@ public class Coggle extends BaseTimeStampEntity {
      * 카테고리 수정 불가 (관리자만 가능)
      * @param request
      */
-    public void updateCoggle(CoggleEditRequest request) {
+    public void updateCoggle(CoggleUpdateRequest request) {
         this.title = request.getTitle();
         this.content = request.getContent();
     }

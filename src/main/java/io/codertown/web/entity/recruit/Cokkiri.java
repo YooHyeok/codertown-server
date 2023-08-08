@@ -24,14 +24,14 @@ public class Cokkiri extends Recruit {
     @JoinColumn(name = "PROJECT_NO")
     private Project project;
 
-    public static Cokkiri createCokkiri(CokkiriSaveRequest requestDto) {
+    public static Cokkiri createCokkiri(CokkiriSaveRequest request) {
         Project project = Project.builder()
-                .build().createProject(requestDto);
+                .build().createProject(request);
         Cokkiri build = Cokkiri.builder()
-                .title(requestDto.getCokkiriTitle())
-                .content(requestDto.getContent())
-                .recruitUser(requestDto.getUser())
-                .objectWeek(requestDto.getObjectWeek())
+                .title(request.getCokkiriTitle())
+                .content(request.getContent())
+                .recruitUser(request.getUser())
+                .objectWeek(request.getObjectWeek())
                 .project(project)
                 .build();
         return build;

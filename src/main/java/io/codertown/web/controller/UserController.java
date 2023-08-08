@@ -5,7 +5,7 @@ import io.codertown.web.payload.ExistsResult;
 import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
-import io.codertown.web.payload.request.UserEditRequest;
+import io.codertown.web.payload.request.UserUpdateRequest;
 import io.codertown.web.payload.response.SignInResponse;
 import io.codertown.web.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -155,7 +155,7 @@ public class UserController {
 
     /**
      * 마이페이지 회원정보 수정 API
-     * @param userEdit Client 파라미터
+     * @param request Client 파라미터
      * <pre>
      *       originEmail : 기존 이메일 (로그인계정) <br/>
      *       changeEmail : 변경 이메일  <br/>
@@ -168,10 +168,10 @@ public class UserController {
     @ApiOperation(value="마이페이지 - 회원정보 수정 API", notes="회원정보 수정")
     @ApiResponse(description = "회원정보 수정 성공 결과",responseCode = "200")
     @PostMapping(path="/user-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> userEdit(@RequestBody UserEditRequest userEdit) {
+    public ResponseEntity<UserDto> userUpdate(@RequestBody UserUpdateRequest request) {
         try {
-            UserDto editResult = userService.userEdit(userEdit);
-            return ResponseEntity.ok(editResult);
+            UserDto updateResult = userService.userUpdate(request);
+            return ResponseEntity.ok(updateResult);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }

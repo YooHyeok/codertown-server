@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CoggleEditRequest {
+public class CoggleUpdateRequest {
 
     private Character category;
     private String title;

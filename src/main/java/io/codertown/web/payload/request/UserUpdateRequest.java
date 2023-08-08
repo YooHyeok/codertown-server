@@ -3,7 +3,7 @@ package io.codertown.web.payload.request;
 import lombok.Data;
 
 @Data
-public class UserEditRequest {
+public class UserUpdateRequest {
     private String originEmail;
     private String changeEmail;
     private String password;

@@ -190,7 +190,7 @@ public class RecruitService {
      * 맘모스 글 수정
      */
     @Transactional(readOnly = false)
-    public Boolean mammothEdit(MammothUpdateRequest request) {
+    public Boolean mammothUpdate(MammothUpdateRequest request) {
         try {
             Optional<Recruit> oRecruit = recruitRepository.findById(request.getRecruitNo().longValue());
             if (oRecruit.isPresent()) {

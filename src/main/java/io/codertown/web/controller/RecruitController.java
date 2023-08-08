@@ -77,7 +77,7 @@ public class RecruitController {
     @ApiOperation(value="코끼리&프로젝트 수정 API", notes="코끼리와 프로젝트를 동시에 수정")
     @ApiResponse(description = "수정 성공 결과",responseCode = "200")
     @PostMapping("/cokkiri-update")
-    public void cokkiriEdit(@RequestBody CokkiriUpdateRequest request) {
+    public void cokkiriUpdate(@RequestBody CokkiriUpdateRequest request) {
         System.out.println("request = " + request);
         Boolean result = recruitService.cokkiriUpdate(request);
     }
@@ -161,9 +161,9 @@ public class RecruitController {
     @ApiOperation(value="맘모스 게시글 수정 API", notes="맘모스 게시글 수정")
     @ApiResponse(description = "수정 성공 결과",responseCode = "200")
     @PostMapping(path = "/mammoth-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessBooleanResult> mammothEdit(@RequestBody MammothUpdateRequest request) {
+    public ResponseEntity<SuccessBooleanResult> mammothUpdate(@RequestBody MammothUpdateRequest request) {
         try {
-            Boolean result = recruitService.mammothEdit(request);
+            Boolean result = recruitService.mammothUpdate(request);
             return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(result));
         } catch (Exception e) {
             e.printStackTrace();

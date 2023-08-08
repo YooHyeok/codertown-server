@@ -77,7 +77,7 @@ public class CoggleService {
      * @return 성공: TRUE | 실패: FALSE
      */
     @Transactional
-    public Boolean coggleEdit(CoggleEditRequest request) throws RuntimeException {
+    public Boolean coggleUpdate(CoggleUpdateRequest request) throws RuntimeException {
         try {
             Optional<Coggle> oCoggle = coggleRepository.findById(request.getCoggleNo());
             if (oCoggle.isPresent()) {
@@ -152,7 +152,7 @@ public class CoggleService {
      * @return 성공: TRUE | 실패: FALSE
      */
     @Transactional
-    public Boolean coggleCommentEdit(CommentEditRequset request) {
+    public Boolean coggleCommentUpdate(CommentUpdateRequset request) {
         Optional<Comment> oComment = commentRepository.findById(request.getCommentNo());
         if (oComment.isPresent()) {
             try {

@@ -4,7 +4,7 @@ import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.UserProject;
 import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.payload.request.SignUpRequest;
-import io.codertown.web.payload.request.UserEditRequest;
+import io.codertown.web.payload.request.UserUpdateRequest;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -54,13 +54,13 @@ public class User extends BaseTimeStampEntity implements UserDetails {
 
     /**
      * 회원정보 수정 - 변경감지 메소드
-     * @param userEdit
+     * @param request
      */
-    public void updateUser(UserEditRequest userEdit) {
-        this.email = userEdit.getChangeEmail();
-        this.nickname = userEdit.getNickname();
-        this.profileIcon = userEdit.getProfileIcon();
-        this.password = userEdit.getPassword();
+    public void updateUser(UserUpdateRequest request) {
+        this.email = request.getChangeEmail();
+        this.nickname = request.getNickname();
+        this.profileIcon = request.getProfileIcon();
+        this.password = request.getPassword();
     }
 
     /**
@@ -80,14 +80,14 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     }
 
     /* === DTO Entity 변환 === */
-    public static User userDtoToEntity(SignUpRequest requestDto) {
-        String role = requestDto.getRole() == null ? "ROLE_USER" : requestDto.getRole(); //null이면 USER정보, 아니면 그외 권한
+    public static User userDtoToEntity(SignUpRequest request) {
+        String role = request.getRole() == null ? "ROLE_USER" : request.getRole(); //null이면 USER정보, 아니면 그외 권한
         return User.builder()
-                .email(requestDto.getEmail())
-                .nickname(requestDto.getNickname())
-                .profileIcon(requestDto.getProfileIcon())
-                .password(requestDto.getPassword())
-                .gender(requestDto.getGender())
+                .email(request.getEmail())
+                .nickname(request.getNickname())
+                .profileIcon(request.getProfileIcon())
+                .password(request.getPassword())
+                .gender(request.getGender())
                 .roles(Collections.singletonList(role))
                 .build();
     }

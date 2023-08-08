@@ -8,7 +8,7 @@ import io.codertown.web.payload.SignInResult;
 import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
-import io.codertown.web.payload.request.UserEditRequest;
+import io.codertown.web.payload.request.UserUpdateRequest;
 import io.codertown.web.payload.response.SignInResponse;
 import io.codertown.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -195,15 +195,15 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
 
     /**
      * 마이페이지 - 회원 수정 메소드
-     * @param userEdit
+     * @param request
      * @return
      */
     @Transactional(readOnly = false)
-    public UserDto userEdit(UserEditRequest userEdit) {
+    public UserDto userUpdate(UserUpdateRequest request) {
         try {
             /* 변경감지 구현 */
-            User findUser = (User)userRepository.findByEmail(userEdit.getOriginEmail());
-            findUser.updateUser(userEdit);
+            User findUser = (User)userRepository.findByEmail(request.getOriginEmail());
+            findUser.updateUser(request);
             UserDto userDto = UserDto.builder().build().userEntityToDto(findUser);
             return userDto;
         } catch (Exception e) {
