@@ -100,10 +100,11 @@ public class RecruitService {
                         .cokkiriDto(cokkiriDto)
                         .build();
             }
+            throw new RuntimeException("게시글 없음");
         } catch (Exception e) {
             e.printStackTrace();
+            throw e;
         }
-        throw new RuntimeException("게시글 없음");
     }
 
     /**

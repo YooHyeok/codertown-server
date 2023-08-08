@@ -57,12 +57,17 @@ public class CoggleService {
      * @return 성공: TRUE | 실패: FALSE
      */
     public CoggleDto coggleDetail(Long coggleNo) throws RuntimeException {
-        Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
-        if (oCoggle.isPresent()) {
-            Coggle findCoggle = oCoggle.get();
-            return CoggleDto.builder().build().changeEntityToDto(findCoggle); //코글 변환후 반환
+        try {
+            Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
+            if (oCoggle.isPresent()) {
+                Coggle findCoggle = oCoggle.get();
+                return CoggleDto.builder().build().changeEntityToDto(findCoggle); //코글 변환후 반환
+            }
+            throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
         }
-        throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
     }
 
     /**
