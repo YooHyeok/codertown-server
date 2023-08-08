@@ -55,7 +55,7 @@ public class RecruitService {
                                     ,partRepository.findById(projectPartDto.getPartNo()).get())
                     )
                     .collect(Collectors.toList());
-            collect.forEach(projectPartRepository::save);
+            collect.forEach(projectPartRepository::save); //반복 저장
             Cokkiri savedCokkiri = recruitRepository.save(cokkiri);
             return savedCokkiri.getId()!=null ? true: false;
         } catch (Exception e) {

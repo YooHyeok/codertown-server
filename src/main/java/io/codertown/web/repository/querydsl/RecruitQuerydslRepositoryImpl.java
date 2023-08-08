@@ -36,14 +36,12 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
                 (dType.equals("cokkiri") ? recruit.instanceOf(Cokkiri.class) : recruit.instanceOf(Mammoth.class));
 
         List<Recruit> content = queryFactory.selectFrom(recruit)
-//                .where(recruit.instanceOf(dTypeCondition(dType)))
                 .where(dTypeCondition)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
         JPAQuery<Recruit> countQuery = queryFactory
                 .selectFrom(recruit)
-//                .where(recruit.instanceOf(dTypeCondition(dType)))
                 .where(dTypeCondition)
                 .orderBy(recruit.id.desc());
 
@@ -54,14 +52,4 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
             }
         });
     }
-
-    /**
-     *
-     * @param dType
-     * @return
-     */
-    private static Class<? extends Recruit> dTypeCondition(String dType) {
-        return dType.equals("all") ? null : (dType.equals("cokkiri") ? Cokkiri.class : Mammoth.class);
-    }
-
 }

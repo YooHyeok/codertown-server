@@ -99,6 +99,7 @@ public class CoggleService {
     /**
      * 코글 목록 출력
      * @param page 페이지 정보
+     * @param request 쿼리 조건 컨디션
      * @return 성공: TRUE | 실패: FALSE
      */
     public CoggleListDto coggleList(Integer page, CoggleListRequest request) throws RuntimeException {

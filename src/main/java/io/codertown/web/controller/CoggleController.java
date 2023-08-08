@@ -79,6 +79,7 @@ public class CoggleController {
     /**
      * 코글 목록 출력 API
      * @param page 페이지 정보
+     * @param request 쿼리 조건 컨디션
      * @return 성공: TRUE | 실패: FALSE
      */
     @ApiOperation(value="코글 목록 출력 API", notes="코글 목록 출력에 필요한 JSON 데이터 반환")

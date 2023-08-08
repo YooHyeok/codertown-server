@@ -24,6 +24,11 @@ public class Cokkiri extends Recruit {
     @JoinColumn(name = "PROJECT_NO")
     private Project project;
 
+    /**
+     * 저장을 위한 Cokkiri 생성 메소드
+     * @param request
+     * @return
+     */
     public static Cokkiri createCokkiri(CokkiriSaveRequest request) {
         Project project = Project.builder()
                 .build().createProject(request);

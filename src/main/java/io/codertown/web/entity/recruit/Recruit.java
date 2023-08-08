@@ -36,6 +36,11 @@ public abstract class Recruit extends BaseTimeStampEntity {
     @JoinColumn(name = "USER_NO")
     private User recruitUser;
 
+    /**
+     * Recruit 변경감지 메소드 <br/>
+     * Cokkiri와 Mammoth 엔티티 변경감지시 호출된다.
+     * @param request
+     */
     public void updateRecruit(MammothUpdateRequest request) {
         this.title = request.getTitle();
         this.link = request.getLink();
