@@ -191,18 +191,21 @@ public class RecruitService {
      */
     @Transactional(readOnly = false)
     public Boolean mammothEdit(MammothUpdateRequest request) {
-        Optional<Recruit> oRecruit = recruitRepository.findById(request.getRecruitNo().longValue());
-        if (oRecruit.isPresent()) {
-            Mammoth findMammoth = (Mammoth) oRecruit.get();
-            try {
-                findMammoth.updateMammoth(request);
-                return true;
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new RuntimeException("맘모스 수정 실패"); //Controller에서 Catch
+        try {
+            Optional<Recruit> oRecruit = recruitRepository.findById(request.getRecruitNo().longValue());
+            if (oRecruit.isPresent()) {
+                Mammoth findMammoth = (Mammoth) oRecruit.get();
+                try { //2차 Try문 - 수정로직
+                    findMammoth.updateMammoth(request);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("맘모스 수정 실패"); //Controller에서 Catch
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("현재 맘모스를 찾을수 없습니다."); //Controller에서 Catch
         }
-        throw new RuntimeException("현재 맘모스를 찾을수 없습니다."); //Controller에서 Catch
+        return true; //2차 Try까지 무사히 통과하면 true반환
     }
-
 }
