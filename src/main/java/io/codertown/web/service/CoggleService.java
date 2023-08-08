@@ -44,8 +44,8 @@ public class CoggleService {
                     .status(false)
                     .user(writer)
                     .build();
-            coggleRepository.save(coggle);
-            return true;
+            Coggle savedCoggle = coggleRepository.save(coggle);
+            return savedCoggle.getCoggleNo()!=null? true:false;
         } catch (Exception e) {
             return false;
         }
@@ -126,8 +126,8 @@ public class CoggleService {
                         .build();
                 //                    System.out.println("buildComment.getParent().getChildren() = " + buildComment.getParent().getChildren());
                 if (parentComment != null) parentComment.getChildren().add(buildComment); // 현재자식을 부모의 자식리스트에 저장
-                commentRepository.save(buildComment);
-                return true;
+                Comment savedComment = commentRepository.save(buildComment);
+                return savedComment.getId()!=null? true:false;
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException("코글 댓글 작성 실패"); //Controller에서 Catch

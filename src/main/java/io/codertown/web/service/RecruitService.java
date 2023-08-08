@@ -58,8 +58,8 @@ public class RecruitService {
                     )
                     .collect(Collectors.toList());
             collect.forEach(projectPartRepository::save);
-            recruitRepository.save(cokkiri);
-            return true;
+            Cokkiri savedCokkiri = recruitRepository.save(cokkiri);
+            return savedCokkiri.getId()!=null ? true: false;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
