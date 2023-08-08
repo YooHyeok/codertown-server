@@ -32,8 +32,8 @@ public class RecruitController {
             RecruitListResponse recruitList = recruitService.recruitList(page, dType);
             return ResponseEntity.ok(recruitList);
         } catch (Exception e) {
-            return null;
-        }
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
     }
 
     /**
@@ -62,8 +62,8 @@ public class RecruitController {
             Boolean result = recruitService.cokkiriSave(request);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
     }
 
 
@@ -87,8 +87,8 @@ public class RecruitController {
             CokkiriDetailResponse cokkiriDetailResponse = recruitService.cokkiriDetail(recruitNo);
             return ResponseEntity.ok(cokkiriDetailResponse);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
     }
 
     /**
@@ -118,8 +118,9 @@ public class RecruitController {
             Boolean result = recruitService.mammothSave(request);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -133,9 +134,11 @@ public class RecruitController {
             RecruitDto mammothDto = recruitService.mammothDetail(recruitNo);
             return ResponseEntity.ok(mammothDto);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
     /**
      * 맘모스 글 수정 API
      */

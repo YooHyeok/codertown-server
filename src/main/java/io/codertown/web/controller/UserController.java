@@ -173,8 +173,8 @@ public class UserController {
             UserDto editResult = userService.userEdit(userEdit);
             return ResponseEntity.ok(editResult);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
     }
 
 }

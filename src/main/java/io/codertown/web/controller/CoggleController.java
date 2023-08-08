@@ -29,6 +29,7 @@ public class CoggleController {
             Boolean result = coggleService.coggleSave(request);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
