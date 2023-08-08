@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 public class RecruitController {
@@ -25,11 +23,11 @@ public class RecruitController {
      * @return
      */
     @GetMapping("/recruit/{dType}/{page}")
-    public ResponseEntity<List<RecruitListResponse>> cokkiriList(@PathVariable(required = false) Integer page,
+    public ResponseEntity<RecruitListResponse> cokkiriList(@PathVariable(required = false) Integer page,
                                                                  @PathVariable(required = false) String dType) {
         System.out.println("dType = " + dType);
         try {
-            List<RecruitListResponse> recruitList = recruitService.recruitList(page, dType);
+            RecruitListResponse recruitList = recruitService.recruitList(page, dType);
             return ResponseEntity.ok(recruitList);
         } catch (Exception e) {
             return null;
