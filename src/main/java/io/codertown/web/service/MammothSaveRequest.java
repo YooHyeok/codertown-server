@@ -12,9 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class MammothSaveRequest {
+    private String writer;
     @Schema(hidden = true)
     private User user;
     private String title;
+    private String link;
     private String location;
     private String content;
 

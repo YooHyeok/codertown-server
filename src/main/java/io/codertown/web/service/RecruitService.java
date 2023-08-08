@@ -153,14 +153,15 @@ public class RecruitService {
     /**
      * 맘모스 저장
      */
+    @Transactional(readOnly = false)
     public Boolean mammothSave(MammothSaveRequest request) {
         try {
             User findUser = (User) userRepository.findByEmail(request.getWriter());
             request.setUser(findUser);
             //코끼리 & 프로젝트 저장 (Cascade.All)
             Mammoth mammoth = Mammoth.builder().build().createMammoth(request);
-            recruitRepository.save(mammoth);
-            return true;
+            Mammoth savedMammoth = recruitRepository.save(mammoth);
+            return savedMammoth.getId()!=null ? true: false; // 값 존재 여부로 성공 / 실패 Boolean 반환
         } catch (Exception e) {
             e.printStackTrace();
             return false;
