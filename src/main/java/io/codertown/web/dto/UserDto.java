@@ -1,5 +1,6 @@
 package io.codertown.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.codertown.web.entity.user.User;
 import lombok.Builder;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.Data;
 @Builder
 public class UserDto {
     private String email;
+    @JsonIgnore
     private String password;
     private String nickname;
     private String profileIcon;
