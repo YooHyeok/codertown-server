@@ -5,8 +5,11 @@ import io.codertown.web.dto.CoggleListDto;
 import io.codertown.web.dto.CommentDto;
 import io.codertown.web.payload.request.*;
 import io.codertown.web.service.CoggleService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +26,9 @@ public class CoggleController {
      * @param request
      * @return 성공: TRUE | 실패: FALSE
      */
-    @PostMapping("/coggle-save")
+    @ApiOperation(value="코글 저장 API", notes="코글 게시글 저장")
+    @ApiResponse(description = "저장 성공 결과",responseCode = "200")
+    @PostMapping(path = "/coggle-save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<Boolean> coggleSave(@RequestBody CoggleSaveRequest request) {
         try {
             Boolean result = coggleService.coggleSave(request);
@@ -55,7 +60,9 @@ public class CoggleController {
      * @param request
      * @return 성공: TRUE | 실패: FALSE
      */
-    @PostMapping("/coggle-edit")
+    @ApiOperation(value="코글 수정 API", notes="코글 게시글 수정")
+    @ApiResponse(description = "수정 성공 결과",responseCode = "200")
+    @PostMapping(path = "/coggle-edit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<Boolean> coggleEdit(@RequestBody CoggleEditRequest request) {
         try {
             Boolean result = coggleService.coggleEdit(request);
@@ -87,7 +94,9 @@ public class CoggleController {
      * @param request
      * @return 성공: TRUE | 실패: FALSE
      */
-    @PostMapping("/coggle/comment-save")
+    @ApiOperation(value="코글-댓글 저장 API", notes="코글-댓글 저장")
+    @ApiResponse(description = "댓글 저장 성공 결과",responseCode = "200")
+    @PostMapping(path = "/coggle/comment-save", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<Boolean> coggleCommentSave(@RequestBody CommentSaveRequest request) {
         try {
             Boolean result = coggleService.coggleCommentSave(request);
@@ -103,7 +112,9 @@ public class CoggleController {
      * @param request
      * @return 성공: TRUE | 실패: FALSE
      */
-    @PostMapping("/coggle/comment-edit")
+    @ApiOperation(value="코글-댓글 수정 API", notes="코글-댓글 수정")
+    @ApiResponse(description = "댓글 수정 성공 결과",responseCode = "200")
+    @PostMapping(path = "/coggle/comment-edit", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<Boolean> coggleCommentEdit(@RequestBody CommentEditRequset request) {
         try {
             Boolean result = coggleService.coggleCommentEdit(request);
@@ -119,7 +130,9 @@ public class CoggleController {
      * @param request
      * @return 성공: TRUE | 실패: FALSE
      */
-    @PostMapping("/coggle/comment-delete")
+    @ApiOperation(value="코글-댓글 삭제 API", notes="코글-댓글 삭제 (블라인드 처리)")
+    @ApiResponse(description = "댓글 삭제 성공 결과",responseCode = "200")
+    @PostMapping(path = "/coggle/comment-delete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<Boolean> coggleCommentDelete(@RequestBody CoggleDeleteParamRequest request) {
         try {
             Boolean result = coggleService.coggleCommentDelete(request);
