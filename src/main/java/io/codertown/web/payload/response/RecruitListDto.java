@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class RecruitListResponse {
+public class RecruitListDto {
     private CokkiriDto cokkiriDto;
     private MammothDto mammothDto;
     private ProjectDto projectDto;
