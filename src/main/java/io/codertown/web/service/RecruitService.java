@@ -1,18 +1,16 @@
 package io.codertown.web.service;
 
 import io.codertown.support.PageInfo;
-import io.codertown.web.dto.CokkiriDto;
-import io.codertown.web.dto.ProjectDto;
-import io.codertown.web.dto.ProjectPartDto;
-import io.codertown.web.dto.UserDto;
+import io.codertown.web.dto.*;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.recruit.Cokkiri;
+import io.codertown.web.entity.recruit.Mammoth;
 import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.CokkiriSaveRequest;
 import io.codertown.web.payload.request.ProjectJoinRequest;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
-import io.codertown.web.payload.response.CokkiriListResponse;
+import io.codertown.web.payload.response.RecruitListResponse;
 import io.codertown.web.repository.PartRepository;
 import io.codertown.web.repository.ProjectPartRepository;
 import io.codertown.web.repository.RecruitRepository;
@@ -101,27 +99,66 @@ public class RecruitService {
     /**
      * Recruit 목록 출력
      */
-    public List<CokkiriListResponse> recruitList(Integer page, String dType) {
+    public List<RecruitListResponse> recruitList(Integer page, String dType) {
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, "id", "DESC");
         try {
 //            Page<Recruit> pages = recruitRepository.findByCategory(pageInfo.getPageRequest());
             Page<Recruit> pages = recruitRepository.findByType(dType, pageInfo.getPageRequest());
             pageInfo.setPageInfo(pages, pageInfo);
-
             return pages.getContent().stream().map(recruit -> {
+                System.out.println("recruit = " + recruit);
                 UserDto userDto = UserDto.userEntityToDto(recruit.getRecruitUser());
-                Cokkiri cokkiri = (Cokkiri) recruit;
-                CokkiriDto cokkiriDto = CokkiriDto.builder().build().entityToDto(cokkiri, userDto);
-                List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
-                        .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
-                        .collect(Collectors.toList());
-                ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
-                return CokkiriListResponse.builder()
-                        .recruitDto(cokkiriDto)
-                        .projectDto(projectDto)
-                        .pageInfo(pageInfo)
-                        .build();
+                RecruitListResponse build = null;
+                System.out.println("dType = " + dType);
+                if (dType.equals("cokkiri")) {
+                    System.out.println("dType = " + dType);
+                    Cokkiri cokkiri = (Cokkiri) recruit;
+                    System.out.println("cokkiri = " + cokkiri);
+                    CokkiriDto cokkiriDto = CokkiriDto.builder().build().entityToDto(cokkiri, userDto);
+                    System.out.println("cokkiriDto = " + cokkiriDto);
+                    List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
+                            .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
+                            .collect(Collectors.toList());
+                    System.out.println("projectPartList = " + projectPartList);
+                    ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject(), projectPartList);
+                    System.out.println("projectDto = " + projectDto);
+                    build =  RecruitListResponse.builder()
+                            .cokkiriDto(cokkiriDto)
+                            .projectDto(projectDto)
+                            .pageInfo(pageInfo)
+                            .build();
+                    System.out.println("cokkiribuild = " + build);
+
+                }
+                if (dType.equals("mammoth")) {
+                    Mammoth mammoth = (Mammoth) recruit;
+                    MammothDto mammothDto = MammothDto.builder().build().entityToDto(mammoth, userDto);
+                     build = RecruitListResponse.builder()
+                            .mammothDto(mammothDto)
+                            .pageInfo(pageInfo)
+                            .build();
+                    System.out.println("mammothbuild = " + build);
+
+                }
+                if (dType.equals("all")) {
+                    Cokkiri cokkiri = (Cokkiri) recruit;
+                    CokkiriDto cokkiriDto = CokkiriDto.builder().build().entityToDto(cokkiri, userDto);
+                    List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
+                            .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
+                            .collect(Collectors.toList());
+                    ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject(), projectPartList);
+                    Mammoth mammoth = (Mammoth) recruit;
+                    MammothDto mammothDto = MammothDto.builder().build().entityToDto(mammoth, userDto);
+                    build =  RecruitListResponse.builder()
+                            .mammothDto(mammothDto)
+                            .cokkiriDto(cokkiriDto)
+                            .projectDto(projectDto)
+                            .pageInfo(pageInfo)
+                            .build();
+                    System.out.println("nullbuild = " + build);
+                }
+                return build;
             }).collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,5 +1,6 @@
 package io.codertown.web.repository.querydsl;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.codertown.web.entity.recruit.Cokkiri;
@@ -31,14 +32,19 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
     public Page<Recruit> findByType(String dType, Pageable pageable) {
         QRecruit recruit = QRecruit.recruit;
 
+        BooleanExpression dTypeCondition = dType.equals("all") ? null :
+                (dType.equals("cokkiri") ? recruit.instanceOf(Cokkiri.class) : recruit.instanceOf(Mammoth.class));
+
         List<Recruit> content = queryFactory.selectFrom(recruit)
-                .where(recruit.instanceOf(dTypeCondition(dType)))
+//                .where(recruit.instanceOf(dTypeCondition(dType)))
+                .where(dTypeCondition)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
         JPAQuery<Recruit> countQuery = queryFactory
                 .selectFrom(recruit)
-                .where(recruit.instanceOf(dTypeCondition(dType)))
+//                .where(recruit.instanceOf(dTypeCondition(dType)))
+                .where(dTypeCondition)
                 .orderBy(recruit.id.desc());
 
         return PageableExecutionUtils.getPage(content, pageable, new LongSupplier(){
@@ -55,7 +61,7 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
      * @return
      */
     private static Class<? extends Recruit> dTypeCondition(String dType) {
-        return dType.isEmpty() ? null : (dType.equals("cokkiri") ? Cokkiri.class : Mammoth.class);
+        return dType.equals("all") ? null : (dType.equals("cokkiri") ? Cokkiri.class : Mammoth.class);
     }
 
 }
