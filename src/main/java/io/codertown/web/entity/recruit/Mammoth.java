@@ -35,4 +35,9 @@ public class Mammoth extends Recruit {
                 .build();
         return build;
     }
+
+    public void updateMammoth(MammothEditRequest request) {
+        updateRecruit(request);
+        this.location = request.getLocation();
+    }
 }
