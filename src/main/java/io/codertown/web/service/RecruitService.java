@@ -172,6 +172,22 @@ public class RecruitService {
     /**
      * 맘모스 상세보기
      */
+    public RecruitDto mammothDetail(Long recruitNo) {
+        try{
+            Optional<Recruit> oRecruit = recruitRepository.findById(recruitNo);
+            if (oRecruit.isPresent()) {
+                Mammoth mammoth = (Mammoth) oRecruit.get();
+                UserDto userDto = UserDto.userEntityToDto(mammoth.getRecruitUser());
+                // 코끼리 조회 정보
+                return RecruitDto.builder().build().mammothEntityToDto(mammoth, userDto, "mammoth");
+            }
+            throw new RuntimeException("게시글 없음");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
 
     /**
      * 맘모스 글 수정

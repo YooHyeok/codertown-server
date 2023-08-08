@@ -1,11 +1,12 @@
 package io.codertown.web.controller;
 
+import io.codertown.web.dto.RecruitDto;
 import io.codertown.web.payload.request.CokkiriSaveRequest;
 import io.codertown.web.payload.request.CokkiriUpdateRequest;
+import io.codertown.web.payload.request.MammothSaveRequest;
 import io.codertown.web.payload.request.ProjectJoinRequest;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
 import io.codertown.web.payload.response.RecruitListResponse;
-import io.codertown.web.payload.request.MammothSaveRequest;
 import io.codertown.web.service.RecruitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -123,8 +124,18 @@ public class RecruitController {
 
     /**
      * 맘모스 상세보기 API
+     * @param recruitNo
+     * @return
      */
-
+    @GetMapping("/mammoth-detail/{recruitNo}")
+    public ResponseEntity<RecruitDto> mammothDetail(@PathVariable(required = true) Long recruitNo) {
+        try {
+            RecruitDto mammothDto = recruitService.mammothDetail(recruitNo);
+            return ResponseEntity.ok(mammothDto);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
     /**
      * 맘모스 글 수정 API
      */
