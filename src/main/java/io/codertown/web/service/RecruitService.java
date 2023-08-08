@@ -2,7 +2,6 @@ package io.codertown.web.service;
 
 import io.codertown.support.PageInfo;
 import io.codertown.web.dto.*;
-import io.codertown.web.entity.Coggle;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.recruit.Cokkiri;
 import io.codertown.web.entity.recruit.Mammoth;
@@ -190,8 +189,9 @@ public class RecruitService {
     /**
      * 맘모스 글 수정
      */
-    public Boolean mammothEdit(MammothEditRequest request) {
-        Optional<Recruit> oRecruit = recruitRepository.findById(request.getRcruitNo());
+    @Transactional(readOnly = false)
+    public Boolean mammothEdit(MammothUpdateRequest request) {
+        Optional<Recruit> oRecruit = recruitRepository.findById(request.getRecruitNo().longValue());
         if (oRecruit.isPresent()) {
             Mammoth findMammoth = (Mammoth) oRecruit.get();
             try {

@@ -14,7 +14,8 @@ public class CoggleDto {
     private String title;
     private String content;
     private Boolean status;
-    private String writer;
+//    private String writer;
+    private UserDto writer;
 
     private LocalDateTime firstRegDate;
     private LocalDateTime lastModDate;
@@ -28,7 +29,8 @@ public class CoggleDto {
         return CoggleDto.builder()
                 .coggleNo(findCoggle.getCoggleNo())
                 .category(findCoggle.getCategory())
-                .writer(findCoggle.getUser().getEmail())
+//                .writer(findCoggle.getUser().getEmail())
+                .writer(UserDto.userEntityToDto(findCoggle.getUser()))
                 .title(findCoggle.getTitle())
                 .content(findCoggle.getContent())
                 .status(findCoggle.getStatus())

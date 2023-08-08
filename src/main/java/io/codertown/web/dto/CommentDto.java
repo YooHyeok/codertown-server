@@ -19,7 +19,9 @@ public class CommentDto {
     private Long coggleNo;
     private Long parentNo;
     private Long commentNo;
-    private String writer;
+//    private String writer;
+    private UserDto writer;
+
     private String content;
     private Boolean status;
 
@@ -30,7 +32,7 @@ public class CommentDto {
                 .coggleNo(comment.getCoggle().getCoggleNo())
                 .parentNo(comment.getParent() == null ? 0 : comment.getParent().getId())
                 .commentNo(comment.getId())
-                .writer(comment.getUser().getEmail())
+                .writer(UserDto.userEntityToDto(comment.getUser()))
                 .content(comment.getContent().isEmpty() ? null : comment.getContent())
                 .status(comment.getStatus())
                 .children(getChildrenMapToList(comment))

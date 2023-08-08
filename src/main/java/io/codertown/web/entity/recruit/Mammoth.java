@@ -1,6 +1,7 @@
 package io.codertown.web.entity.recruit;
 
 import io.codertown.web.payload.request.MammothSaveRequest;
+import io.codertown.web.payload.request.MammothUpdateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,7 @@ public class Mammoth extends Recruit {
         return build;
     }
 
-    public void updateMammoth(MammothEditRequest request) {
+    public void updateMammoth(MammothUpdateRequest request) {
         updateRecruit(request);
         this.location = request.getLocation();
     }

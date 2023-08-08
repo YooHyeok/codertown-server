@@ -141,8 +141,8 @@ public class RecruitController {
      * @param request
      * @return 성공: TRUE | 실패: FALSE
      */
-    @PostMapping("/coggle-edit")
-    public ResponseEntity<Boolean> mammothEdit(@RequestBody MammothEditRequest request) {
+    @PostMapping("/mammoth-edit")
+    public ResponseEntity<Boolean> mammothEdit(@RequestBody MammothUpdateRequest request) {
         try {
             Boolean result = recruitService.mammothEdit(request);
             return ResponseEntity.ok(result);

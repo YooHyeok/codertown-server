@@ -2,6 +2,7 @@ package io.codertown.web.entity.recruit;
 
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.user.User;
+import io.codertown.web.payload.request.MammothUpdateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,7 +36,7 @@ public abstract class Recruit extends BaseTimeStampEntity {
     @JoinColumn(name = "USER_NO")
     private User recruitUser;
 
-    public void updateRecruit(MammothEditRequest request) {
+    public void updateRecruit(MammothUpdateRequest request) {
         this.title = request.getTitle();
         this.link = request.getLink();
         this.content = request.getContent();
