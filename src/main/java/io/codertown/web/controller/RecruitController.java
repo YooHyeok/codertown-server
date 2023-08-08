@@ -64,6 +64,16 @@ public class RecruitController {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
+
+    /**
+     * 코끼리 & 프로젝트 수정(삭제) API
+     */
+    @PostMapping("/cokkiri-update")
+    public void cokkiriEdit(@RequestBody CokkiriUpdateRequest request) {
+        System.out.println("request = " + request);
+        Boolean result = recruitService.cokkiriUpdate(request);
+    }
+
     /**
      * 코끼리 & 프로젝트 상세보기 API
      * @param recruitNo
@@ -87,15 +97,6 @@ public class RecruitController {
     @PostMapping("/cokkiri/join-request")
     public void projectJoinRequest(@RequestBody ProjectJoinRequest request) {
         recruitService.projectJoinRequest(request);
-    }
-
-
-    /**
-     * 코끼리 & 프로젝트 수정(삭제) API
-     */
-    @PostMapping("/cokkiri/edit-delete")
-    public void cokkiriEdit(@RequestBody CokkiriUpdateRequest request) {
-        System.out.println("request = " + request);
     }
 
     /**

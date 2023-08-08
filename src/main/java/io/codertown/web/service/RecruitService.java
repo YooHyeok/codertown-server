@@ -8,6 +8,7 @@ import io.codertown.web.entity.recruit.Mammoth;
 import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.CokkiriSaveRequest;
+import io.codertown.web.payload.request.CokkiriUpdateRequest;
 import io.codertown.web.payload.request.ProjectJoinRequest;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
 import io.codertown.web.payload.response.RecruitListResponse;
@@ -63,9 +64,17 @@ public class RecruitService {
             e.printStackTrace();
             return false;
         }
-
     }
 
+    /**
+     * 코끼리 & 프로젝트 수정
+     * @param request
+     * @return Boolean
+     */
+    public Boolean cokkiriUpdate(CokkiriUpdateRequest request) {
+        return null;
+    }
+    
     /**
      * 코끼리 & 프로젝트 상세보기
      * @param recruitNo
