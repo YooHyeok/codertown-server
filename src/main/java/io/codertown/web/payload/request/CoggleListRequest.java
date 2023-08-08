@@ -5,5 +5,6 @@ import lombok.Data;
 @Data
 public class CoggleListRequest {
     private Character category;
-    private String writer;
+    private String writer; //검색 조건 컨디션
+    private String title; //검색 조건 컨디션
 }
