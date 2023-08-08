@@ -149,10 +149,23 @@ public class RecruitService {
     public void projectJoinRequest(ProjectJoinRequest request) {
     }
 
+
     /**
      * 맘모스 저장
      */
-
+    public Boolean mammothSave(MammothSaveRequest request) {
+        try {
+            User findUser = (User) userRepository.findByEmail(request.getWriter());
+            request.setUser(findUser);
+            //코끼리 & 프로젝트 저장 (Cascade.All)
+            Mammoth mammoth = Mammoth.builder().build().createMammoth(request);
+            recruitRepository.save(mammoth);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     /**
      * 맘모스 상세보기

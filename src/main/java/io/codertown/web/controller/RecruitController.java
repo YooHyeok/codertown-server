@@ -100,9 +100,25 @@ public class RecruitController {
     }
 
     /**
-     * 맘모스 저장 API
+     * 맘모스 저장 API <br/>
+     * @param request : JSON 데이터 <br/>
+     * { <br/>
+     *     "userId": String, <br/>
+     *     "coggleTitle": String, <br/>
+     *     "location": String, <br/>
+     *     "content" : String(text) <br/>
+     * }
+     * @return
      */
-
+    @PostMapping("/mammoth-save")
+    public ResponseEntity<Boolean> mammothSave(@RequestBody MammothSaveRequest request) {
+        try {
+            Boolean result = recruitService.mammothSave(request);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
 
     /**
      * 맘모스 상세보기 API
