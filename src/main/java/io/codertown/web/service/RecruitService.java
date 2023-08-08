@@ -2,15 +2,13 @@ package io.codertown.web.service;
 
 import io.codertown.support.PageInfo;
 import io.codertown.web.dto.*;
+import io.codertown.web.entity.Coggle;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.recruit.Cokkiri;
 import io.codertown.web.entity.recruit.Mammoth;
 import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.entity.user.User;
-import io.codertown.web.payload.request.CokkiriSaveRequest;
-import io.codertown.web.payload.request.CokkiriUpdateRequest;
-import io.codertown.web.payload.request.MammothSaveRequest;
-import io.codertown.web.payload.request.ProjectJoinRequest;
+import io.codertown.web.payload.request.*;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
 import io.codertown.web.payload.response.RecruitListResponse;
 import io.codertown.web.repository.PartRepository;
@@ -189,8 +187,22 @@ public class RecruitService {
         }
     }
 
-
     /**
      * 맘모스 글 수정
      */
+    public Boolean mammothEdit(MammothEditRequest request) {
+        Optional<Recruit> oRecruit = recruitRepository.findById(request.getRcruitNo());
+        if (oRecruit.isPresent()) {
+            Mammoth findMammoth = (Mammoth) oRecruit.get();
+            try {
+                findMammoth.updateMammoth(request);
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("맘모스 수정 실패"); //Controller에서 Catch
+            }
+        }
+        throw new RuntimeException("현재 맘모스를 찾을수 없습니다."); //Controller에서 Catch
+    }
+
 }

@@ -1,10 +1,7 @@
 package io.codertown.web.controller;
 
 import io.codertown.web.dto.RecruitDto;
-import io.codertown.web.payload.request.CokkiriSaveRequest;
-import io.codertown.web.payload.request.CokkiriUpdateRequest;
-import io.codertown.web.payload.request.MammothSaveRequest;
-import io.codertown.web.payload.request.ProjectJoinRequest;
+import io.codertown.web.payload.request.*;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
 import io.codertown.web.payload.response.RecruitListResponse;
 import io.codertown.web.service.RecruitService;
@@ -141,5 +138,17 @@ public class RecruitController {
 
     /**
      * 맘모스 글 수정 API
+     * @param request
+     * @return 성공: TRUE | 실패: FALSE
      */
+    @PostMapping("/coggle-edit")
+    public ResponseEntity<Boolean> mammothEdit(@RequestBody MammothEditRequest request) {
+        try {
+            Boolean result = recruitService.mammothEdit(request);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
