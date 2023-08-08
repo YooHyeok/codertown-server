@@ -5,6 +5,7 @@ import io.codertown.web.payload.request.CokkiriUpdateRequest;
 import io.codertown.web.payload.request.ProjectJoinRequest;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
 import io.codertown.web.payload.response.RecruitListResponse;
+import io.codertown.web.service.MammothSaveRequest;
 import io.codertown.web.service.RecruitService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
