@@ -85,19 +85,25 @@ public class RecruitService {
                 // 코끼리&프로젝트 수정
                 Cokkiri cokkiri = (Cokkiri)oRecruit.get();
                 cokkiri.updateCokkiri(request.getCokkiriUpdate());
-                System.out.println("cokkiri = " + cokkiri);
                 // 프로젝트 파트 수정
                 // UPDATE 다중 수정
-                request.getProjectPartUpdate().getUpdate().forEach(projectPartUpdateDto -> {
-                    ProjectPart projectPart = projectPartRepository.findById(projectPartUpdateDto.getPartNo()).get();
-                    System.out.println("projectPart = " + projectPart);
-                });
-                // DELETE 다중 삭제
-                request.getProjectPartUpdate().getDelete().forEach(projectPartUpdateDto -> {
-                });
-                // INSERT 다중 추가
-                request.getProjectPartUpdate().getInsert().forEach(projectPartUpdateDto -> {
-                });
+                if (request.getProjectPartUpdate().getUpdate().size() > 0) {
+                    request.getProjectPartUpdate().getUpdate().forEach(projectPartUpdateDto -> {
+                        ProjectPart projectPart = projectPartRepository.findById(projectPartUpdateDto.getProjectPartNo()).get();
+                        projectPart.updateProjectPart(projectPartUpdateDto.getRecruitCount());
+                        System.out.println("projectPart = " + projectPart);
+                    });
+                }
+                if (request.getProjectPartUpdate().getDelete().size() > 0) {
+                    // DELETE 다중 삭제
+                    request.getProjectPartUpdate().getDelete().forEach(projectPartUpdateDto -> {
+                    });
+                }
+                if (request.getProjectPartUpdate().getInsert().size() > 0) {
+                    // INSERT 다중 추가
+                    request.getProjectPartUpdate().getInsert().forEach(projectPartUpdateDto -> {
+                    });
+                }
             } else throw new RuntimeException("코끼리 게시글이 존재하지 않습니다.");
 
         } catch (Exception e) {
