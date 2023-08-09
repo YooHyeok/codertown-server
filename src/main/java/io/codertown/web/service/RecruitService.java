@@ -86,12 +86,11 @@ public class RecruitService {
                 Cokkiri cokkiri = (Cokkiri)oRecruit.get();
                 cokkiri.updateCokkiri(request.getCokkiriUpdate());
                 // 프로젝트 파트 수정
-                // UPDATE 다중 수정
                 if (request.getProjectPartUpdate().getUpdate().size() > 0) {
+                    // UPDATE 다중 수정
                     request.getProjectPartUpdate().getUpdate().forEach(projectPartUpdateDto -> {
                         ProjectPart projectPart = projectPartRepository.findById(projectPartUpdateDto.getProjectPartNo()).get();
                         projectPart.updateProjectPart(projectPartUpdateDto.getRecruitCount());
-                        System.out.println("projectPart = " + projectPart);
                     });
                 }
                 if (request.getProjectPartUpdate().getDelete().size() > 0) {
