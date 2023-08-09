@@ -78,13 +78,32 @@ public class RecruitService {
      * @return Boolean
      */
     public Boolean cokkiriUpdate(CokkiriUpdateRequest request) {
-        CokkiriUpdateDto cokkiriUpdate = request.getCokkiriUpdate();
-        for (ProjectPartUpdateDto projectPartUpdateDto : request.getProjectPartUpdate().getUpdate()) {
-            ProjectPart projectPart = projectPartRepository.findById(projectPartUpdateDto.getPartNo()).get();
-            System.out.println("projectPart = " + projectPart);
-        }
 
-        return null;
+        try {
+            Optional<Recruit> oRecruit = recruitRepository.findById(request.getCokkiriUpdate().getRecruitNo());
+            if (oRecruit.isPresent()) {
+                // 코끼리&프로젝트 수정
+                Cokkiri cokkiri = (Cokkiri)oRecruit.get();
+                cokkiri.updateCokkiri(request.getCokkiriUpdate());
+                // 프로젝트 파트 수정
+                // UPDATE 다중 수정
+                request.getProjectPartUpdate().getUpdate().forEach(projectPartUpdateDto -> {
+                    ProjectPart projectPart = projectPartRepository.findById(projectPartUpdateDto.getPartNo()).get();
+                    System.out.println("projectPart = " + projectPart);
+                });
+                // DELETE 다중 삭제
+                request.getProjectPartUpdate().getDelete().forEach(projectPartUpdateDto -> {
+                });
+                // INSERT 다중 추가
+                request.getProjectPartUpdate().getInsert().forEach(projectPartUpdateDto -> {
+                });
+            } else throw new RuntimeException("코끼리 게시글이 존재하지 않습니다.");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
     
     /**
