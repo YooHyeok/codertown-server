@@ -77,6 +77,7 @@ public class RecruitService {
      * @param request
      * @return Boolean
      */
+    @Transactional(readOnly = false)
     public Boolean cokkiriUpdate(CokkiriUpdateRequest request) {
 
         try {
@@ -96,6 +97,9 @@ public class RecruitService {
                 if (request.getProjectPartUpdate().getDelete().size() > 0) {
                     // DELETE 다중 삭제
                     request.getProjectPartUpdate().getDelete().forEach(projectPartUpdateDto -> {
+                        ProjectPart projectPart = projectPartRepository.findById(projectPartUpdateDto.getProjectPartNo()).get();
+                        // caseCadeAll에 의한 변경감지 - Cokkiri의 Project의 List<ProjectPart> projectParts 에서 제거
+                        cokkiri.getProject().getProjectParts().remove(projectPart);
                     });
                 }
                 if (request.getProjectPartUpdate().getInsert().size() > 0) {
