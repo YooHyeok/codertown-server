@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,30 +36,35 @@ public class RecruitService {
 
     /**
      * 코끼리 & 프로젝트 저장
+     * cascade = CascadeType.ALL 에 의해 <br/>
+     * cokkiri가 영속화 되는 시점(flush되어 실제 저장되기직전)에 <br/>
+     * Project, ProjectPart, Project의 List<projectParts>리스트에 <br/>
+     * 값이 주입된 상태로 영속성 컨텍스트에 저장된다. <br/>
+     * -> 조회시 재 주입된다. -> 영속성 컨텍스트에서 리스트에 값이 추가된 정보까지 관리하기때문. <br/>
      * @param request
      * @return Boolean
      */
     @Transactional
     public Boolean cokkiriSave(CokkiriSaveRequest request) {
-
         try {
             User findUser = (User) userRepository.findByEmail(request.getWriter());
             request.setUser(findUser);
-            //코끼리 & 프로젝트 저장 (Cascade.All)
+            //코끼리 & 프로젝트 영속화 주입 (Cascade.All) - createCokkiri()
             Cokkiri cokkiri = Cokkiri.builder().build().createCokkiri(request);
-
-            // 프로젝트 파트 저장 - 추후 양방향 연관관계에 의해서 저장될수 있도록 수정해야한다.
-            List<ProjectPart> collect = request.getProjectParts().stream()
-                    .map(projectPartDto -> ProjectPart.builder().build()
-                            .createProjectPart(
-                                    cokkiri.getProject() // 이곳에서 ProjectPart에 Project가 양방향으로 주입된다.
-                                    , projectPartDto.getRecruitCount()
-                                    ,partRepository.findById(projectPartDto.getPartNo()).get()
-                            )
-                    )
-                    .collect(Collectors.toList());
-            collect.forEach(projectPartRepository::save); //반복 저장
-            Cokkiri savedCokkiri = recruitRepository.save(cokkiri);
+            // 프로젝트 파트 영속화 주입 - 추후 양방향 연관관계에 의해서 저장될수 있도록 수정해야한다.
+            List<ProjectPart> projectParts = new ArrayList<>();
+            for (ProjectPartDto projectPartDto : request.getProjectParts()) {
+                ProjectPart part = ProjectPart.builder().build()
+                        .createProjectPart(
+                                cokkiri.getProject() // 이곳에서 ProjectPart에 Project가 양방향으로 주입된다.
+                                , projectPartDto.getRecruitCount()
+                                , partRepository.findById(projectPartDto.getPartNo()).get()
+                        );
+                projectParts.add(part);
+            }
+            projectParts.forEach(projectPart -> cokkiri.getProject().getProjectParts().add(projectPart));
+//            collect.forEach(projectPartRepository::save); //반복 저장
+            Cokkiri savedCokkiri = recruitRepository.save(cokkiri); // 영속되어있는 Project, ProjectPart 함께 저장
             return savedCokkiri.getId()!=null ? true: false;
         } catch (Exception e) {
             e.printStackTrace();
