@@ -47,7 +47,7 @@ public class CoggleController {
      */
     @ApiOperation(value="코글 상세페이지 API", notes="코글 상세페이지 출력에 필요한 JSON 데이터 반환")
     @ApiResponse(description = "코글 상세페이지 JSON 데이터",responseCode = "200")
-    @GetMapping(path = "/coggle/detail/{coggleNo}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/coggle-detail/{coggleNo}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CoggleDto> coggleDetail(@PathVariable Long coggleNo) {
         try {
             CoggleDto result = coggleService.coggleDetail(coggleNo);
