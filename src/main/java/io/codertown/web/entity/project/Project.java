@@ -25,9 +25,9 @@ public class Project {
     private String projectTitle; //프로젝트명
     private String teamName; //프로젝트팀명
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private TotalStatusEnum projectStatus; //프로젝트 전체 상태 - 모집(RECURUIT), 진행(RUN), 무산(FAIL), 종료(CLOSED)
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private PersonalStatusEnum personalStatus; //프로젝트 개인 상태 - 대기(WAIT), 진행(RUN), 하차(QUIT), 종료(CLOSED)
 
     @OneToMany(mappedBy = "project")
