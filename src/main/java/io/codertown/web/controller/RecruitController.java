@@ -27,7 +27,7 @@ public class RecruitController {
      */
     @ApiOperation(value="코끼리 목록 출력 API", notes="코끼리 목록 출력에 필요한 JSON 데이터 반환")
     @ApiResponse(description = "코끼리 목록 리스트 JSON 데이터",responseCode = "200")
-    @GetMapping(path = "/recruit/{dType}/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/recruit/{page}/{dType}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RecruitListResponse> cokkiriList(@PathVariable(required = false) Integer page,
                                                            @PathVariable(required = false) String dType) {
         try {
@@ -71,13 +71,14 @@ public class RecruitController {
         }
     }
 
-
     /**
      * 코끼리 & 프로젝트 수정(삭제) API
+     * @param request
+     * @return
      */
     @ApiOperation(value="코끼리&프로젝트 수정 API", notes="코끼리와 프로젝트를 동시에 수정")
     @ApiResponse(description = "수정 성공 결과",responseCode = "200")
-    @PostMapping("/cokkiri-update")
+    @PostMapping(path = "/cokkiri-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessBooleanResult> cokkiriUpdate(@RequestBody CokkiriUpdateRequest request) {
         try {
             Boolean result = recruitService.cokkiriUpdate(request);
