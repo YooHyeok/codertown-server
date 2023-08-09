@@ -37,7 +37,7 @@ public class Project {
     private LocalDateTime expectedEndDate; // 종료 예정 일자
     private LocalDateTime lastClosingDate; // 최종 종료 일자 (목표)
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectPart> projectParts = new ArrayList<>();
 
     @OneToOne(mappedBy = "project", orphanRemoval = true)

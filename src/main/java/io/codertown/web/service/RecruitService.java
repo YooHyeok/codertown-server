@@ -73,7 +73,9 @@ public class RecruitService {
     }
 
     /**
-     * 코끼리 & 프로젝트 수정
+     * 코끼리 & 프로젝트 수정 <br/>
+     * 다중 수정은 변경감지에 의해 UPDATE 쿼리 호출 <br/>
+     * 다중 삭제는 영속성 정의에 의해 DELETE 쿼리 호출
      * @param request
      * @return Boolean
      */
@@ -91,14 +93,18 @@ public class RecruitService {
                     // UPDATE 다중 수정
                     request.getProjectPartUpdate().getUpdate().forEach(projectPartUpdateDto -> {
                         ProjectPart projectPart = projectPartRepository.findById(projectPartUpdateDto.getProjectPartNo()).get();
-                        projectPart.updateProjectPart(projectPartUpdateDto.getRecruitCount());
+                        projectPart.updateProjectPart(projectPartUpdateDto.getRecruitCount()); //Update - 변경 감지
                     });
                 }
                 if (request.getProjectPartUpdate().getDelete().size() > 0) {
                     // DELETE 다중 삭제
                     request.getProjectPartUpdate().getDelete().forEach(projectPartUpdateDto -> {
                         ProjectPart projectPart = projectPartRepository.findById(projectPartUpdateDto.getProjectPartNo()).get();
-                        // caseCadeAll에 의한 변경감지 - Cokkiri의 Project의 List<ProjectPart> projectParts 에서 제거
+                        /**
+                         * Delete - 영속성 정의
+                         * 1. 부모 Project의 자식리스트 List<ProjectPart> projectParts 에서 자식요소 제거
+                         * 2. orphanRemoval = true에 의해 부모 리스트로부터 삭제된 projectPart 고아객체를 제거한다
+                         */
                         cokkiri.getProject().getProjectParts().remove(projectPart);
                     });
                 }
@@ -108,7 +114,6 @@ public class RecruitService {
                     });
                 }
             } else throw new RuntimeException("코끼리 게시글이 존재하지 않습니다.");
-
         } catch (Exception e) {
             e.printStackTrace();
             return false;
