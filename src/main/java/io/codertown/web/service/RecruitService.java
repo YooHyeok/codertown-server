@@ -85,6 +85,7 @@ public class RecruitService {
                 // 코끼리&프로젝트 수정
                 Cokkiri cokkiri = (Cokkiri)oRecruit.get();
                 cokkiri.updateCokkiri(request.getCokkiriUpdate());
+                System.out.println("cokkiri = " + cokkiri);
                 // 프로젝트 파트 수정
                 // UPDATE 다중 수정
                 request.getProjectPartUpdate().getUpdate().forEach(projectPartUpdateDto -> {

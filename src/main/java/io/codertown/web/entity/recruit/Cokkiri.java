@@ -1,5 +1,6 @@
 package io.codertown.web.entity.recruit;
 
+import io.codertown.web.dto.CokkiriUpdateDto;
 import io.codertown.web.entity.project.Project;
 import io.codertown.web.payload.request.CokkiriSaveRequest;
 import lombok.Getter;
@@ -40,5 +41,13 @@ public class Cokkiri extends Recruit {
                 .project(project)
                 .build();
         return build;
+    }
+
+    /**
+     * 변경감지 수정을 위한 Cokkiri 초기화 메소드
+     * @param cokkiriUpdate
+     */
+    public void updateCokkiri(CokkiriUpdateDto cokkiriUpdate) {
+        this.objectWeek = cokkiriUpdate.getObjectWeek();
     }
 }
