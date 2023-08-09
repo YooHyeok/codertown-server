@@ -53,12 +53,12 @@ public class RecruitService {
             Cokkiri cokkiri = Cokkiri.builder().build().createCokkiri(request);
             // 프로젝트 파트 영속화 주입 - 추후 양방향 연관관계에 의해서 저장될수 있도록 수정해야한다.
             List<ProjectPart> projectParts = new ArrayList<>();
-            for (ProjectPartDto projectPartDto : request.getProjectParts()) {
+            for (ProjectPartSaveDto projectPartSaveDto : request.getProjectParts()) {
                 ProjectPart part = ProjectPart.builder().build()
                         .createProjectPart(
                                 cokkiri.getProject() // 이곳에서 ProjectPart에 Project가 양방향으로 주입된다.
-                                , projectPartDto.getRecruitCount()
-                                , partRepository.findById(projectPartDto.getPartNo()).get()
+                                , projectPartSaveDto.getRecruitCount()
+                                , partRepository.findById(projectPartSaveDto.getPartNo()).get()
                         );
                 projectParts.add(part);
             }
@@ -78,6 +78,12 @@ public class RecruitService {
      * @return Boolean
      */
     public Boolean cokkiriUpdate(CokkiriUpdateRequest request) {
+        CokkiriUpdateDto cokkiriUpdate = request.getCokkiriUpdate();
+        for (ProjectPartUpdateDto projectPartUpdateDto : request.getProjectPartUpdate().getUpdate()) {
+            ProjectPart projectPart = projectPartRepository.findById(projectPartUpdateDto.getPartNo()).get();
+            System.out.println("projectPart = " + projectPart);
+        }
+
         return null;
     }
     
@@ -93,8 +99,8 @@ public class RecruitService {
                 Cokkiri cokkiri = (Cokkiri)oRecruit.get();
                 UserDto userDto = UserDto.userEntityToDto(cokkiri.getRecruitUser());
                 // 프로젝트별 파트 조회 정보
-                List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
-                        .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
+                List<ProjectPartSaveDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
+                        .map(projectPart -> ProjectPartSaveDto.builder().build().entityToDto(projectPart))
                         .collect(Collectors.toList());
                 // 프로젝트 조회 정보
                 ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
@@ -128,8 +134,8 @@ public class RecruitService {
                 if (recruit instanceof Cokkiri) {
                     Cokkiri cokkiri = (Cokkiri) recruit;
                     recruitDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, "cokkiri");
-                    List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
-                            .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
+                    List<ProjectPartSaveDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
+                            .map(projectPart -> ProjectPartSaveDto.builder().build().entityToDto(projectPart))
                             .collect(Collectors.toList());
                     projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject(), projectPartList);
                 }

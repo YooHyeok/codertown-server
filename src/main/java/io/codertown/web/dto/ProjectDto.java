@@ -14,9 +14,9 @@ public class ProjectDto {
     private String teamName; //프로젝트팀명
     private String projectStatus; //프로젝트 진행 상태
 
-    private List<ProjectPartDto> projectParts; // 파트
+    private List<ProjectPartSaveDto> projectParts; // 파트
 
-    public static ProjectDto entityToDto(Project project, List<ProjectPartDto> projectParts) {
+    public static ProjectDto entityToDto(Project project, List<ProjectPartSaveDto> projectParts) {
         return ProjectDto.builder()
                 .subject(project.getSubject()) // 주제
                 .projectTitle(project.getProjectTitle()) // 프로젝트 제목
