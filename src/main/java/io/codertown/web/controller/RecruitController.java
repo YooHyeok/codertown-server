@@ -67,7 +67,8 @@ public class RecruitController {
             return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(result));
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 
@@ -77,9 +78,14 @@ public class RecruitController {
     @ApiOperation(value="코끼리&프로젝트 수정 API", notes="코끼리와 프로젝트를 동시에 수정")
     @ApiResponse(description = "수정 성공 결과",responseCode = "200")
     @PostMapping("/cokkiri-update")
-    public void cokkiriUpdate(@RequestBody CokkiriUpdateRequest request) {
-        System.out.println("request = " + request);
-        Boolean result = recruitService.cokkiriUpdate(request);
+    public ResponseEntity<SuccessBooleanResult> cokkiriUpdate(@RequestBody CokkiriUpdateRequest request) {
+        try {
+            Boolean result = recruitService.cokkiriUpdate(request);
+            return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(result));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
