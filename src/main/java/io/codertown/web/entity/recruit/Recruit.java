@@ -2,7 +2,6 @@ package io.codertown.web.entity.recruit;
 
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.user.User;
-import io.codertown.web.payload.request.MammothUpdateRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -41,9 +40,9 @@ public abstract class Recruit extends BaseTimeStampEntity {
      * Cokkiri와 Mammoth 엔티티 변경감지시 호출된다.
      * @param request
      */
-    public void updateRecruit(MammothUpdateRequest request) {
-        this.title = request.getTitle();
-        this.link = request.getLink();
-        this.content = request.getContent();
+    public void updateRecruit(String tittle, String link, String Content) {
+        this.title = tittle;
+        this.link = link;
+        this.content = Content;
     }
 }

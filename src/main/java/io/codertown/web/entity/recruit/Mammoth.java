@@ -47,7 +47,7 @@ public class Mammoth extends Recruit {
      * @param request
      */
     public void updateMammoth(MammothUpdateRequest request) {
-        updateRecruit(request);
+        updateRecruit(request.getTitle(), request.getLink(), request.getContent());
         this.location = request.getLocation();
     }
 }

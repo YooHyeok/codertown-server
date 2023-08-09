@@ -48,6 +48,7 @@ public class Cokkiri extends Recruit {
      * @param cokkiriUpdate
      */
     public void updateCokkiri(CokkiriUpdateDto cokkiriUpdate) {
+        updateRecruit(cokkiriUpdate.getCokkiriTitle(), cokkiriUpdate.getLink(), cokkiriUpdate.getContent());
         this.objectWeek = cokkiriUpdate.getObjectWeek();
     }
 }
