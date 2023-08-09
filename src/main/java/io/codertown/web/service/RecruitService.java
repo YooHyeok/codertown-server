@@ -2,6 +2,7 @@ package io.codertown.web.service;
 
 import io.codertown.support.PageInfo;
 import io.codertown.web.dto.*;
+import io.codertown.web.entity.Part;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.recruit.Cokkiri;
 import io.codertown.web.entity.recruit.Mammoth;
@@ -19,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,16 +52,12 @@ public class RecruitService {
             //코끼리 & 프로젝트 영속화 주입 (Cascade.All) - createCokkiri()
             Cokkiri cokkiri = Cokkiri.builder().build().createCokkiri(request);
             // 프로젝트 파트 영속화 주입 - 추후 양방향 연관관계에 의해서 저장될수 있도록 수정해야한다.
-            List<ProjectPart> projectParts = new ArrayList<>();
-            for (ProjectPartSaveDto projectPartSaveDto : request.getProjectParts()) {
-                ProjectPart part = ProjectPart.builder().build()
-                        .createProjectPart(
-                                cokkiri.getProject() // 이곳에서 ProjectPart에 Project가 양방향으로 주입된다.
-                                , projectPartSaveDto.getRecruitCount()
-                                , partRepository.findById(projectPartSaveDto.getPartNo()).get()
-                        );
-                projectParts.add(part);
-            }
+            List<ProjectPart> projectParts = request.getProjectParts().stream().map(projectPartSaveDto -> ProjectPart.builder().build()
+                    .createProjectPart(
+                            cokkiri.getProject() // 이곳에서 ProjectPart에 Project가 양방향으로 주입된다.
+                            , projectPartSaveDto.getRecruitCount()
+                            , partRepository.findById(projectPartSaveDto.getPartNo()).get()
+                    )).collect(Collectors.toList());
             projectParts.forEach(projectPart -> cokkiri.getProject().getProjectParts().add(projectPart));
 //            collect.forEach(projectPartRepository::save); //반복 저장
             Cokkiri savedCokkiri = recruitRepository.save(cokkiri); // 영속되어있는 Project, ProjectPart 함께 저장
@@ -74,8 +70,9 @@ public class RecruitService {
 
     /**
      * 코끼리 & 프로젝트 수정 <br/>
-     * 다중 수정은 변경감지에 의해 UPDATE 쿼리 호출 <br/>
-     * 다중 삭제는 영속성 정의에 의해 DELETE 쿼리 호출
+     * 다중 수정은 ProjectPart 변경감지에 의해 UPDATE 동작 <br/>
+     * 다중 삭제는 Project엔티티의 orphanRemoval(List remove)에 의해 DELETE 동작 <br/>
+     * 다중 추가는 Cokkiri 변경감지(List add)에 의해 영속화된 엔티티 INSERT 동작
      * @param request
      * @return Boolean
      */
@@ -87,7 +84,7 @@ public class RecruitService {
             if (oRecruit.isPresent()) {
                 // 코끼리&프로젝트 수정
                 Cokkiri cokkiri = (Cokkiri)oRecruit.get();
-                cokkiri.updateCokkiri(request.getCokkiriUpdate());
+                cokkiri.updateCokkiri(request.getCokkiriUpdate()); //Update - 변경 감지
                 // 프로젝트 파트 수정
                 if (request.getProjectPartUpdate().getUpdate().size() > 0) {
                     // UPDATE 다중 수정
@@ -105,12 +102,15 @@ public class RecruitService {
                          * 1. 부모 Project의 자식리스트 List<ProjectPart> projectParts 에서 자식요소 제거
                          * 2. orphanRemoval = true에 의해 부모 리스트로부터 삭제된 projectPart 고아객체를 제거한다
                          */
-                        cokkiri.getProject().getProjectParts().remove(projectPart);
+                        cokkiri.getProject().getProjectParts().remove(projectPart); //orphanRemoval = true에 의해 고아객체 제거
                     });
                 }
                 if (request.getProjectPartUpdate().getInsert().size() > 0) {
                     // INSERT 다중 추가
                     request.getProjectPartUpdate().getInsert().forEach(projectPartUpdateDto -> {
+                        Part part = partRepository.findById(projectPartUpdateDto.getPartNo()).get();
+                        ProjectPart projectPart = ProjectPart.builder().build().createProjectPart(cokkiri.getProject(), projectPartUpdateDto.getRecruitCount(), part);
+                        cokkiri.getProject().addProjectParts(projectPart); // Cokkiri 변경감지에 의해 영속화 되어있는 projectPart의 INSERT 호출
                     });
                 }
             } else throw new RuntimeException("코끼리 게시글이 존재하지 않습니다.");
@@ -118,7 +118,7 @@ public class RecruitService {
             e.printStackTrace();
             return false;
         }
-        return true;
+        return true; //Try 모든 로직 성공시 true값을 Controller에 반환한다.
     }
     
     /**

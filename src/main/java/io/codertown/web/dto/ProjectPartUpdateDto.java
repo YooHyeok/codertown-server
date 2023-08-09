@@ -6,4 +6,6 @@ import lombok.Data;
 public class ProjectPartUpdateDto {
     private Long projectPartNo;
     private int recruitCount;
+
+    private Long partNo;
 }

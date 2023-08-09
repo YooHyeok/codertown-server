@@ -43,6 +43,10 @@ public class Project {
     @OneToOne(mappedBy = "project", orphanRemoval = true)
     private Cokkiri cokkiri;
 
+    public void addProjectParts(ProjectPart projectPart) {
+        this.projectParts.add(projectPart);
+    }
+
     public Project createProject(CokkiriSaveRequest request) {
         Project build = Project.builder()
                 .subject(request.getProjectSubject())
