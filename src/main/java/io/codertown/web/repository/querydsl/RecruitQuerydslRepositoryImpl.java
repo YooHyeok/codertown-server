@@ -3,18 +3,13 @@ package io.codertown.web.repository.querydsl;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.codertown.web.entity.recruit.Cokkiri;
-import io.codertown.web.entity.recruit.Mammoth;
-import io.codertown.web.entity.recruit.QRecruit;
-import io.codertown.web.entity.recruit.Recruit;
+import io.codertown.web.entity.recruit.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.data.support.PageableExecutionUtils;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.LongSupplier;
 
 public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport implements RecruitQuerydslRepository {
@@ -33,8 +28,6 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
     @Override
     public Page<Recruit> findByType(String dType, Pageable pageable) {
         QRecruit recruit = QRecruit.recruit;
-        System.out.println(Optional.ofNullable(dType));
-        System.out.println(StringUtils.hasText(dType));
         /*BooleanExpression dTypeCondition =
                 StringUtils.hasText(dType) ?
                         (dType.equals("Cokkiri") ?
@@ -45,6 +38,8 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
                                 recruit.instanceOf(Cokkiri.class) : (dType.equals("Mammoth") ? recruit.instanceOf(Mammoth.class) : null);
         System.out.println("dTypeCondition = " + dTypeCondition);
         List<Recruit> content = queryFactory.selectFrom(recruit)
+                .leftJoin(recruit.recruitUser).fetchJoin()
+                .join(QCokkiri.cokkiri).on(recruit.id.eq(QCokkiri.cokkiri.id))
                 .where(dTypeCondition)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
