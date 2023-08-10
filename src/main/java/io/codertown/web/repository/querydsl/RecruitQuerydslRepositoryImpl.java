@@ -3,7 +3,10 @@ package io.codertown.web.repository.querydsl;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.codertown.web.entity.recruit.*;
+import io.codertown.web.entity.recruit.Cokkiri;
+import io.codertown.web.entity.recruit.Mammoth;
+import io.codertown.web.entity.recruit.QRecruit;
+import io.codertown.web.entity.recruit.Recruit;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
@@ -39,7 +42,6 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
         System.out.println("dTypeCondition = " + dTypeCondition);
         List<Recruit> content = queryFactory.selectFrom(recruit)
                 .leftJoin(recruit.recruitUser).fetchJoin()
-                .join(QCokkiri.cokkiri).on(recruit.id.eq(QCokkiri.cokkiri.id))
                 .where(dTypeCondition)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
