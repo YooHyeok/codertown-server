@@ -4,6 +4,7 @@ import io.codertown.web.entity.Coggle;
 import io.codertown.web.entity.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +21,8 @@ public interface CoggleRepository extends JpaRepository<Coggle, Long> {
      * @param pageRequest
      * @return
      */
+
+    @EntityGraph(attributePaths = "user")
     @Query("SELECT c FROM Coggle c WHERE (:category IS NULL OR c.category = :category) AND (:user IS NULL OR c.user = :user) AND (:title IS NULL OR c.title = :title)")
     Page<Coggle> findByCategoryAndUser(@Param("category") Character category, @Param("user") User user, @Param("title") String title, PageRequest pageRequest);
 }
