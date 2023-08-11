@@ -16,10 +16,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
 
 /**
  * *****************************************************<p>
@@ -177,6 +177,25 @@ public class UserApiController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * 클라이언트에서 프로필사진을 출력할때 호출된다 <br/>
+     * img태그의 src속성에 의해 해당 url이 호출된다. <br/>
+     * byte[] 배열로 변환하면서 DB의 blob타입 컬럼에 저장할경우 MIME타입이 함께 저장된다. <br/>
+     * img태그에서 src에의해 파일정보가 호출되고 MIME 타입 정보를 기반으로 이미지를 올바른 형식으로 표시하게된다.
+     * @param id
+     * @param response
+     */
+    @GetMapping("/profileImage/{id}")
+    public void profileThumbnail(@PathVariable Long id, HttpServletResponse response) {
+        try {
+            byte[] thumbnail = userService.profileImage(id);
+            OutputStream out = response.getOutputStream();
+            out.write(thumbnail);
+        } catch(Exception e) {
+            e.printStackTrace();
         }
     }
 

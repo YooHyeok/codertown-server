@@ -20,6 +20,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * *****************************************************<p>
  * 패키지:io.codertown.user<p>
@@ -213,5 +215,11 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             e.printStackTrace();
             return null;
         }
+    }
+
+    public byte[] profileImage(Long id) throws Exception {
+        Optional<User> ouser = userRepository.findById(id);
+        if(ouser.isEmpty()) throw new Exception("아이디 오류");
+        return ouser.get().getAttachFile();
     }
 }
