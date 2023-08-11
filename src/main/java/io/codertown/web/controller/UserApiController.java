@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -162,19 +163,21 @@ public class UserApiController {
      *          nickname : 변경 닉네임 <br/>
      *          password : 변경 패스워드 <br/>
      *          profile : 변경 프로필 <br/>
+     *          file : 프로필 이미지 파일 <br/>
      * </pre>
      * @return UserDto - [회원정보]
      */
     @ApiOperation(value="마이페이지 - 회원정보 수정 API", notes="회원정보 수정")
     @ApiResponse(description = "회원정보 수정 성공 결과",responseCode = "200")
-    @PostMapping(path="/user-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> userUpdate(@RequestBody UserUpdateRequest request) {
+    @PostMapping(path="/user-update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> userUpdate(@ModelAttribute UserUpdateRequest request) {
         try {
             UserDto updateResult = userService.userUpdate(request);
             return ResponseEntity.ok(updateResult);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

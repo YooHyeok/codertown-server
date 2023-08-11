@@ -6,10 +6,12 @@ import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
 import lombok.*;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -35,6 +37,10 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     @Column(unique = true, nullable = false)
     private String email;
     private String nickname;
+    private String attachFilename; //프로필 이미지 첨부파일 이름
+    @Column(columnDefinition = "mediumblob")
+    @Nullable
+    private byte[] attachFile; //프로필 이미지 첨부파일
     private String profileIcon;
     private String password;
     private Character gender;
@@ -56,11 +62,13 @@ public class User extends BaseTimeStampEntity implements UserDetails {
      * 회원정보 수정 - 변경감지 메소드
      * @param request
      */
-    public void updateUser(UserUpdateRequest request) {
+    public void updateUser(UserUpdateRequest request) throws IOException {
         this.email = request.getChangeEmail();
         this.nickname = request.getNickname();
         this.profileIcon = request.getProfileIcon();
         this.password = request.getPassword();
+        this.attachFilename = request.getFile().getOriginalFilename();
+        this.attachFile = request.getFile().getBytes();
     }
 
     /**
