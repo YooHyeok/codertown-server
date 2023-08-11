@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.OutputStream;
 
 /**
  * *****************************************************<p>
@@ -186,17 +185,17 @@ public class UserApiController {
      * byte[] 배열로 변환하면서 DB의 blob타입 컬럼에 저장할경우 MIME타입이 함께 저장된다. <br/>
      * img태그에서 src에의해 파일정보가 호출되고 MIME 타입 정보를 기반으로 이미지를 올바른 형식으로 표시하게된다.
      * @param id
-     * @param response
      */
     @GetMapping("/profileImage/{id}")
-    public void profileThumbnail(@PathVariable Long id, HttpServletResponse response) {
+    public ResponseEntity<byte[]> profileThumbnail(@PathVariable Long id, HttpServletResponse response) {
         try {
             byte[] thumbnail = userService.profileImage(id);
-            OutputStream out = response.getOutputStream();
-            out.write(thumbnail);
+/*            response.setContentType("image/jpeg"); // 브라우저 이미지 출력 테스트 코드
+            response.getOutputStream().write(thumbnail);*/
+            return ResponseEntity.ok(thumbnail);
         } catch(Exception e) {
             e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
-
 }
