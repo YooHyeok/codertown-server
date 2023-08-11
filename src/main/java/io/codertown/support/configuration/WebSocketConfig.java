@@ -15,9 +15,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/websocket") //엔드포인트 등록 - 해당 경로를 통해 Websocket연결
-                .setAllowedOrigins("*") // 웹 소켓 연결을 허용할 원본(Origin) 설정 (CROS 정책 설정)
-//                .setAllowedOrigins("http://localhost:80")
+        registry.addEndpoint("/apic") //엔드포인트 등록 - apic테스트용
+                .setAllowedOrigins("*"); // 웹 소켓 연결을 허용할 원본(Origin) 설정 (CROS 정책 설정)
+
+        registry.addEndpoint("/ws") //엔드포인트 등록 - 해당 경로를 통해 Websocket연결
+                .setAllowedOrigins("http://localhost:80")
                 .withSockJS(); //WebSocket을 지원하지 않는 브라우저의 대체수단
     }
 
@@ -29,6 +31,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.enableSimpleBroker("/dm-sub", "/push-sub"); //수신
-        registry.setApplicationDestinationPrefixes("/dm-pub", "push-pub"); //송신
+        registry.setApplicationDestinationPrefixes("/dm-pub", "/push-pub"); //송신
     }
 }
