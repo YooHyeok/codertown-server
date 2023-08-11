@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-public class CoggleController {
+public class CoggleApiController {
 
     private final CoggleService coggleService;
 

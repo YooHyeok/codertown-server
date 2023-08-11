@@ -6,7 +6,7 @@ import io.codertown.support.configuration.WebConfig;
 import io.codertown.support.jwt.JwtTokenProvider;
 import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.request.SignUpRequest;
-import io.codertown.web.controller.UserController;
+import io.codertown.web.controller.UserApiController;
 import io.codertown.web.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@WebMvcTest(UserController.class)
+@WebMvcTest(UserApiController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 @ContextConfiguration(classes={WebConfig.class, CodertownApplication.class, SecurityConfig.class}) //Security테스트를 위해 추가
 public class UserControllerMockTest {

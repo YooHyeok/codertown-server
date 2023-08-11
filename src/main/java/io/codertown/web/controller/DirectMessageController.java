@@ -28,4 +28,8 @@ public class DirectMessageController {
 //        receivedMessage(message);
     }
 
+    /**
+     * 메시지 전송?
+     */
+
 }

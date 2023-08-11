@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class RecruitController {
+public class RecruitApiController {
 
     private final RecruitService recruitService;
 
