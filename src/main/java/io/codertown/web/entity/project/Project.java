@@ -58,4 +58,13 @@ public class Project {
                 .build();
         return build;
     }
+
+    /**
+     * 변경감지 수정을 위한 Project 초기화 메소드
+     * @param subject, teamName
+     */
+    public void updateProject(String subject, String teamName) {
+        this.subject = subject;
+        this.teamName = teamName;
+    }
 }
