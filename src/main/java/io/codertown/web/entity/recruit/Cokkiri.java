@@ -34,11 +34,12 @@ public class Cokkiri extends Recruit {
         Project project = Project.builder()
                 .build().createProject(request);
         Cokkiri build = Cokkiri.builder()
-                .title(request.getCokkiriTitle())
-                .content(request.getContent())
-                .recruitUser(request.getUser())
+                .recruitUser(request.getUser())//부모 변수 초기화 가능
+                .title(request.getCokkiriTitle()) //부모 변수 초기화 가능
                 .objectWeek(request.getObjectWeek())
+                .link(request.getLink()) //부모 변수 초기화 가능
                 .project(project)
+                .content(request.getContent())//부모 변수 초기화 가능
                 .build();
         return build;
     }
