@@ -42,8 +42,9 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
                                 recruit.instanceOf(Cokkiri.class) : (dType.equals("Mammoth") ? recruit.instanceOf(Mammoth.class) : null);
         /* 검색 키워드 조건 */
         BooleanExpression searchByLeword = (keyword == null)
-                ? null : (recruit.title.like("%" + keyword + "%").or(recruit.content.like("%" + keyword + "%"))
-                .or(recruit.recruitUser.nickname.like("%" + keyword + "%")));
+                ? null : (recruit.title.like("%" + keyword + "%").or(recruit.recruitUser.nickname.like("%" + keyword + "%"))
+                .or((recruit.content.notLike("%<p><img src=\"%" + keyword + "%</img><p>%").and(recruit.content.like("%" + keyword + "%"))))
+                );
 
         System.out.println("searchByLeword = " + searchByLeword);
 
