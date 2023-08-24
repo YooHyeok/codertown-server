@@ -27,15 +27,18 @@ public class RecruitApiController {
      */
     @ApiOperation(value="코끼리 목록 출력 API", notes="코끼리 목록 출력에 필요한 JSON 데이터 반환")
     @ApiResponse(description = "코끼리 목록 리스트 JSON 데이터",responseCode = "200")
-    @GetMapping(path = "/recruit/{page}/{dType}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RecruitListResponse> cokkiriList(@PathVariable(required = false) Integer page,
-                                                           @PathVariable(required = false) String dType) {
+    @GetMapping(path = "/recruit", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RecruitListResponse> cokkiriList(@RequestParam(required = false) Integer page,
+                                                           @RequestParam(required = false) String dType,
+                                                           @RequestParam(required = false) String keyword) {
         try {
-            RecruitListResponse recruitList = recruitService.recruitList(page, dType);
+            System.out.println("keyword == null = " + (keyword == null));
+            RecruitListResponse recruitList = recruitService.recruitList(page, dType, keyword);
             return ResponseEntity.ok(recruitList);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**

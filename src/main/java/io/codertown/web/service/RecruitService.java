@@ -155,11 +155,11 @@ public class RecruitService {
     /**
      * Recruit 목록 출력
      */
-    public RecruitListResponse recruitList(Integer page, String dType) {
+    public RecruitListResponse recruitList(Integer page, String dType, String keyword) {
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, "id", "DESC");
         try {
-            Page<Recruit> pages = recruitRepository.findByType(dType, pageInfo.getPageRequest());
+            Page<Recruit> pages = recruitRepository.findByType(dType, pageInfo.getPageRequest(), keyword);
             pageInfo.setPageInfo(pages, pageInfo);
             List<RecruitListDto> recruitList = pages.getContent().stream().map(recruit -> {
                 UserDto userDto = UserDto.userEntityToDto(recruit.getRecruitUser());

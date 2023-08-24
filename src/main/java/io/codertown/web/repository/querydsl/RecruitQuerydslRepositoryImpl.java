@@ -29,26 +29,34 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
     }
 
     @Override
-    public Page<Recruit> findByType(String dType, Pageable pageable) {
+    public Page<Recruit> findByType(String dType, Pageable pageable, String keyword) {
         QRecruit recruit = QRecruit.recruit;
         /*BooleanExpression dTypeCondition =
                 StringUtils.hasText(dType) ?
                         (dType.equals("Cokkiri") ?
                                 recruit.instanceOf(Cokkiri.class) : dType.equals("Mammoth") ? recruit.instanceOf(Mammoth.class) : null)
                 : null;*/
+        /* dType 조건*/
         BooleanExpression dTypeCondition =
                         dType.equals("Cokkiri") ?
                                 recruit.instanceOf(Cokkiri.class) : (dType.equals("Mammoth") ? recruit.instanceOf(Mammoth.class) : null);
+        /* 검색 키워드 조건 */
+        BooleanExpression searchByLeword = (keyword == null)
+                ? null : (recruit.title.like("%" + keyword + "%").or(recruit.content.like("%" + keyword + "%"))
+                .or(recruit.recruitUser.nickname.like("%" + keyword + "%")));
+
+        System.out.println("searchByLeword = " + searchByLeword);
+
         List<Recruit> content = queryFactory.selectFrom(recruit)
                 .leftJoin(recruit.recruitUser).fetchJoin()
-                .where(dTypeCondition.and(recruit.status.eq(false)))
+                .where(dTypeCondition.and(recruit.status.eq(false)).and(searchByLeword))
                 .orderBy(recruit.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
         JPAQuery<Recruit> countQuery = queryFactory
                 .selectFrom(recruit)
-                .where(dTypeCondition)
+                .where(dTypeCondition.and(recruit.status.eq(false)).and(searchByLeword))
                 .orderBy(recruit.id.desc());
         return PageableExecutionUtils.getPage(content, pageable, new LongSupplier(){
             @Override
