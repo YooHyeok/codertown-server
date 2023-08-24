@@ -35,6 +35,7 @@ public class Mammoth extends Recruit {
         Mammoth build = Mammoth.builder()
                 .recruitUser(request.getUser())
                 .title(request.getTitle())
+                .link(request.getLink())
                 .content(request.getContent())
                 .location(request.getLocation())
                 .build();
