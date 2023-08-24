@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -35,8 +36,11 @@ public abstract class Recruit extends BaseTimeStampEntity {
     @JoinColumn(name = "USER_NO")
     private User recruitUser;
 
+    @ColumnDefault("false")
+    private Boolean status; // 글상태 True : 삭제 | False : 정상
+
     /**
-     * Recruit 변경감지 메소드 <br/>
+     * Recruit 수정 변경감지 메소드 <br/>
      * Cokkiri와 Mammoth 엔티티 변경감지시 호출된다.
      * @param request
      */
@@ -44,5 +48,14 @@ public abstract class Recruit extends BaseTimeStampEntity {
         this.title = tittle;
         this.link = link;
         this.content = Content;
+    }
+
+    /**
+     * Recruit 삭제 변경감지 메소드 <br/>
+     * Cokkiri와 Mammoth 엔티티 변경감지시 호출된다.
+     * @param request
+     */
+    public void deleteRecruit(Boolean status) {
+        this.status = status;
     }
 }

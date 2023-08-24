@@ -177,4 +177,22 @@ public class RecruitApiController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    /**
+     * 맘모스 글 삭제 API
+     * @param request
+     * @return 성공: TRUE | 실패: FALSE
+     */
+    @ApiOperation(value="맘모스 게시글 삭제 API", notes="맘모스 게시글 삭제")
+    @ApiResponse(description = "삭제 성공 결과",responseCode = "200")
+    @PostMapping(path = "/mammoth-delete")
+    public ResponseEntity<SuccessBooleanResult> mammothDelete(@RequestParam("recruitNo") Long recruitNo) {
+        try {
+            Boolean result = recruitService.mammothDelete(recruitNo);
+            return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(result));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }

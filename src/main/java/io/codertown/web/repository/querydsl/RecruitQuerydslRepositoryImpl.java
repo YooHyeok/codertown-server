@@ -41,7 +41,7 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
                                 recruit.instanceOf(Cokkiri.class) : (dType.equals("Mammoth") ? recruit.instanceOf(Mammoth.class) : null);
         List<Recruit> content = queryFactory.selectFrom(recruit)
                 .leftJoin(recruit.recruitUser).fetchJoin()
-                .where(dTypeCondition)
+                .where(dTypeCondition.and(recruit.status.eq(false)))
                 .orderBy(recruit.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

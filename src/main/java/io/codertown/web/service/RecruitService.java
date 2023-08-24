@@ -256,4 +256,28 @@ public class RecruitService {
         }
         return true; //2차 Try까지 무사히 통과하면 true반환
     }
+
+
+    /**
+     * 맘모스 글 수정
+     */
+    @Transactional(readOnly = false)
+    public Boolean mammothDelete(Long recruitNo) {
+        try {
+            Optional<Recruit> oRecruit = recruitRepository.findById(recruitNo);
+            if (oRecruit.isPresent()) {
+                Mammoth findMammoth = (Mammoth) oRecruit.get();
+                try { //2차 Try문 - 수정로직
+                    findMammoth.deleteMammoth(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("맘모스 삭제 실패"); //Controller에서 Catch
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("현재 맘모스를 찾을수 없습니다."); //Controller에서 Catch
+        }
+        return true; //2차 Try까지 무사히 통과하면 true반환
+    }
 }

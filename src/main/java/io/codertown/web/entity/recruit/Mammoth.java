@@ -43,12 +43,21 @@ public class Mammoth extends Recruit {
     }
 
     /**
-     * Mammoth 변경감지 메소드 <br/>
+     * Mammoth 수정 변경감지 메소드 <br/>
      * updateRecruit()메소드를 호출하여 부모엔티티인 Recruit 엔티티 변경감지 시도
      * @param request
      */
     public void updateMammoth(MammothUpdateRequest request) {
         updateRecruit(request.getTitle(), request.getLink(), request.getContent());
         this.location = request.getLocation();
+    }
+
+    /**
+     * Mammoth 삭제 변경감지 메소드 <br/>
+     * updateRecruit()메소드를 호출하여 부모엔티티인 Recruit 엔티티 변경감지 시도
+     * @param status
+     */
+    public void deleteMammoth(Boolean status) {
+        deleteRecruit(status);
     }
 }
