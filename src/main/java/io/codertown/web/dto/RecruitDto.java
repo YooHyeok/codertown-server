@@ -36,6 +36,7 @@ public class RecruitDto {
 
     public static RecruitDto mammothEntityToDto(Mammoth cokkiri, UserDto userDto, String dType) {
         return RecruitDto.builder()
+                .recruitNo(cokkiri.getId())
                 .category(dType)
                 .title(cokkiri.getTitle()) // 코끼리 글 제목
                 .link(cokkiri.getLink())
