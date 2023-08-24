@@ -39,10 +39,10 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
         BooleanExpression dTypeCondition =
                         dType.equals("Cokkiri") ?
                                 recruit.instanceOf(Cokkiri.class) : (dType.equals("Mammoth") ? recruit.instanceOf(Mammoth.class) : null);
-        System.out.println("dTypeCondition = " + dTypeCondition);
         List<Recruit> content = queryFactory.selectFrom(recruit)
                 .leftJoin(recruit.recruitUser).fetchJoin()
                 .where(dTypeCondition)
+                .orderBy(recruit.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
