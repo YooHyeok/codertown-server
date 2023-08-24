@@ -34,15 +34,16 @@ public class RecruitDto {
                 .build();
     }
 
-    public static RecruitDto mammothEntityToDto(Mammoth cokkiri, UserDto userDto, String dType) {
+    public static RecruitDto mammothEntityToDto(Mammoth mammoth, UserDto userDto, String dType) {
         return RecruitDto.builder()
-                .recruitNo(cokkiri.getId())
+                .recruitNo(mammoth.getId())
                 .category(dType)
-                .title(cokkiri.getTitle()) // 코끼리 글 제목
-                .link(cokkiri.getLink())
-                .content(cokkiri.getContent()) // 코끼리 글 내용
-                .writer(userDto) // 코끼리 글 작성자 (추후 String값으로 수정)
-                .location(cokkiri.getLocation())
+                .title(mammoth.getTitle()) // 맘모스 글 제목
+                .link(mammoth.getLink())
+                .content(mammoth.getContent()) // 맘모스 글 내용
+                .firstRegDate(mammoth.getFirstRegDate())
+                .writer(userDto) // 맘모스 글 작성자 (추후 String값으로 수정)
+                .location(mammoth.getLocation())
                 .build();
     }
 
