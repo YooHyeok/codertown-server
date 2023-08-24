@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProjectPartSaveDto {
 
+    private Long projectPartNo;
     private Long partNo;
     private String partName;
     private int recruitCount;
@@ -19,6 +20,7 @@ public class ProjectPartSaveDto {
 
     public static ProjectPartSaveDto entityToDto(ProjectPart projectPart) {
         return ProjectPartSaveDto.builder()
+                .projectPartNo(projectPart.getId()) // 프로젝트파트 번호
                 .partNo(projectPart.getPart().getId()) // 파트 번호
                 .partName(projectPart.getPart().getPartName()) // 파트 이름
                 .recruitCount(projectPart.getRecruitCount()) // 모집 인원

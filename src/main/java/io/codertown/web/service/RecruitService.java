@@ -86,13 +86,13 @@ public class RecruitService {
                 Cokkiri cokkiri = (Cokkiri)oRecruit.get();
                 cokkiri.updateCokkiri(request.getCokkiriUpdate()); //Update - 변경 감지
                 // 프로젝트 파트 수정
-                if (request.getProjectPartUpdate().getUpdate().size() > 0) {
+                /*if (request.getProjectPartUpdate().getUpdate().size() > 0) {
                     // UPDATE 다중 수정
                     request.getProjectPartUpdate().getUpdate().forEach(projectPartUpdateDto -> {
                         ProjectPart projectPart = projectPartRepository.findById(projectPartUpdateDto.getProjectPartNo()).get();
                         projectPart.updateProjectPart(projectPartUpdateDto.getRecruitCount()); //Update - 변경 감지
                     });
-                }
+                }*/
                 if (request.getProjectPartUpdate().getDelete().size() > 0) {
                     // DELETE 다중 삭제
                     request.getProjectPartUpdate().getDelete().forEach(projectPartUpdateDto -> {
