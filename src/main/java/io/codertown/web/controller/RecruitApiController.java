@@ -179,13 +179,13 @@ public class RecruitApiController {
     }
 
     /**
-     * 맘모스 글 삭제 API
+     * 코끼리/맘모스 글 삭제 API
      * @param request
      * @return 성공: TRUE | 실패: FALSE
      */
     @ApiOperation(value="맘모스 게시글 삭제 API", notes="맘모스 게시글 삭제")
     @ApiResponse(description = "삭제 성공 결과",responseCode = "200")
-    @PostMapping(path = "/mammoth-delete")
+    @PostMapping(path = "/recruit-delete")
     public ResponseEntity<SuccessBooleanResult> mammothDelete(@RequestParam("recruitNo") Long recruitNo) {
         try {
             Boolean result = recruitService.mammothDelete(recruitNo);

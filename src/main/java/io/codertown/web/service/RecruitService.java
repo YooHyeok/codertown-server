@@ -266,9 +266,9 @@ public class RecruitService {
         try {
             Optional<Recruit> oRecruit = recruitRepository.findById(recruitNo);
             if (oRecruit.isPresent()) {
-                Mammoth findMammoth = (Mammoth) oRecruit.get();
+                Recruit findRecruit = oRecruit.get();
                 try { //2차 Try문 - 수정로직
-                    findMammoth.deleteMammoth(true);
+                    findRecruit.deleteRecruit(true);
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new RuntimeException("맘모스 삭제 실패"); //Controller에서 Catch
