@@ -36,7 +36,8 @@ public abstract class Recruit extends BaseTimeStampEntity {
     @JoinColumn(name = "USER_NO")
     private User recruitUser;
 
-    @ColumnDefault("false")
+    @Column(columnDefinition = "boolean default false constraint status check(status in(true,false))")
+    @ColumnDefault(value = "false")
     private Boolean status; // 글상태 True : 삭제 | False : 정상
 
     /**

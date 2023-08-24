@@ -40,6 +40,7 @@ public class Cokkiri extends Recruit {
                 .link(request.getLink()) //부모 변수 초기화 가능
                 .project(project)
                 .content(request.getContent())//부모 변수 초기화 가능
+                .status(false)
                 .build();
         return build;
     }
