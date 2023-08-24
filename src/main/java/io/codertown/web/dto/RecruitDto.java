@@ -22,7 +22,6 @@ public class RecruitDto {
     private LocalDateTime firstRegDate;
 
     public static RecruitDto cokkiriEntityToDto(Cokkiri cokkiri, UserDto userDto, String dType) {
-        System.out.println(cokkiri.getFirstRegDate());
         return RecruitDto.builder()
                 .recruitNo(cokkiri.getId())
                 .category(dType)
