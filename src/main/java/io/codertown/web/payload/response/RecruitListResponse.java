@@ -13,4 +13,6 @@ public class RecruitListResponse {
 
     List<RecruitListDto> recruitList;
     private PageInfo pageInfo;
+
+    private Long articleCount; //전체 조회 개수
 }

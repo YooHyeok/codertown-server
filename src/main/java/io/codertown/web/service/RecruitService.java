@@ -160,6 +160,7 @@ public class RecruitService {
         PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, "id", "DESC");
         try {
             Page<Recruit> pages = recruitRepository.findByType(dType, pageInfo.getPageRequest(), keyword);
+            System.out.println("게시글 카운트 : " + pages.getTotalElements()); //카운트?
             pageInfo.setPageInfo(pages, pageInfo);
             List<RecruitListDto> recruitList = pages.getContent().stream().map(recruit -> {
                 UserDto userDto = UserDto.userEntityToDto(recruit.getRecruitUser());
@@ -182,7 +183,7 @@ public class RecruitService {
                         .projectDto(projectDto)
                         .build();
             }).collect(Collectors.toList());
-            return RecruitListResponse.builder().recruitList(recruitList).pageInfo(pageInfo).build();
+            return RecruitListResponse.builder().recruitList(recruitList).pageInfo(pageInfo).articleCount(pages.getTotalElements()).build();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

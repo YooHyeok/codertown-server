@@ -32,7 +32,6 @@ public class RecruitApiController {
                                                            @RequestParam(required = false) String dType,
                                                            @RequestParam(required = false) String keyword) {
         try {
-            System.out.println("keyword == null = " + (keyword == null));
             RecruitListResponse recruitList = recruitService.recruitList(page, dType, keyword);
             return ResponseEntity.ok(recruitList);
         } catch (Exception e) {
