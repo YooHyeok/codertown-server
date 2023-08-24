@@ -34,7 +34,7 @@ public class PageInfo {
      * @return
      */
     public PageInfo createPageRequest(Integer page, String sortColumn, String sortDirection) {
-        PageRequest pageRequest = PageRequest.of(page - 1, 12, Sort.by(setSortDriection(sortDirection), sortColumn));
+        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(setSortDriection(sortDirection), sortColumn));
         PageInfo pageInfo = PageInfo.builder().curPage(page).pageRequest(pageRequest).build();
         return pageInfo;
     }
