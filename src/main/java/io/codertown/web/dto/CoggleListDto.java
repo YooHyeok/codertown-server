@@ -13,4 +13,6 @@ import java.util.List;
 public class CoggleListDto {
     private PageInfo pageInfo;
     private List<CoggleDto> coggleList;
+
+    private Long articleList;
 }
