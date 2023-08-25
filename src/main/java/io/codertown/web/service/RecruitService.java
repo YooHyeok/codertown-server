@@ -260,7 +260,7 @@ public class RecruitService {
 
 
     /**
-     * 맘모스 글 수정
+     * 맘모스 글 삭제
      */
     @Transactional(readOnly = false)
     public Boolean mammothDelete(Long recruitNo) {

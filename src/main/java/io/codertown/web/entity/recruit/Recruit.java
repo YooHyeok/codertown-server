@@ -43,7 +43,9 @@ public abstract class Recruit extends BaseTimeStampEntity {
     /**
      * Recruit 수정 변경감지 메소드 <br/>
      * Cokkiri와 Mammoth 엔티티 변경감지시 호출된다.
-     * @param request
+     * @param tittle
+     * @param link
+     * @param Content
      */
     public void updateRecruit(String tittle, String link, String Content) {
         this.title = tittle;
@@ -54,7 +56,7 @@ public abstract class Recruit extends BaseTimeStampEntity {
     /**
      * Recruit 삭제 변경감지 메소드 <br/>
      * Cokkiri와 Mammoth 엔티티 변경감지시 호출된다.
-     * @param request
+     * @param status
      */
     public void deleteRecruit(Boolean status) {
         this.status = status;

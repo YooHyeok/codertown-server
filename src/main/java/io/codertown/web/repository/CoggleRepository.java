@@ -25,6 +25,6 @@ public interface CoggleRepository extends JpaRepository<Coggle, Long> {
     @Query("SELECT c FROM Coggle c WHERE (:category IS NULL OR c.category = :category) AND (:user IS NULL OR c.user = :user) AND (:title IS NULL OR c.title = :title)")
     Page<Coggle> findByCategoryAndUser(@Param("category") Character category, @Param("user") User user, @Param("title") String title, PageRequest pageRequest);*/
     @EntityGraph(attributePaths = "user")
-    @Query("SELECT c FROM Coggle c WHERE (:category IS NULL OR c.category = :category) AND (:keyword IS NULL OR (c.user.nickname LIKE %:keyword% OR c.title LIKE %:keyword% OR c.content LIKE %:keyword%))")
+    @Query("SELECT c FROM Coggle c WHERE (:category IS NULL OR c.category = :category) AND (:keyword IS NULL OR (c.user.nickname LIKE %:keyword% OR c.title LIKE %:keyword% OR c.content LIKE %:keyword%)) AND(c.status = false)")
     Page<Coggle> findByCategoryAndUser(@Param("category") Character category, @Param("keyword") String keyword, PageRequest pageRequest);
 }

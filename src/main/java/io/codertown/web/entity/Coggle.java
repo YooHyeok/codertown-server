@@ -44,4 +44,13 @@ public class Coggle extends BaseTimeStampEntity {
         this.title = request.getTitle();
         this.content = request.getContent();
     }
+
+    /**
+     * 코글 삭제 변경감지 메소드 <br/>
+     * Coggle 엔티티 변경감지시 호출된다.
+     * @param status
+     */
+    public void deleteCoggle(Boolean status) {
+        this.status = status;
+    }
 }

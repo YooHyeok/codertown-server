@@ -97,6 +97,31 @@ public class CoggleService {
     }
 
     /**
+     * 코글 삭제
+     * @param request
+     * @return 성공: TRUE | 실패: FALSE
+     */
+    @Transactional
+    public Boolean coggleDelete(Long coggleNo) throws RuntimeException {
+        try {
+            Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
+            if (oCoggle.isPresent()) {
+                Coggle findCoggle = oCoggle.get();
+                try {
+                    findCoggle.deleteCoggle(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException("코글 수정 실패"); //Controller에서 Catch
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
+        }
+        return true;
+    }
+
+    /**
      * 코글 목록 출력
      * @param page 페이지 정보
      * @param request 쿼리 조건 컨디션

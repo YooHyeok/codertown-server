@@ -66,9 +66,27 @@ public class CoggleApiController {
     @ApiOperation(value="코글 수정 API", notes="코글 게시글 수정")
     @ApiResponse(description = "수정 성공 결과",responseCode = "200")
     @PostMapping(path = "/coggle-update", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessBooleanResult> coggleupdate(@RequestBody CoggleUpdateRequest request) {
+    public ResponseEntity<SuccessBooleanResult> coggleUpdate(@RequestBody CoggleUpdateRequest request) {
         try {
             Boolean result = coggleService.coggleUpdate(request);
+            return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(result));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * 코글 삭제 API
+     * @param request
+     * @return 성공: TRUE | 실패: FALSE
+     */
+    @ApiOperation(value="코글 삭제 API", notes="코글 게시글 삭제")
+    @ApiResponse(description = "삭제 성공 결과",responseCode = "200")
+    @PostMapping(path = "/coggle-delete", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SuccessBooleanResult> coggleDelete(@RequestParam("coggleNo") Long coggleNo) {
+        try {
+            Boolean result = coggleService.coggleDelete(coggleNo);
             return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(result));
         } catch (Exception e) {
             e.printStackTrace();
