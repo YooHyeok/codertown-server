@@ -14,5 +14,5 @@ public class CoggleListDto {
     private PageInfo pageInfo;
     private List<CoggleDto> coggleList;
 
-    private Long articleList;
+    private Long articleCount;
 }

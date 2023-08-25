@@ -112,7 +112,7 @@ public class CoggleService {
         List<CoggleDto> coggleList = pages.stream()
                 .map(coggle -> CoggleDto.builder().build().changeEntityToDto(coggle))
                 .collect(Collectors.toList());
-        return CoggleListDto.builder().pageInfo(pageInfo).coggleList(coggleList).articleList(pages.getTotalElements()).build();
+        return CoggleListDto.builder().pageInfo(pageInfo).coggleList(coggleList).articleCount(pages.getTotalElements()).build();
     }
 
     /**
