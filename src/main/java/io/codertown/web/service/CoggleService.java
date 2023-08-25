@@ -102,8 +102,8 @@ public class CoggleService {
      * @param request 쿼리 조건 컨디션
      * @return 성공: TRUE | 실패: FALSE
      */
-    public CoggleListDto coggleList(Integer page, CoggleListRequest request) throws RuntimeException {
-        User writer = (User)userRepository.findByEmail(request.getWriter());
+    public CoggleListDto coggleList(CoggleListRequest request) throws RuntimeException {
+        Integer page = request.getPage();
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build()
                 .createPageRequest(page, "coggleNo", "DESC");

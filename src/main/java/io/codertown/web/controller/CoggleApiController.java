@@ -84,10 +84,10 @@ public class CoggleApiController {
      */
     @ApiOperation(value="코글 목록 출력 API", notes="코글 목록 출력에 필요한 JSON 데이터 반환")
     @ApiResponse(description = "코글 리스트 JSON 데이터",responseCode = "200")
-    @GetMapping(path = "/coggle/{page}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CoggleListDto> coggleList(@PathVariable(required = false) Integer page, @RequestBody CoggleListRequest request) {
+    @GetMapping(path = "/coggle", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CoggleListDto> coggleList(@ModelAttribute CoggleListRequest request) {
         try {
-            CoggleListDto result = coggleService.coggleList(page,request);
+            CoggleListDto result = coggleService.coggleList(request);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
