@@ -40,6 +40,7 @@ public class Coggle extends BaseTimeStampEntity {
      * @param request
      */
     public void updateCoggle(CoggleUpdateRequest request) {
+        this.category = request.getCategory();
         this.title = request.getTitle();
         this.content = request.getContent();
     }
