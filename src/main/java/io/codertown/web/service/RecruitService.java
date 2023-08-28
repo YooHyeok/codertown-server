@@ -155,11 +155,11 @@ public class RecruitService {
     /**
      * Recruit 목록 출력
      */
-    public RecruitListResponse recruitList(Integer page, String dType, String keyword) {
+    public RecruitListResponse recruitList(Integer page, String dType, String keyword, String loginId) {
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, "id", "DESC");
         try {
-            Page<Recruit> pages = recruitRepository.findByType(dType, pageInfo.getPageRequest(), keyword);
+            Page<Recruit> pages = recruitRepository.findByType(dType, pageInfo.getPageRequest(), keyword, loginId);
             System.out.println("게시글 카운트 : " + pages.getTotalElements()); //카운트?
             pageInfo.setPageInfo(pages, pageInfo);
             List<RecruitListDto> recruitList = pages.getContent().stream().map(recruit -> {

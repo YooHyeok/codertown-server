@@ -29,30 +29,38 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
     }
 
     @Override
-    public Page<Recruit> findByType(String dType, Pageable pageable, String keyword) {
+    public Page<Recruit> findByType(String dType, Pageable pageable, String keyword, String loginId) {
         QRecruit recruit = QRecruit.recruit;
-
+//        loginId = loginId == null ? "" : loginId;
         /**
          *  and연산자로 묶기위한 최상위 BooleanExpression
          *  전체조회시 dType이 null일 경우 무시하기위함.
          */
         BooleanExpression  baseCondition = recruit.status.eq(false);
-        /* dType 조건*/
+
+        /* 나의 게시글 / 일반 조회 - 로그인아이디 파라미터 여부 */
+        BooleanExpression loginIdCondition = (loginId == null || loginId.equals("")) ? null : recruit.recruitUser.email.eq(loginId);
+        if (loginIdCondition != null) {
+            baseCondition = baseCondition.and(loginIdCondition);
+        }
+
+        /* dType 조건 */
         BooleanExpression dTypeCondition =
                 dType.equals("Cokkiri") ?
                         recruit.instanceOf(Cokkiri.class) : (dType.equals("Mammoth") ? recruit.instanceOf(Mammoth.class) : null);
-        /* 검색 키워드 조건 */
-        BooleanExpression searchByKeword = (keyword == null)
-                ? null : (recruit.title.like("%" + keyword + "%").or(recruit.recruitUser.nickname.like("%" + keyword + "%"))
-                .or((recruit.content.notLike("%<p><img src=\"%" + keyword + "%</img><p>%").and(recruit.content.like("%" + keyword + "%"))))
-        );
         if (dTypeCondition != null) {
             baseCondition = baseCondition.and(dTypeCondition);
         }
 
+        /* 검색 키워드 조건 */
+        BooleanExpression searchByKeword = (keyword == null || keyword.equals(""))
+                ? null : (recruit.title.like("%" + keyword + "%").or(recruit.recruitUser.nickname.like("%" + keyword + "%"))
+                .or((recruit.content.notLike("%<p><img src=\"%" + keyword + "%</img><p>%").and(recruit.content.like("%" + keyword + "%"))))
+        );
         if (searchByKeword != null) {
             baseCondition = baseCondition.and(searchByKeword);
         }
+
 
         /* 실제 QueryDSL 적용 */
         List<Recruit> content = queryFactory.selectFrom(recruit)

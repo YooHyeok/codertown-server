@@ -30,9 +30,10 @@ public class RecruitApiController {
     @GetMapping(path = "/recruit", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RecruitListResponse> cokkiriList(@RequestParam(required = false) Integer page,
                                                            @RequestParam(required = false) String dType,
-                                                           @RequestParam(required = false) String keyword) {
+                                                           @RequestParam(required = false) String keyword,
+                                                           @RequestParam(required = false) String loginId) {
         try {
-            RecruitListResponse recruitList = recruitService.recruitList(page, dType, keyword);
+            RecruitListResponse recruitList = recruitService.recruitList(page, dType, keyword, loginId);
             return ResponseEntity.ok(recruitList);
         } catch (Exception e) {
             e.printStackTrace();

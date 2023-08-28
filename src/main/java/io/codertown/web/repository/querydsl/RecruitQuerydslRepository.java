@@ -5,5 +5,5 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface RecruitQuerydslRepository {
-    Page<Recruit> findByType(String dType, Pageable pageable, String keyword);
+    Page<Recruit> findByType(String dType, Pageable pageable, String keyword, String loginId);
 }
