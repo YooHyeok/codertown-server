@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,7 @@ public class CommentDto {
     private String content;
     private Boolean status;
 
+    private LocalDateTime firstRegDate;
     private List<CommentDto> children = new ArrayList<>();
 
     public CommentDto changeEntityToDto(Comment comment) {
@@ -36,6 +38,7 @@ public class CommentDto {
                 .content(comment.getContent().isEmpty() ? null : comment.getContent())
                 .status(comment.getStatus())
                 .children(getChildrenMapToList(comment))
+                .firstRegDate(comment.getFirstRegDate())
                 .build();
     }
 

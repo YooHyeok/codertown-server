@@ -20,6 +20,7 @@ public class RecruitDto {
     private String location;
     private Integer objectWeek;
     private LocalDateTime firstRegDate;
+    private LocalDateTime lastModDate;
 
     public static RecruitDto cokkiriEntityToDto(Cokkiri cokkiri, UserDto userDto, String dType) {
         return RecruitDto.builder()
@@ -29,6 +30,7 @@ public class RecruitDto {
                 .link(cokkiri.getLink())
                 .content(cokkiri.getContent()) // 코끼리 글 내용
                 .firstRegDate(cokkiri.getFirstRegDate())
+                .lastModDate(cokkiri.getLastModDate())
                 .writer(userDto) // 코끼리 글 작성자 (추후 String값으로 수정)
                 .objectWeek(cokkiri.getObjectWeek()) // 목표 기간(주)
                 .build();
@@ -42,6 +44,7 @@ public class RecruitDto {
                 .link(mammoth.getLink())
                 .content(mammoth.getContent()) // 맘모스 글 내용
                 .firstRegDate(mammoth.getFirstRegDate())
+                .lastModDate(mammoth.getLastModDate())
                 .writer(userDto) // 맘모스 글 작성자 (추후 String값으로 수정)
                 .location(mammoth.getLocation())
                 .build();
