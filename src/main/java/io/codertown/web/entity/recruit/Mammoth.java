@@ -38,6 +38,7 @@ public class Mammoth extends Recruit {
                 .link(request.getLink())
                 .content(request.getContent())
                 .location(request.getLocation())
+                .status(false)
                 .build();
         return build;
     }

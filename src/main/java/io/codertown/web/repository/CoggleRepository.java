@@ -16,7 +16,8 @@ public interface CoggleRepository extends JpaRepository<Coggle, Long> {
      * null에 대한 조건은 기본적으로 동등비교가 아닌 is 키워드를 사용하게 된다.
      * 파라미터가 null이 넘어오면 is null로 조건이 부여되기 때문에 아무것도 조회되지 않는다.
      * @param category
-     * @param user
+     * @param keyword
+     * @param loginId
      * @param pageRequest
      * @return
      */
