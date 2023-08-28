@@ -132,7 +132,7 @@ public class CoggleService {
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build()
                 .createPageRequest(page, "coggleNo", "DESC");
-        Page<Coggle> pages = coggleRepository.findByCategoryAndUser(request.getCategory(), request.getKeyword(), pageInfo.getPageRequest());
+        Page<Coggle> pages = coggleRepository.findByCategoryAndUser(request.getCategory() , request.getKeyword(), request.getLoginId(), pageInfo.getPageRequest());
         pageInfo.setPageInfo(pages, pageInfo);
         List<CoggleDto> coggleList = pages.stream()
                 .map(coggle -> CoggleDto.builder().build().changeEntityToDto(coggle))

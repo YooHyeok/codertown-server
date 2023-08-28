@@ -8,4 +8,5 @@ public class CoggleListRequest {
     private Integer page;
     private Character category;
     private String keyword; //검색 조건 컨디션
+    private String loginId;
 }
