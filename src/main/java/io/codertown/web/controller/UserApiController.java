@@ -18,8 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
-
 /**
  * *****************************************************<p>
  * 패키지:io.codertown.web.user<p>
@@ -186,12 +184,10 @@ public class UserApiController {
      * img태그에서 src에의해 파일정보가 호출되고 MIME 타입 정보를 기반으로 이미지를 올바른 형식으로 표시하게된다.
      * @param id
      */
-    @GetMapping("/profileImage/{id}")
-    public ResponseEntity<byte[]> profileThumbnail(@PathVariable Long id, HttpServletResponse response) {
+    @GetMapping("/profileImage/{loginId}")
+    public ResponseEntity<byte[]> profileThumbnail(@PathVariable String loginId) {
         try {
-            byte[] thumbnail = userService.profileImage(id);
-/*            response.setContentType("image/jpeg"); // 브라우저 이미지 출력 테스트 코드
-            response.getOutputStream().write(thumbnail);*/
+            byte[] thumbnail = userService.profileImage(loginId);
             return ResponseEntity.ok(thumbnail);
         } catch(Exception e) {
             e.printStackTrace();
