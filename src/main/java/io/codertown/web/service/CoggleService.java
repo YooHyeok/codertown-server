@@ -159,6 +159,9 @@ public class CoggleService {
                         .coggle(findCoggle)
                         .parent(parentComment)
                         .content(request.getContent())
+                        .depth(request.getDepth())
+                        .mentionUser(request.getMentionUser())
+                        .status(false)
                         .build();
                 //                    System.out.println("buildComment.getParent().getChildren() = " + buildComment.getParent().getChildren());
                 if (parentComment != null) parentComment.getChildren().add(buildComment); // 현재자식을 부모의 자식리스트에 저장
@@ -225,6 +228,7 @@ public class CoggleService {
         Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
         if (oCoggle.isPresent()) {
             Coggle coggle = oCoggle.get();
+            System.out.println(commentRepository.findByCoggle(coggle));
             List<CommentDto> collect = commentRepository.findByCoggle(coggle).stream()
                     .filter(comment -> comment.getParent() == null) // 1. parent가 null인 최상위 댓글들만 필터한다.
                     .map(comment ->  CommentDto.builder().build()

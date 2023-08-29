@@ -6,6 +6,7 @@ import io.codertown.web.payload.request.CoggleDeleteParamRequest;
 import io.codertown.web.payload.request.CommentUpdateRequset;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class Comment extends BaseTimeStampEntity {
     @Column(columnDefinition = "LONGTEXT")
     private String content;
 
-    @Column(columnDefinition = "boolean default false constraint achieve check(achieve in(true,false))")
+    @ColumnDefault("false")
     private Boolean status;//댓글 상태 False:정상 | True:삭제
 
     @ToString.Exclude
@@ -36,6 +37,12 @@ public class Comment extends BaseTimeStampEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_no")
     private User user; //댓글 작성자
+
+    @Column
+    private String mentionUser;
+
+    @Column
+    private Integer depth; //깊이 1,2,3
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "coggle_no")

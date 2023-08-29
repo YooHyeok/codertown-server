@@ -7,5 +7,5 @@ public class CommentUpdateRequset {
     private Long commentNo;
     private String content;
 
-    private Character status;
+//    private Character status;
 }
