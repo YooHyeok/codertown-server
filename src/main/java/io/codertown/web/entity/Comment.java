@@ -2,7 +2,6 @@ package io.codertown.web.entity;
 
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.user.User;
-import io.codertown.web.payload.request.CoggleDeleteParamRequest;
 import io.codertown.web.payload.request.CommentUpdateRequset;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -56,7 +55,7 @@ public class Comment extends BaseTimeStampEntity {
         this.content = request.getContent();
     }
 
-    public void deleteComment(CoggleDeleteParamRequest request) {
-        this.status = false;
+    public void deleteComment() {
+        this.status = true;
     }
 }
