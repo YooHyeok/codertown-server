@@ -16,7 +16,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Random;
 
 /**
  * *****************************************************<p>
@@ -32,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
 //public class UserController extends CommonLoggerComponent {
 public class UserApiController {
     private final UserService userService;
+    private final JavaMailSender javaMailSender;
 
     /**
      * Eamil 중복 확인 API
@@ -57,6 +62,27 @@ public class UserApiController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    @ApiOperation(value="이메일 인증 API", notes="회원가입시 이메일 인증번호 발송")
+    @ApiResponse(description = "인증 번호 반환",responseCode = "200")
+    @PostMapping(path = "/email-auth", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Integer> emailAuthSend(@RequestParam("email") String email) {
+        try {
+            Random random = new Random();
+            random.setSeed(System.currentTimeMillis());
+            Integer randomValue = random.nextInt(1000000) % 1000000;
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(email);
+            message.setSubject("[코더타운] 회원가입 이메일 인증");
+            message.setText(randomValue.toString());
+            javaMailSender.send(message);
+            return ResponseEntity.ok(randomValue);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
 
     /**
      * 회원 가입 API
