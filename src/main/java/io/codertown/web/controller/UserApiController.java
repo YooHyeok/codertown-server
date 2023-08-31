@@ -43,8 +43,8 @@ public class UserApiController {
      */
     @ApiOperation(value="이메일 중복확인 API", notes="회원가입시 이메일 중복 확인")
     @ApiResponse(description = "중복 확인 성공 결과",responseCode = "200")
-    @PostMapping(path = "/email-exists", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ExistsResult> emailExists(@RequestBody String email) {
+    @PostMapping(path = "/email-exists", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ExistsResult> emailExists(@RequestParam("email") String email) {
         try {
             Boolean exists = userService.existsByEmail(email);
             ExistsResult result = ExistsResult
