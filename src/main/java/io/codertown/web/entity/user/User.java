@@ -28,7 +28,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"projectUsers", "recruitUsers"})
+@ToString(exclude = {"projectUsers", "recruitUsers", "attachFile"})
 @Entity
 public class User extends BaseTimeStampEntity implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
