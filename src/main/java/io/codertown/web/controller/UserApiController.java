@@ -16,10 +16,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.internet.MimeMessage;
 import java.util.Random;
 
 /**
@@ -71,11 +72,98 @@ public class UserApiController {
             Random random = new Random();
             random.setSeed(System.currentTimeMillis());
             Integer randomValue = random.nextInt(1000000) % 1000000;
-            SimpleMailMessage message = new SimpleMailMessage();
-            message.setTo(email);
-            message.setSubject("[코더타운] 회원가입 이메일 인증");
-            message.setText(randomValue.toString());
-            javaMailSender.send(message);
+//            SimpleMailMessage message = new SimpleMailMessage();
+//            message.setTo(email);
+//            message.setSubject("[코더타운] 회원가입 이메일 인증");
+////          message.setText(randomValue.toString());
+//            message.setText(textString, true);
+//            javaMailSender.send(message);
+            MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+            mimeMessageHelper.setTo(email);
+            mimeMessageHelper.setSubject("[코더타운] 회원가입 이메일 인증");
+
+            String textString =
+                    "<div style=\"background:#ffffff;margin:0;padding:0;font-family:'Apple SD Gothic', '맑은고딕', 'Nanum Gothic', sans-serif\">\n" +
+                            "    <div style=\"background:#ffffff;margin:0 auto;padding:0;width:100%;max-width:600px;box-sizing:border-box;-webkit-text-size-adjust:none\">\n" +
+                            "        <table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#fff;margin:0;padding:0;max-width:600px\">\n" +
+                            "            <tbody>" +
+                            "               <tr>" +
+                            "                   <td style=\"background:#ffffff;padding:63px 2px 0\">\n" +
+                            "                       <table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n" +
+                            "                           <tbody>" +
+                            "                               <tr>" +
+                            "                                   <td align=\"center\">\n" +
+                            "                                   <table width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n" +
+                            "                                       <tbody>" +
+                            "                                           <tr>" +
+                            "                                               <td align=\"left\">" +
+                            "                                                   <div class=\"logo-text\" style=\"font-size: 40px; font-family: 'KOTRAHOPE';  \">" +
+                            "                                                       <b>C</b>oder<b>Town</b>" +
+                            "                                                   </div>" +
+                            "                                               </td>" +
+                            "                                           </tr>\n" +
+                            "                                           <tr>" +
+                            "                                               <td colspan=\"2\" height=\"46\">" +
+                            "                                               </td>" +
+                            "                                           </tr>\n" +
+                            "                                       </tbody>" +
+                            "                                   </table>\n" +
+                            "                               </td>" +
+                            "                           </tr>\n" +
+                            "                           <tr>" +
+                            "                               <td align=\"left\" style=\"background:#fff;padding:0\">\n" +
+                            "                                   <p style=\"margin:0 0 24px;padding:0;font-family:'Apple SD Gothic', '맑은고딕', 'Nanum Gothic', sans-serif;font-size:26px;color:#000;letter-spacing:-1px;line-height:32px;font-weight:bold\">" +
+                            "                                       이메일 인증을 진행해주세요\n" +
+                            "                                   </p>\n" +
+                            "                                   <p style=\"margin:0 0 40px;padding:0;font-family:'Apple SD Gothic', '맑은고딕', 'Nanum Gothic',sans-serif;font-size:18px;color:#404040;letter-spacing:-1px;line-height:24px\">\n" +
+                            "                                       안녕하세요. 코더타운을 이용해주셔서 감사합니다 :)<br>\n" +
+                            "                                       코더타운 가입을 위해 아래 인증번호를 화면에 입력해주세요.\n" +
+                            "                                   </p>\n" +
+                            "                                   <div style=\"background:#f9f9fb;border:1px solid #ececec;border-radius:4px\">\n" +
+                            "                                       <table align=\"center\" width=\"100%\" border=\"0\" bgcolor=\"#f9f9fe\" cellpadding=\"0\" style=\"border:0\">\n" +
+                            "                                           <tbody>" +
+                            "                                               <tr>" +
+                            "                                                   <td height=\"38\"></td>" +
+                            "                                               </tr>\n" +
+                            "                                               <tr>" +
+                            "                                                   <td align=\"center\" style=\"font-family:'Apple SD Gothic', '맑은고딕', 'Nanum Gothic',sans-serif;font-size:48px;color:#202020;letter-spacing:8px;line-height:56px\">\n" +
+                                                                                    randomValue.toString() +"\n"+
+                            "                                                   </td>" +
+                            "                                               </tr>\n" +
+                            "                                               <tr>" +
+                            "                                                   <td height=\"38\">" +
+                            "                                                   </td>" +
+                            "                                               </tr>\n" +
+                            "                                           </tbody>" +
+                            "                                       </table>\n" +
+                            "                                   </div>\n" +
+                            "                                   <table align=\"center\" width=\"100%\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"border:0\">\n" +
+                            "                                       <tbody>" +
+                            "                                           <tr>" +
+                        "                                                   <td align=\"left\" style=\"padding:16px 0 0;font-family:'Apple SD Gothic', '맑은고딕', 'Nanum Gothic',sans-serif;text-align:center;font-size:16px;color:#808080;letter-spacing:-1px;line-height:24px\">\n" +
+                            "                                                   유효시간 5분 안에 인증하셔야 합니다.\n" +
+                            "                                               </td>" +
+                            "                                           </tr>\n" +
+                            "                                           <tr>" +
+                            "                                               <td height=\"56\">" +
+                            "                                               </td>" +
+                            "                                           </tr>\n" +
+                            "                                       </tbody>" +
+                            "                                   </table>\n" +
+                            "                               </td>" +
+                            "                           </tr>\n" +
+                            "                       </tbody>" +
+                            "                   </table>\n" +
+                            "                   </td>" +
+                            "               </tr>\n" +
+                            "           </tbody>" +
+                            "       </table>\n" +
+                            "    </div>\n" +
+                            "</div>";
+            mimeMessageHelper.setText(textString, true);
+            javaMailSender.send(mimeMessage);
+
             return ResponseEntity.ok(randomValue);
         } catch (Exception e) {
             e.printStackTrace();
