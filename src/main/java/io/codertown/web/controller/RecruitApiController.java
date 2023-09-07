@@ -29,11 +29,12 @@ public class RecruitApiController {
     @ApiResponse(description = "코끼리 목록 리스트 JSON 데이터",responseCode = "200")
     @GetMapping(path = "/recruit", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RecruitListResponse> cokkiriList(@RequestParam(required = false) Integer page,
+                                                           @RequestParam(required = false, defaultValue = "10") Integer size,
                                                            @RequestParam(required = false) String dType,
                                                            @RequestParam(required = false) String keyword,
                                                            @RequestParam(required = false) String loginId) {
         try {
-            RecruitListResponse recruitList = recruitService.recruitList(page, dType, keyword, loginId);
+            RecruitListResponse recruitList = recruitService.recruitList(page, size, dType, keyword, loginId);
             return ResponseEntity.ok(recruitList);
         } catch (Exception e) {
             e.printStackTrace();

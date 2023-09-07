@@ -33,8 +33,8 @@ public class PageInfo {
      * @param sortDirection
      * @return
      */
-    public PageInfo createPageRequest(Integer page, String sortColumn, String sortDirection) {
-        PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by(setSortDriection(sortDirection), sortColumn));
+    public PageInfo createPageRequest(Integer page, Integer size, String sortColumn, String sortDirection) {
+        PageRequest pageRequest = PageRequest.of(page - 1, size, Sort.by(setSortDriection(sortDirection), sortColumn));
         PageInfo pageInfo = PageInfo.builder().curPage(page).pageRequest(pageRequest).build();
         return pageInfo;
     }
