@@ -126,11 +126,13 @@ public class RecruitService {
      * @param recruitNo
      * @return
      */
+    @Transactional(readOnly = false)
     public CokkiriDetailResponse cokkiriDetail(Long recruitNo) throws RuntimeException {
         try {
             Optional<Recruit> oRecruit = recruitRepository.findById(recruitNo);
             if (oRecruit.isPresent()) {
                 Cokkiri cokkiri = (Cokkiri)oRecruit.get();
+                cokkiri.incrementViews();
                 UserDto userDto = UserDto.userEntityToDto(cokkiri.getRecruitUser());
                 // 프로젝트별 파트 조회 정보
                 List<ProjectPartSaveDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
@@ -219,12 +221,14 @@ public class RecruitService {
     /**
      * 맘모스 상세보기
      */
+    @Transactional(readOnly = false)
     public RecruitDto mammothDetail(Long recruitNo) {
         try{
             Optional<Recruit> oRecruit = recruitRepository.findById(recruitNo);
             if (oRecruit.isPresent()) {
                 Mammoth mammoth = (Mammoth) oRecruit.get();
                 UserDto userDto = UserDto.userEntityToDto(mammoth.getRecruitUser());
+                mammoth.incrementViews();
                 // 코끼리 조회 정보
                 return RecruitDto.builder().build().mammothEntityToDto(mammoth, userDto, "mammoth");
             }

@@ -40,6 +40,8 @@ public abstract class Recruit extends BaseTimeStampEntity {
     @ColumnDefault(value = "false")
     private Boolean status; // 글상태 True : 삭제 | False : 정상
 
+    private Long views;
+
     /**
      * Recruit 수정 변경감지 메소드 <br/>
      * Cokkiri와 Mammoth 엔티티 변경감지시 호출된다.
@@ -51,6 +53,10 @@ public abstract class Recruit extends BaseTimeStampEntity {
         this.title = tittle;
         this.link = link;
         this.content = Content;
+    }
+
+    public void incrementViews() {
+        this.views ++;
     }
 
     /**

@@ -33,6 +33,12 @@ public class Coggle extends BaseTimeStampEntity {
     @JoinColumn(name = "writer", referencedColumnName = "USER_NO")
     private User user;
 
+    private Long views;
+
+    public void incrementViews() {
+        this.views ++;
+    }
+
     /**
      * 코글 수정 - 변경감지 메소드 <br/>
      * 제목과 내용만 수정이 가능하다. <br/>

@@ -16,7 +16,7 @@ public class CoggleDto {
     private Boolean status;
 //    private String writer;
     private UserDto writer;
-
+    private Long views;
     private LocalDateTime firstRegDate;
     private LocalDateTime lastModDate;
 
@@ -34,6 +34,7 @@ public class CoggleDto {
                 .title(findCoggle.getTitle())
                 .content(findCoggle.getContent())
                 .status(findCoggle.getStatus())
+                .views(findCoggle.getViews())
                 .firstRegDate(findCoggle.getFirstRegDate())
                 .lastModDate(findCoggle.getLastModDate())
                 .build();

@@ -37,7 +37,8 @@ public class Cokkiri extends Recruit {
                 .recruitUser(request.getUser())//부모 변수 초기화 가능
                 .title(request.getCokkiriTitle()) //부모 변수 초기화 가능
                 .objectWeek(request.getObjectWeek())
-                .link(request.getLink()) //부모 변수 초기화 가능
+                .link(request.getLink()) //부모 변수 초기화 가능'
+                .views(0L)
                 .project(project)
                 .content(request.getContent())//부모 변수 초기화 가능
                 .status(false)

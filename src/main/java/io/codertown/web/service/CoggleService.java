@@ -57,11 +57,13 @@ public class CoggleService {
      * @param coggleNo
      * @return 성공: TRUE | 실패: FALSE
      */
+    @Transactional(readOnly = false)
     public CoggleDto coggleDetail(Long coggleNo) throws RuntimeException {
         try {
             Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
             if (oCoggle.isPresent()) {
                 Coggle findCoggle = oCoggle.get();
+                findCoggle.incrementViews();
                 return CoggleDto.builder().build().changeEntityToDto(findCoggle); //코글 변환후 반환
             }
             throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch

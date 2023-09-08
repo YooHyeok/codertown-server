@@ -15,6 +15,7 @@ public class RecruitDto {
     private String title;
     private String content;
     private String link;
+    private Long views;
 //    private String writer;
     private UserDto writer; //추후 writer정보 변경가능
     private String location;
@@ -29,6 +30,7 @@ public class RecruitDto {
                 .title(cokkiri.getTitle()) // 코끼리 글 제목
                 .link(cokkiri.getLink())
                 .content(cokkiri.getContent()) // 코끼리 글 내용
+                .views(cokkiri.getViews())
                 .firstRegDate(cokkiri.getFirstRegDate())
                 .lastModDate(cokkiri.getLastModDate())
                 .writer(userDto) // 코끼리 글 작성자 (추후 String값으로 수정)
@@ -43,6 +45,7 @@ public class RecruitDto {
                 .title(mammoth.getTitle()) // 맘모스 글 제목
                 .link(mammoth.getLink())
                 .content(mammoth.getContent()) // 맘모스 글 내용
+                .views(mammoth.getViews())
                 .firstRegDate(mammoth.getFirstRegDate())
                 .lastModDate(mammoth.getLastModDate())
                 .writer(userDto) // 맘모스 글 작성자 (추후 String값으로 수정)
