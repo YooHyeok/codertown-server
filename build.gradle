@@ -48,6 +48,8 @@ dependencies {
 	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 	// SpringWebsocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+//	implementation 'org.webjars:sockjs-client:1.5.1'
+//	implementation 'org.webjars:stomp-websocket:2.3.4'
 	testImplementation 'org.projectlombok:lombok:1.18.22'
 	// Swagger - API명세 기능
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'

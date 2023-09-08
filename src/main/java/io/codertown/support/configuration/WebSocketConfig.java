@@ -17,9 +17,12 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/apic") //엔드포인트 등록 - apic테스트용
                 .setAllowedOrigins("*"); // 웹 소켓 연결을 허용할 원본(Origin) 설정 (CROS 정책 설정)
+//                .withSockJS();
 
         registry.addEndpoint("/ws") //엔드포인트 등록 - 해당 경로를 통해 Websocket연결
+//                .setAllowedOrigins("*")
                 .setAllowedOrigins("http://localhost:80")
+//                .setAllowedOriginPatterns("http://localhost:*")
                 .withSockJS(); //WebSocket을 지원하지 않는 브라우저의 대체수단
     }
 
