@@ -12,10 +12,7 @@ import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.*;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
 import io.codertown.web.payload.response.RecruitListResponse;
-import io.codertown.web.repository.PartRepository;
-import io.codertown.web.repository.ProjectPartRepository;
-import io.codertown.web.repository.RecruitRepository;
-import io.codertown.web.repository.UserRepository;
+import io.codertown.web.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -34,7 +31,6 @@ public class RecruitService {
     private final UserRepository userRepository;
     private final PartRepository partRepository;
     private final ProjectPartRepository projectPartRepository;
-
     private final LikeRepository likeRepository;
 
     /**
