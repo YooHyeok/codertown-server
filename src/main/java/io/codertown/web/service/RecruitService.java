@@ -2,6 +2,7 @@ package io.codertown.web.service;
 
 import io.codertown.support.PageInfo;
 import io.codertown.web.dto.*;
+import io.codertown.web.entity.Like;
 import io.codertown.web.entity.Part;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.recruit.Cokkiri;
@@ -33,6 +34,8 @@ public class RecruitService {
     private final UserRepository userRepository;
     private final PartRepository partRepository;
     private final ProjectPartRepository projectPartRepository;
+
+    private final LikeRepository likeRepository;
 
     /**
      * 코끼리 & 프로젝트 저장
@@ -190,6 +193,35 @@ public class RecruitService {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 코끼리&맘모스 좋아요 Toggle
+     * @param recruitNo
+     * @param userId
+     * @return
+     */
+    @Transactional(readOnly = false)
+    public void likeToggle(Long recruitNo, String userId) throws Exception{
+        User user = (User) userRepository.findByEmail(userId);
+        try {
+            Optional<Recruit> oRecruit = recruitRepository.findById(recruitNo);
+            
+            if (oRecruit.isPresent()) {
+                Recruit recruit = oRecruit.get();
+                Optional<Like> like = likeRepository.findByUserAndRecruit(user, recruit);
+            }
+//            throw new RuntimeException("게시글 없음");
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw e;
+    }
+
+        /*if(like.isEmpty()){
+            likeRepository.save(new Like(rno, userId));
+        } else {
+            likeRepository.delete(like.get());
+        }*/
     }
 
     /**

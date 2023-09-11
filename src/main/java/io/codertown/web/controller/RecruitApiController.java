@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 public class RecruitApiController {
 
     private final RecruitService recruitService;
-    private final LikeService likeService;
 
     /**
      * 코끼리&맘모스 목록 API
@@ -45,16 +44,17 @@ public class RecruitApiController {
 
     /**
      * 코끼리&맘모스 좋아요 Toggle API
-     * @param page
+     * @param recruitNo
+     * @param userId
      * @return
      */
     @ApiOperation(value="코끼리&맘모스 좋아요 Toggle API", notes="코끼리&맘모스 좋아요 Toggle 성공여부 반환")
     @ApiResponse(description = "코끼리&맘모스 목록 리스트 JSON 데이터",responseCode = "200")
     @PostMapping(path = "/recruit-like", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> likeToggle(@RequestParam Integer rno, String userId) {
+    public ResponseEntity<String> likeToggle(@RequestParam Long recruitNo, String userId) {
         ResponseEntity<String> res = null;
         try{
-            likeService.likeToggle(rno,userId);
+            recruitService.likeToggle(recruitNo,userId);
             res = new ResponseEntity<String>("찜 목록에 추가", HttpStatus.OK);
             return res;
         }catch(Exception e) {
