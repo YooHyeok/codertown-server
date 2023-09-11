@@ -33,7 +33,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/dm-sub", "/push-sub"); //수신
+        registry.enableSimpleBroker("/connected-success", "/dm-sub", "/push-sub"); //수신
         registry.setApplicationDestinationPrefixes("/dm-pub", "/push-pub"); //송신
     }
 }
