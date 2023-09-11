@@ -205,7 +205,12 @@ public class RecruitService {
             if (oRecruit.isPresent()) {
                 Recruit recruit = oRecruit.get();
                 Optional<LikeMark> like = likeRepository.findByUserAndRecruit(user, recruit);
-                System.out.println("createRecruitLike = " + LikeMark.builder().build().createRecruitLikeMark(user, recruit));
+                LikeMark recruitLikeMark = LikeMark.builder().build().createRecruitLikeMark(user, recruit);
+                if(like.isEmpty()){ // 존재하지 않는다면 추가
+                    likeRepository.save(recruitLikeMark);
+                } else { //존재한다면 제거
+                    likeRepository.delete(like.get());
+                }
             }
 //            throw new RuntimeException("게시글 없음");
     } catch (Exception e) {
