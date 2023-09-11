@@ -3,6 +3,7 @@ package io.codertown.web.repository.querydsl;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.codertown.web.entity.QLikeMark;
 import io.codertown.web.entity.recruit.Cokkiri;
 import io.codertown.web.entity.recruit.Mammoth;
 import io.codertown.web.entity.recruit.QRecruit;
@@ -29,8 +30,9 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
     }
 
     @Override
-    public Page<Recruit> findByType(String dType, Pageable pageable, String keyword, String loginId) {
+    public Page<Recruit> findByType(String dType, Pageable pageable, String keyword, String loginId, String url) {
         QRecruit recruit = QRecruit.recruit;
+        QLikeMark likeMark = QLikeMark.likeMark;
 //        loginId = loginId == null ? "" : loginId;
         /**
          *  and연산자로 묶기위한 최상위 BooleanExpression
@@ -38,11 +40,17 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
          */
         BooleanExpression  baseCondition = recruit.status.eq(false);
 
-        /* 나의 게시글 / 일반 조회 - 로그인아이디 파라미터 여부 */
-        BooleanExpression loginIdCondition = (loginId == null || loginId.equals("")) ? null : recruit.recruitUser.email.eq(loginId);
-        if (loginIdCondition != null) {
-            baseCondition = baseCondition.and(loginIdCondition);
+        BooleanExpression loginIdCondition = null;
+        if (url == null || !url.equals("main")) {
+            /* 나의 게시글 / 일반 조회 - 로그인아이디 파라미터 여부 */
+            loginIdCondition = (loginId == null || loginId.equals("")) ? null : recruit.recruitUser.email.eq(loginId);
+            System.out.println("loginIdCondition = " + loginIdCondition);
+            if (loginIdCondition != null) {
+                baseCondition = baseCondition.and(loginIdCondition);
+            }
         }
+        System.out.println("loginId = " + loginId);
+        System.out.println("baseCondition = " + baseCondition);
 
         /* dType 조건 */
         BooleanExpression dTypeCondition =
@@ -60,10 +68,11 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
         if (searchByKeword != null) {
             baseCondition = baseCondition.and(searchByKeword);
         }
-
+        System.out.println("loginId = " + loginId);
 
         /* 실제 QueryDSL 적용 */
         List<Recruit> content = queryFactory.selectFrom(recruit)
+                .leftJoin(recruit.likeMark)
                 .leftJoin(recruit.recruitUser).fetchJoin()
 //                .where(dTypeCondition, recruit.status.eq(false) , searchByLeword)
                 .where(baseCondition)

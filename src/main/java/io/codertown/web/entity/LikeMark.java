@@ -2,10 +2,7 @@ package io.codertown.web.entity;
 
 import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,7 +10,8 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = "recruit")
+@Getter
 public class LikeMark {
 
     @Id
@@ -21,15 +19,15 @@ public class LikeMark {
     @Column(name = "LIKE_MARK_NO")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_NO")
     private User user;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "RECRUIT_NO")
     private Recruit recruit;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "COGGLE_NO")
     private Coggle coggle;
 

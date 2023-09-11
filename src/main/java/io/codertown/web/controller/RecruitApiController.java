@@ -32,9 +32,10 @@ public class RecruitApiController {
                                                            @RequestParam(required = false, defaultValue = "10") Integer size,
                                                            @RequestParam(required = false) String dType,
                                                            @RequestParam(required = false) String keyword,
-                                                           @RequestParam(required = false) String loginId) {
+                                                           @RequestParam(required = false) String loginId,
+                                                           @RequestParam(required = false) String url) {
         try {
-            RecruitListResponse recruitList = recruitService.recruitList(page, size, dType, keyword, loginId);
+            RecruitListResponse recruitList = recruitService.recruitList(page, size, dType, keyword, loginId, url);
             return ResponseEntity.ok(recruitList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,15 +52,13 @@ public class RecruitApiController {
     @ApiOperation(value="코끼리&맘모스 좋아요 Toggle API", notes="코끼리&맘모스 좋아요 Toggle 성공여부 반환")
     @ApiResponse(description = "코끼리&맘모스 목록 리스트 JSON 데이터",responseCode = "200")
     @PostMapping(path = "/recruit-like", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> likeToggle(@RequestParam Long recruitNo, String userId) {
-        ResponseEntity<String> res = null;
+    public ResponseEntity<Boolean> likeToggle(@RequestParam Long recruitNo, String userId) {
         try{
-            recruitService.likeToggle(recruitNo,userId);
-            res = new ResponseEntity<String>("찜 목록에 추가", HttpStatus.OK);
-            return res;
+            Boolean isLiked = recruitService.likeToggle(recruitNo, userId);
+            System.out.println("isLiked = " + isLiked);
+            return ResponseEntity.ok(isLiked);
         }catch(Exception e) {
-            res = new ResponseEntity<String>("찜하기 실패", HttpStatus.BAD_REQUEST);
-            return res;
+            return new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
         }
     }
     /**

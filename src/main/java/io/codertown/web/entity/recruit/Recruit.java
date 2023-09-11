@@ -1,6 +1,7 @@
 package io.codertown.web.entity.recruit;
 
 import io.codertown.support.base.BaseTimeStampEntity;
+import io.codertown.web.entity.LikeMark;
 import io.codertown.web.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,6 +36,9 @@ public abstract class Recruit extends BaseTimeStampEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_NO")
     private User recruitUser;
+
+    @OneToOne(mappedBy = "recruit", fetch = FetchType.LAZY)
+    private LikeMark likeMark;
 
     @Column(columnDefinition = "boolean default false constraint status check(status in(true,false))")
     @ColumnDefault(value = "false")
