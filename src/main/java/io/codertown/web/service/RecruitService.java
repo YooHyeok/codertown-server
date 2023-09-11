@@ -2,7 +2,7 @@ package io.codertown.web.service;
 
 import io.codertown.support.PageInfo;
 import io.codertown.web.dto.*;
-import io.codertown.web.entity.Like;
+import io.codertown.web.entity.LikeMark;
 import io.codertown.web.entity.Part;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.recruit.Cokkiri;
@@ -31,7 +31,7 @@ public class RecruitService {
     private final UserRepository userRepository;
     private final PartRepository partRepository;
     private final ProjectPartRepository projectPartRepository;
-    private final LikeRepository likeRepository;
+    private final LikeMarkRepository likeRepository;
 
     /**
      * 코끼리 & 프로젝트 저장
@@ -202,10 +202,10 @@ public class RecruitService {
         User user = (User) userRepository.findByEmail(userId);
         try {
             Optional<Recruit> oRecruit = recruitRepository.findById(recruitNo);
-            
             if (oRecruit.isPresent()) {
                 Recruit recruit = oRecruit.get();
-                Optional<Like> like = likeRepository.findByUserAndRecruit(user, recruit);
+                Optional<LikeMark> like = likeRepository.findByUserAndRecruit(user, recruit);
+                System.out.println("createRecruitLike = " + LikeMark.builder().build().createRecruitLikeMark(user, recruit));
             }
 //            throw new RuntimeException("게시글 없음");
     } catch (Exception e) {
