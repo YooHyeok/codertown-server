@@ -19,14 +19,15 @@ import org.springframework.web.bind.annotation.*;
 public class RecruitApiController {
 
     private final RecruitService recruitService;
+    private final LikeService likeService;
 
     /**
-     * 코끼리 목록 API
+     * 코끼리&맘모스 목록 API
      * @param page
      * @return
      */
-    @ApiOperation(value="코끼리 목록 출력 API", notes="코끼리 목록 출력에 필요한 JSON 데이터 반환")
-    @ApiResponse(description = "코끼리 목록 리스트 JSON 데이터",responseCode = "200")
+    @ApiOperation(value="코끼리&맘모스 목록 출력 API", notes="코끼리&맘모스 목록 출력에 필요한 JSON 데이터 반환")
+    @ApiResponse(description = "코끼리&맘모스 목록 리스트 JSON 데이터",responseCode = "200")
     @GetMapping(path = "/recruit", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<RecruitListResponse> cokkiriList(@RequestParam(required = false) Integer page,
                                                            @RequestParam(required = false, defaultValue = "10") Integer size,
@@ -42,6 +43,25 @@ public class RecruitApiController {
         }
     }
 
+    /**
+     * 코끼리&맘모스 좋아요 Toggle API
+     * @param page
+     * @return
+     */
+    @ApiOperation(value="코끼리&맘모스 좋아요 Toggle API", notes="코끼리&맘모스 좋아요 Toggle 성공여부 반환")
+    @ApiResponse(description = "코끼리&맘모스 목록 리스트 JSON 데이터",responseCode = "200")
+    @PostMapping(path = "/recruit-like", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> likeToggle(@RequestParam Integer rno, String userId) {
+        ResponseEntity<String> res = null;
+        try{
+            likeService.likeToggle(rno,userId);
+            res = new ResponseEntity<String>("찜 목록에 추가", HttpStatus.OK);
+            return res;
+        }catch(Exception e) {
+            res = new ResponseEntity<String>("찜하기 실패", HttpStatus.BAD_REQUEST);
+            return res;
+        }
+    }
     /**
      * 코끼리 & 프로젝트 저장 API <br/>
      * @param request : JSON 데이터 <br/>
