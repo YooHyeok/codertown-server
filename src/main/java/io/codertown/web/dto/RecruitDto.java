@@ -19,7 +19,7 @@ public class RecruitDto {
 //    private String writer;
     private UserDto writer; //추후 writer정보 변경가능
     private String location;
-    private Integer objectWeek;
+//    private Integer objectWeek;
     private Integer likedCount;
     private Boolean isLiked;
     private LocalDateTime firstRegDate;
@@ -38,7 +38,7 @@ public class RecruitDto {
                 .firstRegDate(cokkiri.getFirstRegDate())
                 .lastModDate(cokkiri.getLastModDate())
                 .writer(userDto) // 코끼리 글 작성자 (추후 String값으로 수정)
-                .objectWeek(cokkiri.getObjectWeek()) // 목표 기간(주)
+//                .objectWeek(cokkiri.getObjectWeek()) // 목표 기간(주)
                 .build();
     }
 

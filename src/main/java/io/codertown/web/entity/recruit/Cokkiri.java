@@ -16,10 +16,8 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 public class Cokkiri extends Recruit {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
-    private Integer objectWeek; //목표 기간(주)
+//    private Integer objectWeek; //목표 기간(주)
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL) // Project도 함께 저장한다.
     @JoinColumn(name = "PROJECT_NO")
@@ -36,7 +34,7 @@ public class Cokkiri extends Recruit {
         Cokkiri build = Cokkiri.builder()
                 .recruitUser(request.getUser())//부모 변수 초기화 가능
                 .title(request.getCokkiriTitle()) //부모 변수 초기화 가능
-                .objectWeek(request.getObjectWeek())
+//                .objectWeek(request.getObjectWeek())
                 .link(request.getLink()) //부모 변수 초기화 가능'
                 .views(0L)
                 .project(project)
@@ -52,7 +50,7 @@ public class Cokkiri extends Recruit {
      */
     public void updateCokkiri(CokkiriUpdateDto cokkiriUpdate) {
         updateRecruit(cokkiriUpdate.getCokkiriTitle(), cokkiriUpdate.getLink(), cokkiriUpdate.getContent());
-        this.objectWeek = cokkiriUpdate.getObjectWeek();
-        project.updateProject(cokkiriUpdate.getProjectSubject(), cokkiriUpdate.getTeamname());
+//        this.objectWeek = cokkiriUpdate.getObjectWeek();
+        project.updateProject(cokkiriUpdate.getProjectSubject(), cokkiriUpdate.getObjectWeek(), cokkiriUpdate.getTeamname());
     }
 }

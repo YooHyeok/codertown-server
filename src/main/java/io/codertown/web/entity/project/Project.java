@@ -32,7 +32,7 @@ public class Project {
 
     @OneToMany(mappedBy = "project")
     private List<UserProject> projects = new ArrayList<>();
-
+    private Integer objectWeek; //목표 기간(주)
     private LocalDateTime startDate; // 시작 일자
     private LocalDateTime expectedEndDate; // 종료 예정 일자
     private LocalDateTime lastClosingDate; // 최종 종료 일자 (목표)
@@ -51,6 +51,7 @@ public class Project {
         Project build = Project.builder()
                 .subject(request.getProjectSubject())
                 .teamName(request.getTeamname())
+                .objectWeek(request.getObjectWeek())
                 .projectTitle(request.getProjectTitle())
                 .projectStatus(TotalStatusEnum.RECURUIT)
 //                .personalStatus()
@@ -63,8 +64,9 @@ public class Project {
      * 변경감지 수정을 위한 Project 초기화 메소드
      * @param subject, teamName
      */
-    public void updateProject(String subject, String teamName) {
+    public void updateProject(String subject, Integer objectWeek, String teamName) {
         this.subject = subject;
+        this.objectWeek = objectWeek;
         this.teamName = teamName;
     }
 }

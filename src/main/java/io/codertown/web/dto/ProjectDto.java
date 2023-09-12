@@ -14,6 +14,8 @@ public class ProjectDto {
     private String teamName; //프로젝트팀명
     private String projectStatus; //프로젝트 진행 상태
 
+    private Integer objectWeek;
+
     private List<ProjectPartSaveDto> projectParts; // 파트
 
     public static ProjectDto entityToDto(Project project, List<ProjectPartSaveDto> projectParts) {
@@ -22,6 +24,7 @@ public class ProjectDto {
                 .projectTitle(project.getProjectTitle()) // 프로젝트 제목
                 .teamName(project.getTeamName()) // 팀 이름
                 .projectStatus(project.getProjectStatus().name()) // 프로젝트 상태 (대기중)
+                .objectWeek(project.getObjectWeek())
                 .projectParts(projectParts) // 프로젝트별 파트 목록
                 .build();
     }

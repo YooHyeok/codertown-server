@@ -9,9 +9,6 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 
 @ToString(callSuper = true)
 @SuperBuilder
@@ -20,9 +17,6 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @Entity
 public class Mammoth extends Recruit {
-
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private String location; // 위치
 
