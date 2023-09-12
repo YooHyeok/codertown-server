@@ -3,7 +3,6 @@ package io.codertown.web.repository.querydsl;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.codertown.web.entity.QLikeMark;
 import io.codertown.web.entity.recruit.Cokkiri;
 import io.codertown.web.entity.recruit.Mammoth;
 import io.codertown.web.entity.recruit.QRecruit;
@@ -32,8 +31,6 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
     @Override
     public Page<Recruit> findByType(String dType, Pageable pageable, String keyword, String loginId, String url) {
         QRecruit recruit = QRecruit.recruit;
-        QLikeMark likeMark = QLikeMark.likeMark;
-//        loginId = loginId == null ? "" : loginId;
         /**
          *  and연산자로 묶기위한 최상위 BooleanExpression
          *  전체조회시 dType이 null일 경우 무시하기위함.
@@ -41,18 +38,16 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
         BooleanExpression  baseCondition = recruit.status.eq(false);
 
         BooleanExpression loginIdCondition = null;
+        /* 현재 페이지가 메인페이지면 로그인된 ID와 상관없이 전체 조회. */
         if (url == null || !url.equals("main")) {
             /* 나의 게시글 / 일반 조회 - 로그인아이디 파라미터 여부 */
             loginIdCondition = (loginId == null || loginId.equals("")) ? null : recruit.recruitUser.email.eq(loginId);
-            System.out.println("loginIdCondition = " + loginIdCondition);
             if (loginIdCondition != null) {
                 baseCondition = baseCondition.and(loginIdCondition);
             }
         }
-        System.out.println("loginId = " + loginId);
-        System.out.println("baseCondition = " + baseCondition);
 
-        /* dType 조건 */
+        /* dType 조건 (코끼리/맘모스/전체) */
         BooleanExpression dTypeCondition =
                 dType.equals("Cokkiri") ?
                         recruit.instanceOf(Cokkiri.class) : (dType.equals("Mammoth") ? recruit.instanceOf(Mammoth.class) : null);
@@ -68,11 +63,9 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
         if (searchByKeword != null) {
             baseCondition = baseCondition.and(searchByKeword);
         }
-        System.out.println("loginId = " + loginId);
 
         /* 실제 QueryDSL 적용 */
         List<Recruit> content = queryFactory.selectFrom(recruit)
-                .leftJoin(recruit.likeMark)
                 .leftJoin(recruit.recruitUser).fetchJoin()
 //                .where(dTypeCondition, recruit.status.eq(false) , searchByLeword)
                 .where(baseCondition)

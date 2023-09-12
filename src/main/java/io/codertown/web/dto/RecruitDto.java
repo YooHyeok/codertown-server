@@ -4,10 +4,8 @@ import io.codertown.web.entity.recruit.Cokkiri;
 import io.codertown.web.entity.recruit.Mammoth;
 import lombok.Builder;
 import lombok.Data;
-import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Data
 @Builder
@@ -26,7 +24,7 @@ public class RecruitDto {
     private LocalDateTime firstRegDate;
     private LocalDateTime lastModDate;
 
-    public static RecruitDto cokkiriEntityToDto(Cokkiri cokkiri, UserDto userDto, String dType, String loginId) {
+    public static RecruitDto cokkiriEntityToDto(Cokkiri cokkiri, UserDto userDto, String dType, Boolean isLiked) {
         return RecruitDto.builder()
                 .recruitNo(cokkiri.getId())
                 .category(dType)
@@ -34,8 +32,7 @@ public class RecruitDto {
                 .link(cokkiri.getLink())
                 .content(cokkiri.getContent()) // 코끼리 글 내용
                 .views(cokkiri.getViews())
-//                .isLiked(isLiked)
-                .isLiked(!StringUtils.hasText(loginId) /* 비어있다면 false */ ?  false : Optional.ofNullable(cokkiri.getLikeMark()).isEmpty() ? false : cokkiri.getLikeMark().getUser().getEmail().equals(loginId) ? true: false)
+                .isLiked(isLiked)
                 .firstRegDate(cokkiri.getFirstRegDate())
                 .lastModDate(cokkiri.getLastModDate())
                 .writer(userDto) // 코끼리 글 작성자 (추후 String값으로 수정)
@@ -43,7 +40,7 @@ public class RecruitDto {
                 .build();
     }
 
-    public static RecruitDto mammothEntityToDto(Mammoth mammoth, UserDto userDto, String dType, String loginId) {
+    public static RecruitDto mammothEntityToDto(Mammoth mammoth, UserDto userDto, String dType, Boolean isLiked) {
         return RecruitDto.builder()
                 .recruitNo(mammoth.getId())
                 .category(dType)
@@ -55,7 +52,7 @@ public class RecruitDto {
                 .lastModDate(mammoth.getLastModDate())
                 .writer(userDto) // 맘모스 글 작성자 (추후 String값으로 수정)
                 .location(mammoth.getLocation())
-                .isLiked(true)
+                .isLiked(isLiked)
                 .build();
     }
 

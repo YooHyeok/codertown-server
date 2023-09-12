@@ -23,11 +23,11 @@ public class LikeMark {
     @JoinColumn(name = "USER_NO")
     private User user;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RECRUIT_NO")
     private Recruit recruit;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COGGLE_NO")
     private Coggle coggle;
 

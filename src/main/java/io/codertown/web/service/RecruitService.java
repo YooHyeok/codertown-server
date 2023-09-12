@@ -167,24 +167,28 @@ public class RecruitService {
                 UserDto userDto = UserDto.userEntityToDto(recruit.getRecruitUser());
                 RecruitDto recruitDto = null;
                 ProjectDto projectDto = null;
+
                 /* 회원별 게시글별 좋아요 유무 */
-//                Optional<LikeMark> like = likeRepository.findByUserAndRecruit(recruit.getRecruitUser(), recruit);
+                boolean isLiked = recruit.getLikeMark()
+                        .stream().anyMatch(likeMark ->  likeMark.getUser().getEmail().equals(loginId));
+
+                /* 코끼리 변환 (조회한 Recruit리스트중 현재 요소가 Cokkiri인경우) */
                 if (recruit instanceof Cokkiri) {
                     Cokkiri cokkiri = (Cokkiri) recruit;
-
-//                    recruitDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, "cokkiri", like.isEmpty()
-                    recruitDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, "cokkiri", loginId
+                    recruitDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, "cokkiri", isLiked
                     );
                     List<ProjectPartSaveDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
                             .map(projectPart -> ProjectPartSaveDto.builder().build().entityToDto(projectPart))
                             .collect(Collectors.toList());
                     projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject(), projectPartList);
                 }
+
+                /* 맘모스 변환 (조회한 Recruit리스트중 현재 요소가 Mammoth인경우) */
                 if (recruit instanceof Mammoth) {
                     Mammoth mammoth = (Mammoth) recruit;
-//                    recruitDto = RecruitDto.builder().build().mammothEntityToDto(mammoth, userDto, "mammoth", like.isEmpty());
-                    recruitDto = RecruitDto.builder().build().mammothEntityToDto(mammoth, userDto, "mammoth", loginId);
+                    recruitDto = RecruitDto.builder().build().mammothEntityToDto(mammoth, userDto, "mammoth", isLiked);
                 }
+
                 return RecruitListDto.builder()
                         .recruitDto(recruitDto)
                         .projectDto(projectDto)

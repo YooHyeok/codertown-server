@@ -11,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -37,8 +38,8 @@ public abstract class Recruit extends BaseTimeStampEntity {
     @JoinColumn(name = "USER_NO")
     private User recruitUser;
 
-    @OneToOne(mappedBy = "recruit", fetch = FetchType.LAZY)
-    private LikeMark likeMark;
+    @OneToMany(mappedBy = "recruit")
+    private List<LikeMark> likeMark;
 
     @Column(columnDefinition = "boolean default false constraint status check(status in(true,false))")
     @ColumnDefault(value = "false")
