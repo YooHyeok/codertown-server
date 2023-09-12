@@ -142,6 +142,18 @@ public class RecruitApiController {
     }
 
     /**
+     * 프로젝트 참여 수락 API
+     * UserProject에 수락된 사용자를 파트별로 추가한다.
+     * @param request
+     */
+    @ApiOperation(value="프로젝트 참가 요청 API", notes="프로젝트 참여를 요청한다.")
+    @ApiResponse(description = "참여요청 성공 결과",responseCode = "200")
+    @PostMapping("/cokkiri/join-confirm")
+    public void projectJoinConfirm() {
+//        recruitService.projectJoinConfirm();
+    }
+
+    /**
      * 맘모스 저장 API <br/>
      * @param request : JSON 데이터 <br/>
      * { <br/>
