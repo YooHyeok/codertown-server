@@ -186,7 +186,6 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .nickname(user.getNickname())
-                .profileIcon(user.getProfileIcon())
                 .gender(user.getGender())
                 .role(user.getRolesToString())
                 .build();

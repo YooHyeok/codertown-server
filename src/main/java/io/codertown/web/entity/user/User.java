@@ -41,7 +41,6 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     @Column(columnDefinition = "mediumblob")
     @Nullable
     private byte[] attachFile; //프로필 이미지 첨부파일
-    private String profileIcon;
     private String password;
     private Character gender;
 
@@ -65,7 +64,6 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     public void updateUser(UserUpdateRequest request) throws IOException {
         this.email = request.getChangeEmail();
         this.nickname = request.getNickname();
-        this.profileIcon = request.getProfileIcon();
         this.password = request.getPassword();
         this.attachFilename = request.getFile().getOriginalFilename();
         this.attachFile = request.getFile().getBytes();
@@ -93,7 +91,6 @@ public class User extends BaseTimeStampEntity implements UserDetails {
         return User.builder()
                 .email(request.getEmail())
                 .nickname(request.getNickname())
-                .profileIcon(request.getProfileIcon())
                 .password(request.getPassword())
                 .gender(request.getGender())
                 .roles(Collections.singletonList(role))
