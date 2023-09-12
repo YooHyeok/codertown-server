@@ -52,13 +52,13 @@ public class RecruitApiController {
     @ApiOperation(value="코끼리&맘모스 좋아요 Toggle API", notes="코끼리&맘모스 좋아요 Toggle 성공여부 반환")
     @ApiResponse(description = "코끼리&맘모스 목록 리스트 JSON 데이터",responseCode = "200")
     @PostMapping(path = "/recruit-like", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Boolean> likeToggle(@RequestParam Long recruitNo, String userId) {
+    public ResponseEntity<SuccessBooleanResult> likeToggle(@RequestParam Long recruitNo, String userId) {
         try{
             Boolean isLiked = recruitService.likeToggle(recruitNo, userId);
-            System.out.println("isLiked = " + isLiked);
-            return ResponseEntity.ok(isLiked);
+
+            return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(isLiked));
         }catch(Exception e) {
-            return new ResponseEntity<Boolean>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<SuccessBooleanResult>(HttpStatus.BAD_REQUEST);
         }
     }
     /**

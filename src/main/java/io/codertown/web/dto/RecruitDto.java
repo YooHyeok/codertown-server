@@ -20,6 +20,7 @@ public class RecruitDto {
     private UserDto writer; //추후 writer정보 변경가능
     private String location;
     private Integer objectWeek;
+    private Integer likedCount;
     private Boolean isLiked;
     private LocalDateTime firstRegDate;
     private LocalDateTime lastModDate;
@@ -33,6 +34,7 @@ public class RecruitDto {
                 .content(cokkiri.getContent()) // 코끼리 글 내용
                 .views(cokkiri.getViews())
                 .isLiked(isLiked)
+                .likedCount(cokkiri.getLikeMark().size())
                 .firstRegDate(cokkiri.getFirstRegDate())
                 .lastModDate(cokkiri.getLastModDate())
                 .writer(userDto) // 코끼리 글 작성자 (추후 String값으로 수정)
@@ -53,6 +55,7 @@ public class RecruitDto {
                 .writer(userDto) // 맘모스 글 작성자 (추후 String값으로 수정)
                 .location(mammoth.getLocation())
                 .isLiked(isLiked)
+                .likedCount(mammoth.getLikeMark().size())
                 .build();
     }
 

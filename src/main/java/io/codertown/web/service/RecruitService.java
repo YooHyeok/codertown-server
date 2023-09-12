@@ -218,10 +218,10 @@ public class RecruitService {
                 LikeMark recruitLikeMark = LikeMark.builder().build().createRecruitLikeMark(user, recruit);
                 if (like.isEmpty()) { // 존재하지 않는다면 추가
                     likeRepository.save(recruitLikeMark);
-                    return like.isPresent(); // 추가됨
+                    return like.isEmpty(); // 추가됨
                 }
                 likeRepository.delete(like.get()); // 존재한다면 제거
-                return like.isPresent(); // 제거됨
+                return like.isEmpty(); // 제거됨
             }
         throw new RuntimeException("게시글 없음");
         } catch (Exception e) {
