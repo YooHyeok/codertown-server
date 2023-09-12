@@ -5,6 +5,7 @@ import io.codertown.web.dto.*;
 import io.codertown.web.entity.LikeMark;
 import io.codertown.web.entity.Part;
 import io.codertown.web.entity.ProjectPart;
+import io.codertown.web.entity.UserProject;
 import io.codertown.web.entity.recruit.Cokkiri;
 import io.codertown.web.entity.recruit.Mammoth;
 import io.codertown.web.entity.recruit.Recruit;
@@ -57,9 +58,18 @@ public class RecruitService {
                             , projectPartSaveDto.getRecruitCount()
                             , partRepository.findById(projectPartSaveDto.getPartNo()).get()
                     )).collect(Collectors.toList());
+            /* 프로젝트 파트에 팀장추가 */
+            ProjectPart projectPartLeader = ProjectPart.builder().build().createProjectPart(cokkiri.getProject(), 1, partRepository.findById(1L).get());
+            /* UserProject 엔티티에 팀장-작성자로 저장 */
+            UserProject userProject = UserProject.builder().build().createUserProject(findUser, cokkiri.getProject(), projectPartLeader);
+            projectPartLeader.getUserProjects().add(userProject); //양방향 - 저장?
+            cokkiri.getProject().getProjects().add(userProject); //양방향
+            projectParts.add(projectPartLeader);
             projectParts.forEach(projectPart -> cokkiri.getProject().getProjectParts().add(projectPart));
 //            collect.forEach(projectPartRepository::save); //반복 저장
             Cokkiri savedCokkiri = recruitRepository.save(cokkiri); // 영속되어있는 Project, ProjectPart 함께 저장
+
+
             return savedCokkiri.getId()!=null ? true: false;
         } catch (Exception e) {
             e.printStackTrace();

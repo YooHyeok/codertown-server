@@ -3,10 +3,7 @@ package io.codertown.web.entity;
 
 import io.codertown.web.entity.project.Project;
 import io.codertown.web.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -15,6 +12,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 /**
  * 프로젝트에 참여 할 때 저장되는 엔터티이다!
  */
@@ -59,10 +57,11 @@ public class UserProject {
      * @param project
      * @return
      */
-    public static UserProject createUserProject(User projectUser, Project project) {
+    public static UserProject createUserProject(User projectUser, Project project, ProjectPart projectPart) {
         UserProject userProject = UserProject.builder()
-                .projectUser(projectUser)
-                .project(project)
+                .projectUser(projectUser) //프로젝트 파트 참여자 저장
+                .project(project) //프로젝트 번호 저장
+                .projectPart(projectPart) // 프로젝트 파트번호 저장
                 .build();
         return userProject;
     }

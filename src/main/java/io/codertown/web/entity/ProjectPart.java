@@ -27,7 +27,7 @@ public class ProjectPart {
     @JoinColumn(name = "PART_NO")
     private Part part;
 
-    @OneToMany(mappedBy = "projectPart")
+    @OneToMany(mappedBy = "projectPart", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserProject> userProjects = new ArrayList<>(); //참여자 목록
     private int recruitCount; // 모집 인원
     private int currentCount; // 지원 인원
@@ -37,6 +37,7 @@ public class ProjectPart {
                 .part(part)
                 .recruitCount(recruitCount)
                 .project(project) //이곳에서 양방향으로 주입된다.
+                .userProjects(new ArrayList<>())
                 .build();
     }
 
