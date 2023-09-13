@@ -1,8 +1,10 @@
 package io.codertown;
 
 import io.codertown.web.dto.JoinedProjectDto;
+import io.codertown.web.dto.JoinedProjectTestDto;
 import io.codertown.web.entity.UserProject;
 import io.codertown.web.entity.project.Project;
+import io.codertown.web.entity.user.User;
 import io.codertown.web.repository.ProjectRepository;
 import io.codertown.web.repository.UserProjectRepository;
 import io.codertown.web.repository.UserRepository;
@@ -13,6 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @SpringBootTest
@@ -32,6 +36,7 @@ public class ProjectRepositoryTest {
     @Test
     @DisplayName("내가 참여중인 프로젝트 조회(나의 파트 함께 조회) 테스트 1")
     void findJoinedProjectTest1() {
+/*
         long startTime = System.currentTimeMillis();
         projectRepository.findJoinedProjectTest1().forEach(project -> {
             System.out.println("project = " + project.getProject());
@@ -40,6 +45,7 @@ public class ProjectRepositoryTest {
         long endTime = System.currentTimeMillis();
         long elapsedTime = endTime - startTime;
         System.out.println("코드 실행 시간: " + elapsedTime + " 밀리초");
+*/
     }
 
     @Test
@@ -47,7 +53,8 @@ public class ProjectRepositoryTest {
     void findJoinedProjectTest2() {
         long startTime = System.currentTimeMillis();
         projectRepository.findJoinedProjectTest2().stream().map(object -> {
-            return new JoinedProjectDto((Project) object[0], (UserProject) object[1]);
+            System.out.println("object.length = " + object.length);
+            return new JoinedProjectTestDto((Project) object[0], (UserProject) object[1], null);
         }).collect(Collectors.toList()).forEach(project -> {
             System.out.println("project = " + project.getProject());
             System.out.println("project = " + project.getUserProject());
@@ -66,7 +73,7 @@ public class ProjectRepositoryTest {
     void findJoinedProjectTest3() {
         long startTime = System.currentTimeMillis();
         projectRepository.findJoinedProjectTest3().stream().map(tuple -> {
-            return new JoinedProjectDto(tuple.get("pt", Project.class), tuple.get("up", UserProject.class));
+            return new JoinedProjectTestDto(tuple.get("pt", Project.class), tuple.get("up", UserProject.class), null);
         }).collect(Collectors.toList()).forEach(project -> {
             System.out.println("project = " + project.getProject());
             System.out.println("project = " + project.getUserProject());
@@ -78,5 +85,23 @@ public class ProjectRepositoryTest {
         long endTime = System.currentTimeMillis();
         long elapsedTime = endTime - startTime;
         System.out.println("코드 실행 시간: " + elapsedTime + " 밀리초");
+    }
+    
+    @Test
+    @DisplayName("내가 참여중인 프로젝트 조회(나의 파트 함께 조회) 테스트 4")
+    void findJoinedProjectTest4() {
+        User loginUser = (User) userRepository.findByEmail("webdevyoo@gmail.com");
+        List<Map<String, Object>> joinedProject = projectRepository.findJoinedProject(loginUser);
+
+        List<JoinedProjectDto> collect = joinedProject.stream()
+                .map(result -> JoinedProjectDto.builder()
+                        .project((Project) result.get("project"))
+                        .participationPartNo( (Long) result.get("participationPartNo"))
+                        .participationPartName((String) result.get("participationPartName"))
+                        .build())
+                .collect(Collectors.toList());
+        collect.forEach(joinedProjectDto -> {
+            System.out.println("project = " + joinedProjectDto);
+        });
     }
 }

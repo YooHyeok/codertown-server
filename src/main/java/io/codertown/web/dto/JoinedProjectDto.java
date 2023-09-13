@@ -1,13 +1,16 @@
 package io.codertown.web.dto;
 
-import io.codertown.web.entity.UserProject;
 import io.codertown.web.entity.project.Project;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class JoinedProjectDto {
     private Project project;
-    private UserProject userProject;
+
+    private Long participationPartNo;
+    private String participationPartName;
+
 }
