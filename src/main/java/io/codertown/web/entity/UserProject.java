@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
+@ToString(exclude = {"project", "projectPart"})
 /**
  * 프로젝트에 참여 할 때 저장되는 엔터티이다!
  */
