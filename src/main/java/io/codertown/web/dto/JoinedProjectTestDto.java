@@ -11,6 +11,8 @@ import lombok.Data;
 public class JoinedProjectTestDto {
     private Project project;
     private UserProject userProject;
-
     private ProjectPart projectPart;
+
+     /*   private Long participationPartNo;
+    private String participationPartName;*/
 }

@@ -6,6 +6,7 @@ import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
+import io.codertown.web.payload.response.JoinedProjectResponseDto;
 import io.codertown.web.payload.response.SignInResponse;
 import io.codertown.web.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -21,6 +22,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -292,6 +294,21 @@ public class UserApiController {
     }
 
     /**
+     * 참여중인 프로젝트 목록 API
+     * @param page
+     * @return
+     */
+    @ApiOperation(value="프로젝트 목록 출력 API", notes="프로젝트 목록 출력에 필요한 JSON 데이터 반환")
+    @ApiResponse(description = "프로젝트 목록 리스트 JSON 데이터",responseCode = "200")
+    @GetMapping(path = "/joinedProject", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<JoinedProjectResponseDto>> joinedProject(@RequestParam String loginId) {
+        System.out.println("메롱");
+        List<JoinedProjectResponseDto> joinedProject = userService.findJoinedProject(loginId);
+        joinedProject.forEach(joinedProjectDto -> System.out.println("joinedProjectDto = " + joinedProjectDto));
+        return ResponseEntity.ok(joinedProject);
+    }
+
+    /**
      * 클라이언트에서 프로필사진을 출력할때 호출된다 <br/>
      * img태그의 src속성에 의해 해당 url이 호출된다. <br/>
      * byte[] 배열로 변환하면서 DB의 blob타입 컬럼에 저장할경우 MIME타입이 함께 저장된다. <br/>
@@ -308,4 +325,6 @@ public class UserApiController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+
 }

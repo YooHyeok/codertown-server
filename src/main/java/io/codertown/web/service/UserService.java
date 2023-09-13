@@ -2,14 +2,16 @@ package io.codertown.web.service;
 
 import io.codertown.support.base.CommonLoggerComponent;
 import io.codertown.support.jwt.JwtTokenProvider;
-import io.codertown.web.dto.UserDto;
+import io.codertown.web.dto.*;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.SignInResult;
 import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
+import io.codertown.web.payload.response.JoinedProjectResponseDto;
 import io.codertown.web.payload.response.SignInResponse;
+import io.codertown.web.repository.ProjectRepository;
 import io.codertown.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -19,6 +21,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * *****************************************************<p>
@@ -34,12 +39,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService extends CommonLoggerComponent implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final ProjectRepository projectRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, @Lazy JwtTokenProvider jwtTokenProvider) {
+    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, ProjectRepository projectRepository, @Lazy JwtTokenProvider jwtTokenProvider) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
+        this.projectRepository = projectRepository;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -208,6 +215,33 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             findUser.updateUser(request);
             UserDto userDto = UserDto.builder().build().userEntityToDto(findUser);
             return userDto;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<JoinedProjectResponseDto> findJoinedProject(String loginEmail) {
+        try {
+
+            User loginUser = (User)loadUserByUsername(loginEmail);
+            List<JoinedProjectDto> joinedProject = projectRepository.findJoinedProject(loginUser);
+            List<JoinedProjectResponseDto> collect = joinedProject.stream().map(joinedProjectDto -> {
+                        /* 프로젝트 파트 리스트 DTO 변환 */
+                        List<ProjectPartSaveDto> projectPartList = joinedProjectDto.getProject().getProjectParts().stream()
+                                .map(projectPart -> ProjectPartSaveDto.builder().build().entityToDto(projectPart))
+                                .collect(Collectors.toList());
+                        /* Projet dto 변환 */
+                        ProjectDto projectDto = ProjectDto.builder().build().entityToDto(joinedProjectDto.getProject(), projectPartList);
+                        /* PartDto 변환 */
+                        PartDto partDto = PartDto.builder()
+                                .partNo(joinedProjectDto.getProjectPart().getPart().getId())
+                                .partNmae(joinedProjectDto.getProjectPart().getPart().getPartName()).build();
+                        return JoinedProjectResponseDto.builder().projectDto(projectDto).partDto(partDto).build();
+                    }
+            ).collect(Collectors.toList());
+
+            return collect;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
