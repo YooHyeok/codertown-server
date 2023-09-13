@@ -4,6 +4,7 @@ import io.codertown.web.entity.project.Project;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -15,8 +16,11 @@ public class ProjectDto {
     private String projectTitle; //프로젝트명
     private String teamName; //프로젝트팀명
     private String projectStatus; //프로젝트 진행 상태
-
     private Integer objectWeek;
+
+    private LocalDateTime startDate; // 시작 일자
+    private LocalDateTime expectedEndDate; // 종료 예정 일자
+    private LocalDateTime lastClosingDate; // 최종 종료 일자 (목표)
 
     private List<ProjectPartSaveDto> projectParts; // 파트
 
@@ -29,6 +33,9 @@ public class ProjectDto {
                 .projectStatus(project.getProjectStatus().name()) // 프로젝트 상태 (대기중)
                 .objectWeek(project.getObjectWeek())
                 .projectParts(projectParts) // 프로젝트별 파트 목록
+                .startDate(project.getStartDate())
+                .expectedEndDate(project.getExpectedEndDate())
+                .lastClosingDate(project.getLastClosingDate())
                 .build();
     }
 }
