@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class JoinedProjectDto {
+public class JoinedProjectSimpleConvertDto {
 
     private Project project;
 //    private UserProject userProject;

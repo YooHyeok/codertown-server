@@ -1,6 +1,6 @@
 package io.codertown.web.repository;
 
-import io.codertown.web.dto.JoinedProjectDto;
+import io.codertown.web.dto.JoinedProjectSimpleConvertDto;
 import io.codertown.web.dto.JoinedProjectTestDto;
 import io.codertown.web.entity.project.Project;
 import io.codertown.web.entity.user.User;
@@ -44,7 +44,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     List<Map<String, Object>> findJoinedProject(@Param("loginUser") User loginUser);*/
 
 
-    @Query("SELECT NEW io.codertown.web.dto.JoinedProjectDto(p, pp) FROM Project p " +
+    @Query("SELECT NEW io.codertown.web.dto.JoinedProjectSimpleConvertDto(p, pp) FROM Project p " +
             "LEFT JOIN fetch UserProject up ON (up.project.id = p.id) " +
             "LEFT JOIN fetch ProjectPart pp ON (pp.id = up.projectPart.id) " +
             "where up.projectUser.email = 'webdevyoo@gmail.com'")
@@ -53,7 +53,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
         "LEFT JOIN fetch UserProject up ON (up.project.id = p.id) " +
         "LEFT JOIN fetch ProjectPart pp ON (pp.id = up.projectPart.id) " +
         "where up.projectUser.email = 'webdevyoo@gmail.com'")*/
-    List<JoinedProjectDto> findJoinedProject(@Param("loginUser") User loginUser);
+    List<JoinedProjectSimpleConvertDto> findJoinedProject(@Param("loginUser") User loginUser);
 
 
 }

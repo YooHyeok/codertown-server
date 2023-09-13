@@ -6,7 +6,7 @@ import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
-import io.codertown.web.payload.response.JoinedProjectResponseDto;
+import io.codertown.web.dto.JoinedProjectResponseDto;
 import io.codertown.web.payload.response.SignInResponse;
 import io.codertown.web.service.UserService;
 import io.swagger.annotations.ApiOperation;

@@ -9,7 +9,7 @@ import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
-import io.codertown.web.payload.response.JoinedProjectResponseDto;
+import io.codertown.web.dto.JoinedProjectResponseDto;
 import io.codertown.web.payload.response.SignInResponse;
 import io.codertown.web.repository.ProjectRepository;
 import io.codertown.web.repository.UserRepository;
@@ -225,7 +225,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         try {
 
             User loginUser = (User)loadUserByUsername(loginEmail);
-            List<JoinedProjectDto> joinedProject = projectRepository.findJoinedProject(loginUser);
+            List<JoinedProjectSimpleConvertDto> joinedProject = projectRepository.findJoinedProject(loginUser);
             List<JoinedProjectResponseDto> collect = joinedProject.stream().map(joinedProjectDto -> {
                         /* 프로젝트 파트 리스트 DTO 변환 */
                         List<ProjectPartSaveDto> projectPartList = joinedProjectDto.getProject().getProjectParts().stream()

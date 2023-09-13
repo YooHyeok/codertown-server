@@ -1,7 +1,5 @@
-package io.codertown.web.payload.response;
+package io.codertown.web.dto;
 
-import io.codertown.web.dto.PartDto;
-import io.codertown.web.dto.ProjectDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
