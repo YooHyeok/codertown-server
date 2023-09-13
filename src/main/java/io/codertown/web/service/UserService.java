@@ -1,5 +1,6 @@
 package io.codertown.web.service;
 
+import io.codertown.support.PageInfo;
 import io.codertown.support.base.CommonLoggerComponent;
 import io.codertown.support.jwt.JwtTokenProvider;
 import io.codertown.web.dto.*;
@@ -9,12 +10,13 @@ import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
-import io.codertown.web.dto.JoinedProjectResponseDto;
+import io.codertown.web.payload.response.JoinedProjectResponse;
 import io.codertown.web.payload.response.SignInResponse;
 import io.codertown.web.repository.ProjectRepository;
 import io.codertown.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -221,12 +223,16 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         }
     }
 
-    public List<JoinedProjectResponseDto> findJoinedProject(String loginEmail) {
+    public JoinedProjectResponse findJoinedProject(Integer page, Integer size, String loginEmail) {
+        page = page == null ? 1 : page;
+        PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, size, "id", "DESC");
         try {
 
+
             User loginUser = (User)loadUserByUsername(loginEmail);
-            List<JoinedProjectSimpleConvertDto> joinedProject = projectRepository.findJoinedProject(loginUser);
-            List<JoinedProjectResponseDto> collect = joinedProject.stream().map(joinedProjectDto -> {
+            Page<JoinedProjectSimpleConvertDto> pages = projectRepository.findJoinedProject(loginUser, pageInfo.getPageRequest());
+            pageInfo.setPageInfo(pages, pageInfo);
+            List<JoinedProjectResponseDto> projectList = pages.getContent().stream().map(joinedProjectDto -> {
                         /* 프로젝트 파트 리스트 DTO 변환 */
                         List<ProjectPartSaveDto> projectPartList = joinedProjectDto.getProject().getProjectParts().stream()
                                 .map(projectPart -> ProjectPartSaveDto.builder().build().entityToDto(projectPart))
@@ -241,7 +247,11 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
                     }
             ).collect(Collectors.toList());
 
-            return collect;
+            return JoinedProjectResponse.builder()
+                    .projectList(projectList)
+                    .pageInfo(pageInfo)
+                    .articleCount(pages.getTotalElements())
+                    .build();
         } catch (Exception e) {
             e.printStackTrace();
             return null;

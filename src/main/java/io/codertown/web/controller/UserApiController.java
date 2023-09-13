@@ -6,7 +6,7 @@ import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
-import io.codertown.web.dto.JoinedProjectResponseDto;
+import io.codertown.web.payload.response.JoinedProjectResponse;
 import io.codertown.web.payload.response.SignInResponse;
 import io.codertown.web.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +22,6 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.internet.MimeMessage;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -301,11 +300,16 @@ public class UserApiController {
     @ApiOperation(value="프로젝트 목록 출력 API", notes="프로젝트 목록 출력에 필요한 JSON 데이터 반환")
     @ApiResponse(description = "프로젝트 목록 리스트 JSON 데이터",responseCode = "200")
     @GetMapping(path = "/joinedProject", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<JoinedProjectResponseDto>> joinedProject(@RequestParam String loginId) {
-        System.out.println("메롱");
-        List<JoinedProjectResponseDto> joinedProject = userService.findJoinedProject(loginId);
-        joinedProject.forEach(joinedProjectDto -> System.out.println("joinedProjectDto = " + joinedProjectDto));
-        return ResponseEntity.ok(joinedProject);
+    public ResponseEntity<JoinedProjectResponse> joinedProject(@RequestParam(required = false) Integer page,
+                                                               @RequestParam(required = false, defaultValue = "10") Integer size,
+                                                               @RequestParam String loginId) {
+        try {
+            JoinedProjectResponse joinedProject = userService.findJoinedProject(page, size, loginId);
+            return ResponseEntity.ok(joinedProject);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
     /**
