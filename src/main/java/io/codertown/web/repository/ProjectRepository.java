@@ -49,12 +49,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
     @Query("SELECT NEW io.codertown.web.dto.JoinedProjectSimpleConvertDto(p, pp) FROM Project p " +
             "LEFT JOIN fetch UserProject up ON (up.project.id = p.id) " +
             "LEFT JOIN fetch ProjectPart pp ON (pp.id = up.projectPart.id) " +
-            "where up.projectUser.email = 'webdevyoo@gmail.com'")
-    /*@Query("SELECT NEW io.codertown.web.dto.JoinedProjectDto(r, p, pp) FROM Recruit r " +
-        "LEFT JOIN fetch Project p ON (p.id = r.id) " +
-        "LEFT JOIN fetch UserProject up ON (up.project.id = p.id) " +
-        "LEFT JOIN fetch ProjectPart pp ON (pp.id = up.projectPart.id) " +
-        "where up.projectUser.email = 'webdevyoo@gmail.com'")*/
+            "where up.projectUser = :loginUser")
     Page<JoinedProjectSimpleConvertDto> findJoinedProject(@Param("loginUser") User loginUser, PageRequest pageRequest);
 
 
