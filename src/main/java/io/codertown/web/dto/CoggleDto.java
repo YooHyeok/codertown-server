@@ -1,6 +1,6 @@
 package io.codertown.web.dto;
 
-import io.codertown.web.entity.Coggle;
+import io.codertown.web.entity.coggle.Coggle;
 import lombok.Builder;
 import lombok.Data;
 

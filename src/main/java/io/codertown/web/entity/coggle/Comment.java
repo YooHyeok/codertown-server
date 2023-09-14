@@ -1,4 +1,4 @@
-package io.codertown.web.entity;
+package io.codertown.web.entity.coggle;
 
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.user.User;

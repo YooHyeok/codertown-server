@@ -1,6 +1,6 @@
 package io.codertown.web.dto;
 
-import io.codertown.web.entity.Comment;
+import io.codertown.web.entity.coggle.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

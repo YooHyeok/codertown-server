@@ -1,6 +1,6 @@
 package io.codertown.web.repository;
 
-import io.codertown.web.entity.Coggle;
+import io.codertown.web.entity.coggle.Coggle;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.EntityGraph;

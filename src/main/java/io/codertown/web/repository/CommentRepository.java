@@ -1,7 +1,7 @@
 package io.codertown.web.repository;
 
-import io.codertown.web.entity.Coggle;
-import io.codertown.web.entity.Comment;
+import io.codertown.web.entity.coggle.Coggle;
+import io.codertown.web.entity.coggle.Comment;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
