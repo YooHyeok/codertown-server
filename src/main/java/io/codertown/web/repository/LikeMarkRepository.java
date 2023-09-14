@@ -1,6 +1,6 @@
 package io.codertown.web.repository;
 
-import io.codertown.web.entity.LikeMark;
+import io.codertown.web.entity.recruit.LikeMark;
 import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.entity.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;

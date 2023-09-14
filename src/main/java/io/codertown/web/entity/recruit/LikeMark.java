@@ -1,6 +1,5 @@
-package io.codertown.web.entity;
+package io.codertown.web.entity.recruit;
 
-import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.entity.user.User;
 import lombok.*;
 
@@ -26,10 +25,6 @@ public class LikeMark {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "RECRUIT_NO")
     private Recruit recruit;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "COGGLE_NO")
-    private Coggle coggle;
 
 //    private Boolean isLiked;
 

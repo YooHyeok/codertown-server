@@ -1,7 +1,6 @@
 package io.codertown.web.entity.recruit;
 
 import io.codertown.support.base.BaseTimeStampEntity;
-import io.codertown.web.entity.LikeMark;
 import io.codertown.web.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

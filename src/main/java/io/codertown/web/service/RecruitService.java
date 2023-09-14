@@ -2,7 +2,7 @@ package io.codertown.web.service;
 
 import io.codertown.support.PageInfo;
 import io.codertown.web.dto.*;
-import io.codertown.web.entity.LikeMark;
+import io.codertown.web.entity.recruit.LikeMark;
 import io.codertown.web.entity.Part;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.UserProject;
