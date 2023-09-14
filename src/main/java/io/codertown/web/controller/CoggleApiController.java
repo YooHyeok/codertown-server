@@ -59,6 +59,25 @@ public class CoggleApiController {
     }
 
     /**
+     * 코글 좋아요 Toggle API
+     * @param recruitNo
+     * @param userId
+     * @return
+     */
+    @ApiOperation(value="코글 좋아요 Toggle API", notes="코글 좋아요 Toggle 성공여부 반환")
+    @ApiResponse(description = "코글 좋아요 여부 JSON 데이터",responseCode = "200")
+    @PostMapping(path = "/coggle-likemark-toggle", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SuccessBooleanResult> likeMarkToggle(@RequestParam Long recruitNo, String userId) {
+        try{
+            Boolean isLikeMarked = coggleService.likeMarkToggle(recruitNo, userId);
+
+            return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(isLikeMarked));
+        }catch(Exception e) {
+            return new ResponseEntity<SuccessBooleanResult>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
      * 코글 수정 API
      * @param request
      * @return 성공: TRUE | 실패: FALSE

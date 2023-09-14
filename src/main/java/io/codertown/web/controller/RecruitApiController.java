@@ -44,15 +44,15 @@ public class RecruitApiController {
     }
 
     /**
-     * 코끼리&맘모스 좋아요 Toggle API
+     * 코끼리&맘모스 북마크 Toggle API
      * @param recruitNo
      * @param userId
      * @return
      */
-    @ApiOperation(value="코끼리&맘모스 좋아요 Toggle API", notes="코끼리&맘모스 좋아요 Toggle 성공여부 반환")
-    @ApiResponse(description = "코끼리&맘모스 목록 리스트 JSON 데이터",responseCode = "200")
-    @PostMapping(path = "/recruit-like", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessBooleanResult> likeToggle(@RequestParam Long recruitNo, String userId) {
+    @ApiOperation(value="코끼리&맘모스 북마크 Toggle API", notes="코끼리&맘모스 북마크 Toggle 성공여부 반환")
+    @ApiResponse(description = "코끼리&맘모스 북마크 여부 JSON 데이터",responseCode = "200")
+    @PostMapping(path = "/recruit-bookmark-toggle", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SuccessBooleanResult> bookMarkToggle(@RequestParam Long recruitNo, String userId) {
         try{
             Boolean isBookMarked = recruitService.bookMarkToggle(recruitNo, userId);
 
