@@ -147,7 +147,7 @@ public class RecruitService {
                 // 프로젝트 조회 정보
                 ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
                 // 코끼리 조회 정보
-                Optional<BookMark> like = likeRepository.findByUserAndRecruit(cokkiri.getRecruitUser(), cokkiri);
+                Optional<BookMark> like = bookMarkRepository.findByUserAndRecruit(cokkiri.getRecruitUser(), cokkiri);
                 RecruitDto cokkiriDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, null, null);
                 return CokkiriDetailResponse.builder()
                         .projectDto(projectDto)
@@ -273,7 +273,7 @@ public class RecruitService {
             if (oRecruit.isPresent()) {
                 Mammoth mammoth = (Mammoth) oRecruit.get();
                 /* 회원별 게시글별 좋아요 유무 */
-                Optional<BookMark> like = likeRepository.findByUserAndRecruit(mammoth.getRecruitUser(), mammoth);
+                Optional<BookMark> like = bookMarkRepository.findByUserAndRecruit(mammoth.getRecruitUser(), mammoth);
                 UserDto userDto = UserDto.userEntityToDto(mammoth.getRecruitUser());
                 mammoth.incrementViews();
                 // 코끼리 조회 정보

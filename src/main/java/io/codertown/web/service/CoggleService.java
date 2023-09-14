@@ -11,7 +11,7 @@ import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.*;
 import io.codertown.web.repository.CoggleRepository;
 import io.codertown.web.repository.CommentRepository;
-import io.codertown.web.repository.BookMarkRepository;
+import io.codertown.web.repository.LikeMarkRepository;
 import io.codertown.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,7 +29,7 @@ public class CoggleService {
     private final CoggleRepository coggleRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
-    private final BookMarkRepository likeMarkRepository;
+    private final LikeMarkRepository likeMarkRepository;
 
     /**
      * 코글 저장
@@ -89,7 +89,7 @@ public class CoggleService {
             Optional<Coggle> oCoggle = coggleRepository.findById(recruitNo);
             if (oCoggle.isPresent()) {
                 Coggle coggle = oCoggle.get();
-                Optional<LikeMark> likeMark = likeMarkRepository.findByUserAndRecruit(user, coggle);
+                Optional<LikeMark> likeMark = likeMarkRepository.findByUserAndCoggle(user, coggle);
                 LikeMark coggleLikeMark = LikeMark.builder().build().createCoggleLikeMark(user, coggle);
                 if (likeMark.isEmpty()) { // 존재하지 않는다면 추가
                     likeMarkRepository.save(coggleLikeMark);
