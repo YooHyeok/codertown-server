@@ -38,8 +38,10 @@ public class RecruitQuerydslRepositoryImpl extends QuerydslRepositorySupport imp
         BooleanExpression  baseCondition = recruit.status.eq(false);
 
         BooleanExpression loginIdCondition = null;
-        /* 현재 페이지가 메인페이지면 로그인된 ID와 상관없이 전체 조회. */
-        if (url == null || !url.equals("main")) {
+
+        /* 현재 페이지가 마이페이지라면 로그인된 ID로 조회
+        마이페이지가 아니람녀 로그인 ID와 상관없이 전체 조회. */
+        if (url != null && url.equals("myPost")) {
             /* 나의 게시글 / 일반 조회 - 로그인아이디 파라미터 여부 */
             loginIdCondition = (loginId == null || loginId.equals("")) ? null : recruit.recruitUser.email.eq(loginId);
             if (loginIdCondition != null) {

@@ -172,6 +172,7 @@ public class RecruitService {
         PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, size, "id", "DESC");
         try {
             Page<Recruit> pages = recruitRepository.findByType(dType, pageInfo.getPageRequest(), keyword, loginId, url);
+            Long totalCount = pages.getTotalElements();
             pageInfo.setPageInfo(pages, pageInfo);
             List<RecruitListDto> recruitList = pages.getContent().stream().map(recruit -> {
                 UserDto userDto = UserDto.userEntityToDto(recruit.getRecruitUser());
@@ -204,7 +205,16 @@ public class RecruitService {
                         .projectDto(projectDto)
                         .build();
             }).collect(Collectors.toList());
-            return RecruitListResponse.builder().recruitList(recruitList).pageInfo(pageInfo).articleCount(pages.getTotalElements()).build();
+
+            /* 마이페이지 북마크일경우 */
+            if (url != null && url.equals("myBookMark")) {
+                recruitList = recruitList.stream().filter(recruitListDto -> {
+                    return recruitListDto.getRecruitDto().getIsBookmarked() == true;
+                }).collect(Collectors.toList());
+                totalCount = Long.valueOf(recruitList.size());
+            }
+
+            return RecruitListResponse.builder().recruitList(recruitList).pageInfo(pageInfo).articleCount(totalCount).build();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
