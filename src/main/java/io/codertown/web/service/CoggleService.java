@@ -6,10 +6,12 @@ import io.codertown.web.dto.CoggleListDto;
 import io.codertown.web.dto.CommentDto;
 import io.codertown.web.entity.coggle.Coggle;
 import io.codertown.web.entity.coggle.Comment;
+import io.codertown.web.entity.coggle.LikeMark;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.*;
 import io.codertown.web.repository.CoggleRepository;
 import io.codertown.web.repository.CommentRepository;
+import io.codertown.web.repository.BookMarkRepository;
 import io.codertown.web.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,6 +29,7 @@ public class CoggleService {
     private final CoggleRepository coggleRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final BookMarkRepository likeMarkRepository;
 
     /**
      * 코글 저장
@@ -67,6 +70,35 @@ public class CoggleService {
                 return CoggleDto.builder().build().changeEntityToDto(findCoggle); //코글 변환후 반환
             }
             throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    /**
+     * 코글 좋아요 Toggle
+     * @param recruitNo
+     * @param userId
+     * @return
+     */
+    @Transactional(readOnly = false)
+    public Boolean likeMarkToggle(Long recruitNo, String userId) throws Exception {
+        User user = (User) userRepository.findByEmail(userId);
+        try {
+            Optional<Coggle> oCoggle = coggleRepository.findById(recruitNo);
+            if (oCoggle.isPresent()) {
+                Coggle coggle = oCoggle.get();
+                Optional<LikeMark> likeMark = likeMarkRepository.findByUserAndRecruit(user, coggle);
+                LikeMark coggleLikeMark = LikeMark.builder().build().createCoggleLikeMark(user, coggle);
+                if (likeMark.isEmpty()) { // 존재하지 않는다면 추가
+                    likeMarkRepository.save(coggleLikeMark);
+                    return likeMark.isEmpty(); // 추가됨
+                }
+                likeMarkRepository.delete(likeMark.get()); // 존재한다면 제거
+                return likeMark.isEmpty(); // 제거됨
+            }
+            throw new RuntimeException("게시글 없음");
         } catch (Exception e) {
             e.printStackTrace();
             throw e;

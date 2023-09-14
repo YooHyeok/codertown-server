@@ -54,9 +54,9 @@ public class RecruitApiController {
     @PostMapping(path = "/recruit-like", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessBooleanResult> likeToggle(@RequestParam Long recruitNo, String userId) {
         try{
-            Boolean isLiked = recruitService.likeToggle(recruitNo, userId);
+            Boolean isBookMarked = recruitService.bookMarkToggle(recruitNo, userId);
 
-            return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(isLiked));
+            return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(isBookMarked));
         }catch(Exception e) {
             return new ResponseEntity<SuccessBooleanResult>(HttpStatus.BAD_REQUEST);
         }

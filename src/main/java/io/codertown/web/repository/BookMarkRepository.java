@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface LikeMarkRepository extends JpaRepository<BookMark, Long> {
+public interface BookMarkRepository extends JpaRepository<BookMark, Long> {
 
     Optional<BookMark> findByUserAndRecruit(User user, Recruit recruit);
 }

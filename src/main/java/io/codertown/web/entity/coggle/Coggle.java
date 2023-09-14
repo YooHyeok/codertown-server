@@ -11,6 +11,8 @@ import org.hibernate.annotations.Check;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @ToString(callSuper = true) // 부모 클래스인 AuditingBaseEntity 필드를 포함하는 역할 수행
 @Entity
@@ -32,6 +34,9 @@ public class Coggle extends BaseTimeStampEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer", referencedColumnName = "USER_NO")
     private User user;
+
+    @OneToMany(mappedBy = "coggle")
+    private List<LikeMark> likeMarkList = new ArrayList<>();
 
     private Long views;
 

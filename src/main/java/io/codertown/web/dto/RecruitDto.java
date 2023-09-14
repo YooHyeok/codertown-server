@@ -34,7 +34,7 @@ public class RecruitDto {
                 .content(cokkiri.getContent()) // 코끼리 글 내용
                 .views(cokkiri.getViews())
                 .isLiked(isLiked)
-                .likedCount(cokkiri.getBookMark().size())
+                .likedCount(cokkiri.getBookMarkList().size())
                 .firstRegDate(cokkiri.getFirstRegDate())
                 .lastModDate(cokkiri.getLastModDate())
                 .writer(userDto) // 코끼리 글 작성자 (추후 String값으로 수정)
@@ -55,7 +55,7 @@ public class RecruitDto {
                 .writer(userDto) // 맘모스 글 작성자 (추후 String값으로 수정)
                 .location(mammoth.getLocation())
                 .isLiked(isLiked)
-                .likedCount(mammoth.getBookMark().size())
+                .likedCount(mammoth.getBookMarkList().size())
                 .build();
     }
 

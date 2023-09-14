@@ -29,7 +29,7 @@ public class RecruitService {
     private final UserRepository userRepository;
     private final PartRepository partRepository;
     private final ProjectPartRepository projectPartRepository;
-    private final LikeMarkRepository likeRepository;
+    private final BookMarkRepository bookMarkRepository;
 
     /**
      * 코끼리 & 프로젝트 저장
@@ -176,7 +176,7 @@ public class RecruitService {
                 ProjectDto projectDto = null;
 
                 /* 회원별 게시글별 좋아요 유무 */
-                boolean isLiked = recruit.getBookMark()
+                boolean isLiked = recruit.getBookMarkList()
                         .stream().anyMatch(bookMark ->  bookMark.getUser().getEmail().equals(loginId));
 
                 /* 코끼리 변환 (조회한 Recruit리스트중 현재 요소가 Cokkiri인경우) */
@@ -209,26 +209,26 @@ public class RecruitService {
     }
 
     /**
-     * 코끼리&맘모스 좋아요 Toggle
+     * 코끼리&맘모스 북마크 Toggle
      * @param recruitNo
      * @param userId
      * @return
      */
     @Transactional(readOnly = false)
-    public Boolean likeToggle(Long recruitNo, String userId) throws Exception {
+    public Boolean bookMarkToggle(Long recruitNo, String userId) throws Exception {
         User user = (User) userRepository.findByEmail(userId);
         try {
             Optional<Recruit> oRecruit = recruitRepository.findById(recruitNo);
             if (oRecruit.isPresent()) {
                 Recruit recruit = oRecruit.get();
-                Optional<BookMark> like = likeRepository.findByUserAndRecruit(user, recruit);
+                Optional<BookMark> bookMark = bookMarkRepository.findByUserAndRecruit(user, recruit);
                 BookMark recruitLikeMark = BookMark.builder().build().createRecruitBookMark(user, recruit);
-                if (like.isEmpty()) { // 존재하지 않는다면 추가
-                    likeRepository.save(recruitLikeMark);
-                    return like.isEmpty(); // 추가됨
+                if (bookMark.isEmpty()) { // 존재하지 않는다면 추가
+                    bookMarkRepository.save(recruitLikeMark);
+                    return bookMark.isEmpty(); // 추가됨
                 }
-                likeRepository.delete(like.get()); // 존재한다면 제거
-                return like.isEmpty(); // 제거됨
+                bookMarkRepository.delete(bookMark.get()); // 존재한다면 제거
+                return bookMark.isEmpty(); // 제거됨
             }
         throw new RuntimeException("게시글 없음");
         } catch (Exception e) {
