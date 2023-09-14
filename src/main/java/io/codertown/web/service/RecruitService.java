@@ -2,13 +2,10 @@ package io.codertown.web.service;
 
 import io.codertown.support.PageInfo;
 import io.codertown.web.dto.*;
-import io.codertown.web.entity.recruit.LikeMark;
 import io.codertown.web.entity.Part;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.UserProject;
-import io.codertown.web.entity.recruit.Cokkiri;
-import io.codertown.web.entity.recruit.Mammoth;
-import io.codertown.web.entity.recruit.Recruit;
+import io.codertown.web.entity.recruit.*;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.*;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
@@ -150,7 +147,7 @@ public class RecruitService {
                 // 프로젝트 조회 정보
                 ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
                 // 코끼리 조회 정보
-                Optional<LikeMark> like = likeRepository.findByUserAndRecruit(cokkiri.getRecruitUser(), cokkiri);
+                Optional<BookMark> like = likeRepository.findByUserAndRecruit(cokkiri.getRecruitUser(), cokkiri);
                 RecruitDto cokkiriDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, null, null);
                 return CokkiriDetailResponse.builder()
                         .projectDto(projectDto)
@@ -179,8 +176,8 @@ public class RecruitService {
                 ProjectDto projectDto = null;
 
                 /* 회원별 게시글별 좋아요 유무 */
-                boolean isLiked = recruit.getLikeMark()
-                        .stream().anyMatch(likeMark ->  likeMark.getUser().getEmail().equals(loginId));
+                boolean isLiked = recruit.getBookMark()
+                        .stream().anyMatch(bookMark ->  bookMark.getUser().getEmail().equals(loginId));
 
                 /* 코끼리 변환 (조회한 Recruit리스트중 현재 요소가 Cokkiri인경우) */
                 if (recruit instanceof Cokkiri) {
@@ -224,8 +221,8 @@ public class RecruitService {
             Optional<Recruit> oRecruit = recruitRepository.findById(recruitNo);
             if (oRecruit.isPresent()) {
                 Recruit recruit = oRecruit.get();
-                Optional<LikeMark> like = likeRepository.findByUserAndRecruit(user, recruit);
-                LikeMark recruitLikeMark = LikeMark.builder().build().createRecruitLikeMark(user, recruit);
+                Optional<BookMark> like = likeRepository.findByUserAndRecruit(user, recruit);
+                BookMark recruitLikeMark = BookMark.builder().build().createRecruitBookMark(user, recruit);
                 if (like.isEmpty()) { // 존재하지 않는다면 추가
                     likeRepository.save(recruitLikeMark);
                     return like.isEmpty(); // 추가됨
@@ -276,7 +273,7 @@ public class RecruitService {
             if (oRecruit.isPresent()) {
                 Mammoth mammoth = (Mammoth) oRecruit.get();
                 /* 회원별 게시글별 좋아요 유무 */
-                Optional<LikeMark> like = likeRepository.findByUserAndRecruit(mammoth.getRecruitUser(), mammoth);
+                Optional<BookMark> like = likeRepository.findByUserAndRecruit(mammoth.getRecruitUser(), mammoth);
                 UserDto userDto = UserDto.userEntityToDto(mammoth.getRecruitUser());
                 mammoth.incrementViews();
                 // 코끼리 조회 정보

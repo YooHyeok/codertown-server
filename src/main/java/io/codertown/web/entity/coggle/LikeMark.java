@@ -1,4 +1,4 @@
-package io.codertown.web.entity.recruit;
+package io.codertown.web.entity.coggle;
 
 import io.codertown.web.entity.user.User;
 import lombok.*;
@@ -9,13 +9,13 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = "recruit")
+@ToString(exclude = "coggle")
 @Getter
 public class LikeMark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "LIKE_MARK_NO")
+    @Column(name = "Like_MARK_NO")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -23,15 +23,10 @@ public class LikeMark {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "RECRUIT_NO")
-    private Recruit recruit;
+    @JoinColumn(name = "COGGLE_NO")
+    private Coggle coggle;
 
-//    private Boolean isLiked;
-
-    /**
-     * LikeMark 생성 메서드
-     */
-    public LikeMark createRecruitLikeMark(User user, Recruit recruit) {
-        return LikeMark.builder().user(user).recruit(recruit).build();
+    public LikeMark createCoggleLikeMark(User user, Coggle coggle) {
+        return LikeMark.builder().user(user).coggle(coggle).build();
     }
 }

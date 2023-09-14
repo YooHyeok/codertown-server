@@ -38,7 +38,7 @@ public abstract class Recruit extends BaseTimeStampEntity {
     private User recruitUser;
 
     @OneToMany(mappedBy = "recruit")
-    private List<LikeMark> likeMark;
+    private List<BookMark> bookMark;
 
     @Column(columnDefinition = "boolean default false constraint status check(status in(true,false))")
     @ColumnDefault(value = "false")
