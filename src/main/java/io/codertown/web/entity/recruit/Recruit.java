@@ -10,6 +10,7 @@ import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -38,7 +39,7 @@ public abstract class Recruit extends BaseTimeStampEntity {
     private User recruitUser;
 
     @OneToMany(mappedBy = "recruit")
-    private List<BookMark> bookMarkList;
+    private List<BookMark> bookMarkList = new ArrayList<>();
 
     @Column(columnDefinition = "boolean default false constraint status check(status in(true,false))")
     @ColumnDefault(value = "false")

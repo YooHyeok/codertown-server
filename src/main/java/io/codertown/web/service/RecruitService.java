@@ -133,13 +133,16 @@ public class RecruitService {
      * @return
      */
     @Transactional(readOnly = false)
-    public CokkiriDetailResponse cokkiriDetail(Long recruitNo) throws RuntimeException {
+    public CokkiriDetailResponse cokkiriDetail(Long recruitNo, String loginId) throws RuntimeException {
         try {
             Optional<Recruit> oRecruit = recruitRepository.findById(recruitNo);
             if (oRecruit.isPresent()) {
                 Cokkiri cokkiri = (Cokkiri)oRecruit.get();
                 cokkiri.incrementViews(); //조회수 증가
                 UserDto userDto = UserDto.userEntityToDto(cokkiri.getRecruitUser());
+                /* 로그인하지 않았다면 좋아요여부 false  */
+                boolean isBookmarked =  loginId.equals("null") ?  false : cokkiri.getBookMarkList()
+                        .stream().anyMatch(bookMark ->  bookMark.getUser().getEmail().equals(loginId));
                 // 프로젝트별 파트 조회 정보
                 List<ProjectPartSaveDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
                         .map(projectPart -> ProjectPartSaveDto.builder().build().entityToDto(projectPart))
@@ -148,7 +151,7 @@ public class RecruitService {
                 ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
                 // 코끼리 조회 정보
                 Optional<BookMark> like = bookMarkRepository.findByUserAndRecruit(cokkiri.getRecruitUser(), cokkiri);
-                RecruitDto cokkiriDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, null, null);
+                RecruitDto cokkiriDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, null, isBookmarked);
                 return CokkiriDetailResponse.builder()
                         .projectDto(projectDto)
                         .cokkiriDto(cokkiriDto)
@@ -267,17 +270,20 @@ public class RecruitService {
      * 맘모스 상세보기
      */
     @Transactional(readOnly = false)
-    public RecruitDto mammothDetail(Long recruitNo) {
+    public RecruitDto mammothDetail(Long recruitNo, String loginId) {
         try{
             Optional<Recruit> oRecruit = recruitRepository.findById(recruitNo);
             if (oRecruit.isPresent()) {
                 Mammoth mammoth = (Mammoth) oRecruit.get();
                 /* 회원별 게시글별 좋아요 유무 */
                 Optional<BookMark> like = bookMarkRepository.findByUserAndRecruit(mammoth.getRecruitUser(), mammoth);
+                /* 로그인하지 않았다면 좋아요여부 false  */
+                boolean isBookmarked =  loginId.equals("null") ?  false : mammoth.getBookMarkList()
+                        .stream().anyMatch(bookMark ->  bookMark.getUser().getEmail().equals(loginId));
                 UserDto userDto = UserDto.userEntityToDto(mammoth.getRecruitUser());
                 mammoth.incrementViews();
                 // 코끼리 조회 정보
-                return RecruitDto.builder().build().mammothEntityToDto(mammoth, userDto, "mammoth", null);
+                return RecruitDto.builder().build().mammothEntityToDto(mammoth, userDto, "mammoth", isBookmarked);
             }
             throw new RuntimeException("게시글 없음");
         } catch (Exception e) {

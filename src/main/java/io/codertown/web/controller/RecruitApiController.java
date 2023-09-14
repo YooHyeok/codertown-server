@@ -119,10 +119,10 @@ public class RecruitApiController {
      */
     @ApiOperation(value="코끼리 상세페이지 API", notes="코끼리 상세페이지 출력에 필요한 JSON 데이터 반환")
     @ApiResponse(description = "코끼리 상세페이지 JSON 데이터",responseCode = "200")
-    @GetMapping(path = "/cokkiri-detail/{recruitNo}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CokkiriDetailResponse> cokkiriDetail(@PathVariable(required = true) Long recruitNo) {
+    @GetMapping(path = "/cokkiri-detail/{recruitNo}/{loginId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CokkiriDetailResponse> cokkiriDetail(@PathVariable(required = true) Long recruitNo, @PathVariable(required = false) String loginId) {
         try {
-            CokkiriDetailResponse cokkiriDetailResponse = recruitService.cokkiriDetail(recruitNo);
+            CokkiriDetailResponse cokkiriDetailResponse = recruitService.cokkiriDetail(recruitNo, loginId);
             return ResponseEntity.ok(cokkiriDetailResponse);
         } catch (Exception e) {
             e.printStackTrace();
@@ -184,10 +184,10 @@ public class RecruitApiController {
      */
     @ApiOperation(value="맘모스 상세페이지 API", notes="맘모스 상세페이지 출력에 필요한 JSON 데이터 반환")
     @ApiResponse(description = "맘모스 상세페이지 JSON 데이터",responseCode = "200")
-    @GetMapping(path = "/mammoth-detail/{recruitNo}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RecruitDto> mammothDetail(@PathVariable(required = true) Long recruitNo) {
+    @GetMapping(path = "/mammoth-detail/{recruitNo}/{loginId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<RecruitDto> mammothDetail(@PathVariable(required = true) Long recruitNo, @PathVariable(required = false) String loginId) {
         try {
-            RecruitDto mammothDto = recruitService.mammothDetail(recruitNo);
+            RecruitDto mammothDto = recruitService.mammothDetail(recruitNo, loginId);
             return ResponseEntity.ok(mammothDto);
         } catch (Exception e) {
             e.printStackTrace();

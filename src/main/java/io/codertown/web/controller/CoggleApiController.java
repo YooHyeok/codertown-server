@@ -47,10 +47,10 @@ public class CoggleApiController {
      */
     @ApiOperation(value="코글 상세페이지 API", notes="코글 상세페이지 출력에 필요한 JSON 데이터 반환")
     @ApiResponse(description = "코글 상세페이지 JSON 데이터",responseCode = "200")
-    @GetMapping(path = "/coggle-detail/{coggleNo}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CoggleDto> coggleDetail(@PathVariable Long coggleNo) {
+    @GetMapping(path = "/coggle-detail/{coggleNo}/{loginId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CoggleDto> coggleDetail(@PathVariable Long coggleNo, @PathVariable(required = false) String loginId) {
         try {
-            CoggleDto result = coggleService.coggleDetail(coggleNo);
+            CoggleDto result = coggleService.coggleDetail(coggleNo, loginId);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -60,16 +60,16 @@ public class CoggleApiController {
 
     /**
      * 코글 좋아요 Toggle API
-     * @param recruitNo
+     * @param coggleNo
      * @param userId
      * @return
      */
     @ApiOperation(value="코글 좋아요 Toggle API", notes="코글 좋아요 Toggle 성공여부 반환")
     @ApiResponse(description = "코글 좋아요 여부 JSON 데이터",responseCode = "200")
     @PostMapping(path = "/coggle-likemark-toggle", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SuccessBooleanResult> likeMarkToggle(@RequestParam Long recruitNo, String userId) {
+    public ResponseEntity<SuccessBooleanResult> likeMarkToggle(@RequestParam Long coggleNo, String userId) {
         try{
-            Boolean isLikeMarked = coggleService.likeMarkToggle(recruitNo, userId);
+            Boolean isLikeMarked = coggleService.likeMarkToggle(coggleNo, userId);
 
             return ResponseEntity.ok(SuccessBooleanResult.builder().build().setResult(isLikeMarked));
         }catch(Exception e) {

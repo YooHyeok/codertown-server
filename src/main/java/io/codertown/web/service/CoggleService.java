@@ -61,13 +61,16 @@ public class CoggleService {
      * @return 성공: TRUE | 실패: FALSE
      */
     @Transactional(readOnly = false)
-    public CoggleDto coggleDetail(Long coggleNo) throws RuntimeException {
+    public CoggleDto coggleDetail(Long coggleNo, String loginId) throws RuntimeException {
         try {
             Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
             if (oCoggle.isPresent()) {
                 Coggle findCoggle = oCoggle.get();
+                /* 로그인하지 않았다면 좋아요여부 false  */
+                boolean isLiked =  loginId.equals("null") ?  false : findCoggle.getLikeMarkList()
+                        .stream().anyMatch(bookMark ->  bookMark.getUser().getEmail().equals(loginId));
                 findCoggle.incrementViews();
-                return CoggleDto.builder().build().changeEntityToDto(findCoggle); //코글 변환후 반환
+                return CoggleDto.builder().build().changeEntityToDto(findCoggle, isLiked); //코글 변환후 반환
             }
             throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
         } catch (Exception e) {
@@ -78,15 +81,15 @@ public class CoggleService {
 
     /**
      * 코글 좋아요 Toggle
-     * @param recruitNo
+     * @param coggleNo
      * @param userId
      * @return
      */
     @Transactional(readOnly = false)
-    public Boolean likeMarkToggle(Long recruitNo, String userId) throws Exception {
+    public Boolean likeMarkToggle(Long coggleNo, String userId) throws Exception {
         User user = (User) userRepository.findByEmail(userId);
         try {
-            Optional<Coggle> oCoggle = coggleRepository.findById(recruitNo);
+            Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
             if (oCoggle.isPresent()) {
                 Coggle coggle = oCoggle.get();
                 Optional<LikeMark> likeMark = likeMarkRepository.findByUserAndCoggle(user, coggle);
@@ -169,7 +172,7 @@ public class CoggleService {
         Page<Coggle> pages = coggleRepository.findByCategoryAndUser(request.getCategory() , request.getKeyword(), request.getLoginId(), pageInfo.getPageRequest());
         pageInfo.setPageInfo(pages, pageInfo);
         List<CoggleDto> coggleList = pages.stream()
-                .map(coggle -> CoggleDto.builder().build().changeEntityToDto(coggle))
+                .map(coggle -> CoggleDto.builder().build().changeEntityToDto(coggle, null))
                 .collect(Collectors.toList());
         return CoggleListDto.builder().pageInfo(pageInfo).coggleList(coggleList).articleCount(pages.getTotalElements()).build();
     }

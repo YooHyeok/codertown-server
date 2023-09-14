@@ -16,6 +16,8 @@ public class CoggleDto {
     private Boolean status;
 //    private String writer;
     private UserDto writer;
+    private Boolean isLikeMarked;
+    private Integer isLikedMarkedCount;
     private Long views;
     private LocalDateTime firstRegDate;
     private LocalDateTime lastModDate;
@@ -25,7 +27,7 @@ public class CoggleDto {
      * @param findCoggle
      * @return
      */
-    public CoggleDto changeEntityToDto(Coggle findCoggle) {
+    public CoggleDto changeEntityToDto(Coggle findCoggle, Boolean isLikeMarked) {
         return CoggleDto.builder()
                 .coggleNo(findCoggle.getCoggleNo())
                 .category(findCoggle.getCategory())
@@ -34,6 +36,8 @@ public class CoggleDto {
                 .title(findCoggle.getTitle())
                 .content(findCoggle.getContent())
                 .status(findCoggle.getStatus())
+                .isLikeMarked(isLikeMarked)
+                .isLikedMarkedCount(findCoggle.getLikeMarkList().size())
                 .views(findCoggle.getViews())
                 .firstRegDate(findCoggle.getFirstRegDate())
                 .lastModDate(findCoggle.getLastModDate())
