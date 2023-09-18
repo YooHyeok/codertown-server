@@ -223,6 +223,13 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         }
     }
 
+    /**
+     * 참여중인 프로젝트 목록 출력 메소드
+     * @param page
+     * @param size
+     * @param loginEmail
+     * @return
+     */
     public JoinedProjectResponse findJoinedProject(Integer page, Integer size, String loginEmail) {
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, size, "id", "DESC");
@@ -235,7 +242,13 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             List<JoinedProjectResponseDto> projectList = pages.getContent().stream().map(joinedProjectDto -> {
                         /* 프로젝트 파트 리스트 DTO 변환 */
                         List<ProjectPartSaveDto> projectPartList = joinedProjectDto.getProject().getProjectParts().stream()
-                                .map(projectPart -> ProjectPartSaveDto.builder().build().entityToDto(projectPart))
+                                .map(projectPart -> {
+                                    /* 프로젝트별 참여중인 회원 리스트 DTO변환  */
+                                    List<UserProjectDto> userProjectDtoList = projectPart.getUserProjects().stream().map(userProject ->
+                                            UserProjectDto.builder().build().convertEntityToDto(userProject)
+                                    ).collect(Collectors.toList());
+                                    return ProjectPartSaveDto.builder().build().entityToDto(projectPart, userProjectDtoList);
+                                })
                                 .collect(Collectors.toList());
                         /* Projet dto 변환 */
                         ProjectDto projectDto = ProjectDto.builder().build().entityToDto(joinedProjectDto.getProject(), projectPartList);

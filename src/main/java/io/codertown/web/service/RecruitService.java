@@ -145,7 +145,7 @@ public class RecruitService {
                         .stream().anyMatch(bookMark ->  bookMark.getUser().getEmail().equals(loginId));
                 // 프로젝트별 파트 조회 정보
                 List<ProjectPartSaveDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
-                        .map(projectPart -> ProjectPartSaveDto.builder().build().entityToDto(projectPart))
+                        .map(projectPart -> ProjectPartSaveDto.builder().build().entityToDto(projectPart, null))
                         .collect(Collectors.toList());
                 // 프로젝트 조회 정보
                 ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
@@ -189,7 +189,7 @@ public class RecruitService {
                     recruitDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, "cokkiri", isLiked
                     );
                     List<ProjectPartSaveDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
-                            .map(projectPart -> ProjectPartSaveDto.builder().build().entityToDto(projectPart))
+                            .map(projectPart -> ProjectPartSaveDto.builder().build().entityToDto(projectPart, null))
                             .collect(Collectors.toList());
                     projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject(), projectPartList);
                 }
