@@ -49,7 +49,8 @@ public class RecruitService {
             //코끼리 & 프로젝트 영속화 주입 (Cascade.All) - createCokkiri()
             Cokkiri cokkiri = Cokkiri.builder().build().createCokkiri(request);
             // 프로젝트 파트 영속화 주입 - 추후 양방향 연관관계에 의해서 저장될수 있도록 수정해야한다.
-            List<ProjectPart> projectParts = request.getProjectParts().stream().map(projectPartSaveDto -> ProjectPart.builder().build()
+            List<ProjectPart> projectParts = request.getProjectParts().stream().map(
+                    projectPartSaveDto -> ProjectPart.builder().build()
                     .createProjectPart(
                             cokkiri.getProject() // 이곳에서 ProjectPart에 Project가 양방향으로 주입된다.
                             , projectPartSaveDto.getRecruitCount()

@@ -230,8 +230,8 @@ public class UserApiController {
      */
     @ApiOperation(value="마이페이지 - 회원정보 조회 API", notes="회원정보 출력")
     @ApiResponse(description = "회원 정보 조회 성공 결과",responseCode = "200")
-    @PostMapping(path = "/user-info", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> mypage(@RequestBody String loginEmail) {
+    @PostMapping(path = "/user-info", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<UserDto> mypage(@RequestParam("loginEmail") String loginEmail) {
         try {
             UserDto userDto = userService.userInfo(loginEmail);
             return ResponseEntity.ok(userDto);
@@ -243,7 +243,7 @@ public class UserApiController {
 
     /**
      * 닉네임 중복 확인 API
-     * @param email Client Text/Plain 파라미터
+     * @param nickname Client Text/Plain 파라미터
      * <pre>
      *       email : 이메일 (로그인계정) <br/>
      * </pre>
@@ -251,10 +251,10 @@ public class UserApiController {
      */
     @ApiOperation(value="닉네임 중복확인 API", notes="회원정보 수정시 닉네임 중복 확인")
     @ApiResponse(description = "중복 확인 성공 결과",responseCode = "200")
-    @PostMapping(path = "/nickname-exists", consumes = MediaType.TEXT_PLAIN_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ExistsResult> nicknameExists(@RequestBody String email) {
+    @PostMapping(path = "/nickname-exists", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ExistsResult> nicknameExists(@RequestParam("nickname") String nickname) {
         try {
-            Boolean exists = userService.existsByNickname(email);
+            Boolean exists = userService.existsByNickname(nickname);
             ExistsResult result = ExistsResult
                     .builder()
                     .Exists(exists)
