@@ -55,6 +55,7 @@ public class Project {
                 .projectTitle(request.getProjectTitle())
                 .projectStatus(TotalStatusEnum.RECURUIT)
 //                .personalStatus()
+                .projects(new ArrayList<>())
                 .projectParts(new ArrayList<>()) // 빌더 패턴은 객체 생성과 속성 설정을 분리하여 관리하므로 따로 초기화해야한다.
                 .build();
         return build;
