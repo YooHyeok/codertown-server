@@ -213,7 +213,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             String encodedPassword = passwordEncoder.encode(request.getPassword());
             request.setPassword(encodedPassword);
             /* 변경감지 구현 */
-            User findUser = (User)userRepository.findByEmail(request.getOriginEmail());
+            User findUser = (User)userRepository.findByEmail(request.getLoginEmail());
             findUser.updateUser(request);
             UserDto userDto = UserDto.builder().build().userEntityToDto(findUser);
             return userDto;

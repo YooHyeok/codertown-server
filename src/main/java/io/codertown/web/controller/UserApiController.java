@@ -297,9 +297,9 @@ public class UserApiController {
      * @param page
      * @return
      */
-    @ApiOperation(value="프로젝트 목록 출력 API", notes="프로젝트 목록 출력에 필요한 JSON 데이터 반환")
+    @ApiOperation(value="마이페이지 - 프로젝트 목록 출력 API", notes="프로젝트 목록 출력에 필요한 JSON 데이터 반환")
     @ApiResponse(description = "프로젝트 목록 리스트 JSON 데이터",responseCode = "200")
-    @GetMapping(path = "/joinedProject", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/joined-project", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JoinedProjectResponse> joinedProject(@RequestParam(required = false) Integer page,
                                                                @RequestParam(required = false, defaultValue = "10") Integer size,
                                                                @RequestParam String loginId) {

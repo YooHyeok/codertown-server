@@ -62,11 +62,10 @@ public class User extends BaseTimeStampEntity implements UserDetails {
      * @param request
      */
     public void updateUser(UserUpdateRequest request) throws IOException {
-        this.email = request.getChangeEmail();
         this.nickname = request.getNickname();
         this.password = request.getPassword();
-        this.attachFilename = request.getFile().getOriginalFilename();
-        this.attachFile = request.getFile().getBytes();
+//        this.attachFilename = request.getAttachFile().getOriginalFilename();
+//        this.attachFile = request.getAttachFile().getBytes();
     }
 
     /**
