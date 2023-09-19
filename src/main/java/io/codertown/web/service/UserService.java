@@ -24,6 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,7 +80,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * @throws RuntimeException 저장중 닉네임 불일치 저장실패 예외
      */
     @Transactional(readOnly = false)
-    public SignStatus signUp(SignUpRequest request) {
+    public SignStatus signUp(SignUpRequest request) throws IOException {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
         request.setPassword(encodedPassword);
         setNickname(request); //닉네임 중복 체크 및 난수 부여 메소드

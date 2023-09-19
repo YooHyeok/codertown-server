@@ -64,8 +64,8 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     public void updateUser(UserUpdateRequest request) throws IOException {
         this.nickname = request.getNickname();
         this.password = request.getPassword();
-//        this.attachFilename = request.getAttachFile().getOriginalFilename();
-//        this.attachFile = request.getAttachFile().getBytes();
+        this.attachFilename = request.getAttachFile().getOriginalFilename();
+        this.attachFile = request.getAttachFile().getBytes();
     }
 
     /**
@@ -85,12 +85,13 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     }
 
     /* === DTO Entity 변환 === */
-    public static User userDtoToEntity(SignUpRequest request) {
+    public static User userDtoToEntity(SignUpRequest request) throws IOException {
         String role = request.getRole() == null ? "ROLE_USER" : request.getRole(); //null이면 USER정보, 아니면 그외 권한
         return User.builder()
                 .email(request.getEmail())
                 .nickname(request.getNickname())
                 .password(request.getPassword())
+                .attachFile(request.getAttachFile().getBytes())
                 .gender(request.getGender())
                 .roles(Collections.singletonList(role))
                 .build();

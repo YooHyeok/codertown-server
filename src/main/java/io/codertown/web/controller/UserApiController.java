@@ -187,8 +187,8 @@ public class UserApiController {
      */
     @ApiOperation(value="회원가입 API", notes="회원가입 기능")
     @ApiResponse(description = "회원가입 성공 결과",responseCode = "200")
-    @PostMapping(path = "/sign-up", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<SignStatus> signUp(@RequestBody SignUpRequest request) {
+    @PostMapping(path = "/sign-up", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SignStatus> signUp(@ModelAttribute SignUpRequest request) {
         try {
             SignStatus signUpResult = userService.signUp(request);
             return ResponseEntity.ok(signUpResult);

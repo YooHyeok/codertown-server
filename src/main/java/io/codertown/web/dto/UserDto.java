@@ -12,7 +12,7 @@ public class UserDto {
     @JsonIgnore
     private String password;
     private String nickname;
-    private byte[] attachProfile;
+    private byte[] attachFile;
     private Character gender;
     private String role;
 
@@ -21,7 +21,7 @@ public class UserDto {
         return UserDto.builder()
                 .email(user.getEmail())
                 .nickname(user.getNickname())
-                .attachProfile(user.getAttachFile())
+                .attachFile(user.getAttachFile())
                 .password(user.getPassword())
                 .gender(user.getGender())
                 .build();

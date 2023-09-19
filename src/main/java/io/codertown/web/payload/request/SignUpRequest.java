@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * *****************************************************<p>
@@ -22,7 +23,7 @@ public class SignUpRequest {
     private String email;
     private String password;
     private String nickname;
-    private String profileIcon;
+    private MultipartFile attachFile;
     private Character gender;
     private String role;
 
