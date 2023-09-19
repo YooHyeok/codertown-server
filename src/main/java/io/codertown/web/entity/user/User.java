@@ -12,10 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * *****************************************************<p>
@@ -40,7 +37,7 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     private String attachFilename; //프로필 이미지 첨부파일 이름
     @Column(columnDefinition = "mediumblob")
     @Nullable
-    private byte[] attachFile; //프로필 이미지 첨부파일
+    private byte[] profileUrl; //프로필 이미지 첨부파일
     private String password;
     private Character gender;
 
@@ -65,7 +62,7 @@ public class User extends BaseTimeStampEntity implements UserDetails {
         this.nickname = request.getNickname();
         this.password = request.getPassword();
         this.attachFilename = request.getAttachFile().getOriginalFilename();
-        this.attachFile = request.getAttachFile().getBytes();
+        this.profileUrl = request.getAttachFile().getBytes();
     }
 
     /**
@@ -91,7 +88,8 @@ public class User extends BaseTimeStampEntity implements UserDetails {
                 .email(request.getEmail())
                 .nickname(request.getNickname())
                 .password(request.getPassword())
-                .attachFile(request.getAttachFile().getBytes())
+//                .attachFile(request.getAttachFile().getBytes())
+                .profileUrl(Base64.getDecoder().decode(request.getProfileUrl().split(",")[1]))
                 .gender(request.getGender())
                 .roles(Collections.singletonList(role))
                 .build();

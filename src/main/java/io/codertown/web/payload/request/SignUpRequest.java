@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * *****************************************************<p>
@@ -23,12 +22,13 @@ public class SignUpRequest {
     private String email;
     private String password;
     private String nickname;
-    private MultipartFile attachFile;
+//    private MultipartFile attachFile;
+    private String profileUrl;
     private Character gender;
     private String role;
 
     public void setNickname(String email) {
         this.nickname = email; //중복이 아니면 그대로 저장
-
     }
+
 }

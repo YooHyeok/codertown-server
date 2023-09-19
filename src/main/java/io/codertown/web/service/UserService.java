@@ -196,6 +196,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
                 .email(user.getEmail())
                 .password(user.getPassword())
                 .nickname(user.getNickname())
+                .profileUrl(user.getProfileUrl())
                 .gender(user.getGender())
                 .role(user.getRolesToString())
                 .build();
@@ -274,6 +275,6 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
 
     public byte[] profileImage(String loginEmail) throws Exception {
         User user = (User)loadUserByUsername(loginEmail);
-        return user.getAttachFile();
+        return user.getProfileUrl();
     }
 }
