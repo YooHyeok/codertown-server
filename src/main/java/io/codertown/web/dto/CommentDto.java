@@ -26,7 +26,7 @@ public class CommentDto {
     private String content;
     private Boolean status;
     private Integer depth;
-    private String mentionUser;
+    private UserDto mention;
     private LocalDateTime firstRegDate;
     private List<CommentDto> children = new ArrayList<>();
 
@@ -39,7 +39,7 @@ public class CommentDto {
                 .content(comment.getContent().isEmpty() ? null : comment.getContent())
                 .status(comment.getStatus())
                 .depth(comment.getDepth())
-                .mentionUser(comment.getMentionUser())
+                .mention(UserDto.userEntityToDto(comment.getMention()))
                 .children(getChildrenMapToList(comment))
                 .firstRegDate(comment.getFirstRegDate())
                 .build();

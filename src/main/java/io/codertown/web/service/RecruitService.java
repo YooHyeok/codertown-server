@@ -192,7 +192,7 @@ public class RecruitService {
                 RecruitDto recruitDto = null;
                 ProjectDto projectDto = null;
 
-                /* 회원별 게시글별 좋아요 유무 */
+                /* 회원별 게시글별 북마크 유무 */
                 boolean isBookmarked = recruit.getBookMarkList()
                         .stream().anyMatch(bookMark ->  bookMark.getUser().getEmail().equals(loginId));
 

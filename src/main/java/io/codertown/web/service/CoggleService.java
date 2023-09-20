@@ -45,6 +45,7 @@ public class CoggleService {
                     .title(request.getTitle())
                     .content(request.getContent())
                     .status(false)
+                    .views(0L)
                     .user(writer)
                     .build();
             Coggle savedCoggle = coggleRepository.save(coggle);
@@ -180,7 +181,7 @@ public class CoggleService {
                     return CoggleDto.builder().build().changeEntityToDto(coggle, isLikedMarked);
                 })
                 .collect(Collectors.toList());
-        /* 마이페이지 북마크일경우 */
+        /* 마이페이지 좋아요일 경우 */
         if (request.getUrl() != null && request.getUrl().equals("myBookMark")) {
             coggleList = coggleList.stream().filter(coggleDto -> {
                 return coggleDto.getIsLikeMarked() == true;
@@ -198,6 +199,7 @@ public class CoggleService {
     @Transactional
     public Boolean coggleCommentSave(CommentSaveRequest request) {
         User findWriter = (User)userRepository.findByEmail(request.getWriter());
+        User findMentionUser = (User)userRepository.findByEmail(request.getMentionUser());
         Optional<Coggle> oCoggle = coggleRepository.findById(request.getCoggleNo());
         Comment parentComment = null;
         if(request.getParentNo() != null) parentComment = commentRepository.findById(request.getParentNo()).get();
@@ -210,7 +212,7 @@ public class CoggleService {
                         .parent(parentComment)
                         .content(request.getContent())
                         .depth(request.getDepth())
-                        .mentionUser(request.getMentionUser())
+                        .mention(findMentionUser)
                         .status(false)
                         .build();
                 //                    System.out.println("buildComment.getParent().getChildren() = " + buildComment.getParent().getChildren());
