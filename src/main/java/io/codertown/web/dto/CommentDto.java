@@ -39,7 +39,7 @@ public class CommentDto {
                 .content(comment.getContent().isEmpty() ? null : comment.getContent())
                 .status(comment.getStatus())
                 .depth(comment.getDepth())
-                .mention(UserDto.userEntityToDto(comment.getMention()))
+                .mention(comment.getDepth() > 1 ? UserDto.userEntityToDto(comment.getMention()) : null )
                 .children(getChildrenMapToList(comment))
                 .firstRegDate(comment.getFirstRegDate())
                 .build();

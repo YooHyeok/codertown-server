@@ -9,6 +9,5 @@ public class CommentSaveRequest {
     private Long parentNo;
     private String content;
     private Integer depth;
-
     private String mentionUser;
 }
