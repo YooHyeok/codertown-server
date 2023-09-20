@@ -30,6 +30,7 @@ public class RecruitService {
     private final PartRepository partRepository;
     private final ProjectPartRepository projectPartRepository;
     private final BookMarkRepository bookMarkRepository;
+    private final UserProjectRepository userProjectRepository;
 
     /**
      * 코끼리 & 프로젝트 저장
@@ -257,6 +258,26 @@ public class RecruitService {
      * @param request
      */
     public void projectJoinRequest(ProjectJoinRequest request) {
+    }
+
+    /**
+     * 프로젝트 파트별 참여자 추방
+     * @param
+     */
+    @Transactional(readOnly = false)
+    public Boolean projectQuitUser(Long userProjectNo) {
+        try {
+            Optional<UserProject> oUserProject = userProjectRepository.findById(userProjectNo);
+            if (oUserProject.isPresent()) {
+                UserProject findUserProject = oUserProject.get();
+                findUserProject.removeProjectPart();
+                return true;
+            }
+            throw new RuntimeException("회원이 참여중인 프로젝트 정보 없음. 삭제 불가!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e; //컨트롤러로 Exception 리턴
+        }
     }
 
 
