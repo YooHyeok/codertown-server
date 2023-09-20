@@ -61,6 +61,7 @@ public class RecruitService {
             /* UserProject 엔티티에 팀장-작성자로 저장 */
             UserProject userProject = UserProject.builder().build().createUserProject(findUser, cokkiri.getProject(), projectPartLeader);
             projectPartLeader.getUserProjects().add(userProject); //양방향 - 저장?
+            projectPartLeader.increaseUserCount();
             cokkiri.getProject().getProjects().add(userProject); //양방향
             projectParts.add(projectPartLeader);
             projectParts.forEach(projectPart -> cokkiri.getProject().getProjectParts().add(projectPart));
