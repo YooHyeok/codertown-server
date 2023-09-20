@@ -7,6 +7,7 @@ import io.codertown.web.dto.*;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.SignInResult;
 import io.codertown.web.payload.SignStatus;
+import io.codertown.web.payload.SuccessBooleanResult;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
@@ -209,7 +210,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * @return
      */
     @Transactional(readOnly = false)
-    public UserDto userUpdate(UserUpdateRequest request) {
+    public SuccessBooleanResult userUpdate(UserUpdateRequest request) {
         try {
             if(!request.getPassword().equals("")) {
                 /* 패스워드 암호화 */
@@ -218,10 +219,16 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             }
             /* 변경감지 구현 */
             User findUser = (User)userRepository.findByEmail(request.getLoginEmail());
+
+            /* 패스워드 일치 여부 확인 */
+            boolean matches = passwordEncoder.matches(request.getOriginalPassword(), findUser.getPassword());
+            if (!matches){
+                return SuccessBooleanResult.builder().build().setResult(matches);
+            }
+
             findUser.updateUser(request);
 
-            UserDto userDto = UserDto.builder().build().userEntityToDto(findUser);
-            return userDto;
+            return SuccessBooleanResult.builder().build().setResult(true);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

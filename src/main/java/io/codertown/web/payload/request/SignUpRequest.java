@@ -22,7 +22,6 @@ public class SignUpRequest {
     private String email;
     private String password;
     private String nickname;
-//    private MultipartFile attachFile;
     private String profileUrl;
     private Character gender;
     private String role;

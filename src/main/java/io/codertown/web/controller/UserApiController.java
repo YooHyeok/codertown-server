@@ -3,6 +3,7 @@ package io.codertown.web.controller;
 import io.codertown.web.dto.UserDto;
 import io.codertown.web.payload.ExistsResult;
 import io.codertown.web.payload.SignStatus;
+import io.codertown.web.payload.SuccessBooleanResult;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
@@ -282,10 +283,10 @@ public class UserApiController {
     @ApiOperation(value="마이페이지 - 회원정보 수정 API", notes="회원정보 수정")
     @ApiResponse(description = "회원정보 수정 성공 결과",responseCode = "200")
     @PostMapping(path="/user-update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDto> userUpdate(@ModelAttribute UserUpdateRequest request) {
+    public ResponseEntity<SuccessBooleanResult> userUpdate(@ModelAttribute UserUpdateRequest request) {
         try {
-            UserDto updateResult = userService.userUpdate(request);
-            return ResponseEntity.ok(updateResult);
+            SuccessBooleanResult successBooleanResult = userService.userUpdate(request);
+            return ResponseEntity.ok(successBooleanResult);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
