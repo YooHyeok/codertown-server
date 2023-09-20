@@ -26,6 +26,13 @@ public interface CoggleRepository extends JpaRepository<Coggle, Long> {
     @Query("SELECT c FROM Coggle c WHERE (:category IS NULL OR c.category = :category) AND (:user IS NULL OR c.user = :user) AND (:title IS NULL OR c.title = :title)")
     Page<Coggle> findByCategoryAndUser(@Param("category") Character category, @Param("user") User user, @Param("title") String title, PageRequest pageRequest);*/
     @EntityGraph(attributePaths = "user")
-    @Query("SELECT c FROM Coggle c WHERE (:category IS NULL OR c.category = :category) AND (:loginId IS NULL OR c.user.email = :loginId) AND (:keyword IS NULL OR (c.user.nickname LIKE %:keyword% OR c.title LIKE %:keyword% OR c.content LIKE %:keyword%)) AND (c.status = false)")
-    Page<Coggle> findByCategoryAndUser(@Param("category") Character category, @Param("keyword") String keyword, @Param("loginId") String loginId, PageRequest pageRequest);
+    @Query(
+            "SELECT c FROM Coggle c WHERE (:category IS NULL OR c.category = :category) " +
+//            "AND (:loginId IS NULL OR c.user.email = :loginId) " +
+            "AND (:keyword IS NULL OR (c.user.nickname LIKE %:keyword% OR c.title LIKE %:keyword% OR c.content LIKE %:keyword%)) " +
+            "AND (c.status = false)" +
+            "AND (:url IS NOT 'myPost' OR (:loginId IS NULL OR c.user.email = :loginId))"
+    ) // url이 myPost가 아니면 true (break) & loginId가 null이면 true(break)
+//            "AND (:url IS NULL OR (:url like 'myPost' OR (:loginId IS NULL OR c.user.email = :loginId)))")
+    Page<Coggle> findByCategoryAndUser(@Param("category") Character category, @Param("keyword") String keyword, @Param("url") String url, @Param("loginId") String loginId, PageRequest pageRequest);
 }

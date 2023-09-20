@@ -193,13 +193,13 @@ public class RecruitService {
                 ProjectDto projectDto = null;
 
                 /* 회원별 게시글별 좋아요 유무 */
-                boolean isLiked = recruit.getBookMarkList()
+                boolean isBookmarked = recruit.getBookMarkList()
                         .stream().anyMatch(bookMark ->  bookMark.getUser().getEmail().equals(loginId));
 
                 /* 코끼리 변환 (조회한 Recruit리스트중 현재 요소가 Cokkiri인경우) */
                 if (recruit instanceof Cokkiri) {
                     Cokkiri cokkiri = (Cokkiri) recruit;
-                    recruitDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, "cokkiri", isLiked
+                    recruitDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, "cokkiri", isBookmarked
                     );
                     List<ProjectPartSaveDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
                             .map(projectPart -> ProjectPartSaveDto.builder().build().entityToDto(projectPart, null))
@@ -210,7 +210,7 @@ public class RecruitService {
                 /* 맘모스 변환 (조회한 Recruit리스트중 현재 요소가 Mammoth인경우) */
                 if (recruit instanceof Mammoth) {
                     Mammoth mammoth = (Mammoth) recruit;
-                    recruitDto = RecruitDto.builder().build().mammothEntityToDto(mammoth, userDto, "mammoth", isLiked);
+                    recruitDto = RecruitDto.builder().build().mammothEntityToDto(mammoth, userDto, "mammoth", isBookmarked);
                 }
 
                 return RecruitListDto.builder()

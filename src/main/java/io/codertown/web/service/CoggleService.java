@@ -169,12 +169,25 @@ public class CoggleService {
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build()
                 .createPageRequest(page, 10, "coggleNo", "DESC");
-        Page<Coggle> pages = coggleRepository.findByCategoryAndUser(request.getCategory() , request.getKeyword(), request.getLoginId(), pageInfo.getPageRequest());
+        Page<Coggle> pages = coggleRepository.findByCategoryAndUser(request.getCategory() , request.getKeyword(), request.getUrl(), request.getLoginId(), pageInfo.getPageRequest());
+        Long totalCount = pages.getTotalElements();
         pageInfo.setPageInfo(pages, pageInfo);
         List<CoggleDto> coggleList = pages.stream()
-                .map(coggle -> CoggleDto.builder().build().changeEntityToDto(coggle, null))
+                .map(coggle -> {
+                    /* 회원별 게시글별 좋아요 유무 */
+                    boolean isLikedMarked = coggle.getLikeMarkList()
+                            .stream().anyMatch(bookMark ->  bookMark.getUser().getEmail().equals(request.getLoginId()));
+                    return CoggleDto.builder().build().changeEntityToDto(coggle, isLikedMarked);
+                })
                 .collect(Collectors.toList());
-        return CoggleListDto.builder().pageInfo(pageInfo).coggleList(coggleList).articleCount(pages.getTotalElements()).build();
+        /* 마이페이지 북마크일경우 */
+        if (request.getUrl() != null && request.getUrl().equals("myBookMark")) {
+            coggleList = coggleList.stream().filter(coggleDto -> {
+                return coggleDto.getIsLikeMarked() == true;
+            }).collect(Collectors.toList());
+            totalCount = Long.valueOf(coggleList.size());
+        }
+        return CoggleListDto.builder().pageInfo(pageInfo).coggleList(coggleList).articleCount(totalCount).build();
     }
 
     /**
