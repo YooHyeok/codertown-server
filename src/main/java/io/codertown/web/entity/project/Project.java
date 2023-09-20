@@ -31,7 +31,7 @@ public class Project {
     private PersonalStatusEnum personalStatus; //프로젝트 개인 상태 - 대기(WAIT), 진행(RUN), 하차(QUIT), 종료(CLOSED)
 
     @OneToMany(mappedBy = "project")
-    private List<UserProject> projects = new ArrayList<>();
+    private List<UserProject> userProjects = new ArrayList<>();
     private Integer objectWeek; //목표 기간(주)
     private LocalDateTime startDate; // 시작 일자
     private LocalDateTime expectedEndDate; // 종료 예정 일자
@@ -55,7 +55,7 @@ public class Project {
                 .projectTitle(request.getProjectTitle())
                 .projectStatus(TotalStatusEnum.RECURUIT)
 //                .personalStatus()
-                .projects(new ArrayList<>())
+                .userProjects(new ArrayList<>())
                 .projectParts(new ArrayList<>()) // 빌더 패턴은 객체 생성과 속성 설정을 분리하여 관리하므로 따로 초기화해야한다.
                 .build();
         return build;

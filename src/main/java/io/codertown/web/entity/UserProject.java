@@ -40,29 +40,31 @@ public class UserProject {
      * @param projectPart
      */
     public void addProjectPart(ProjectPart projectPart) {
-        this.projectPart = projectPart;
         projectPart.getUserProjects().add(this);
         projectPart.increaseUserCount();
+        this.projectPart = projectPart;
     }
 
     public void removeProjectPart() {
-        projectPart.getUserProjects().remove(this);
-        projectPart.decreaseUserCount();
+        this.projectPart.getUserProjects().remove(this);
+        this.projectPart.decreaseUserCount();
     }
 
 
     /**
      * [회원 프로젝트 생성]
      * @param projectUser
-     * @param project
+     * @param projectPart
      * @return
      */
-    public static UserProject createUserProject(User projectUser, Project project, ProjectPart projectPart) {
+    public UserProject createUserProject(User projectUser, ProjectPart projectPart) {
         UserProject userProject = UserProject.builder()
-                .projectUser(projectUser) //프로젝트 파트 참여자 저장
-                .project(project) //프로젝트 번호 저장
-                .projectPart(projectPart) // 프로젝트 파트번호 저장
+                .projectUser(projectUser) //참여자 저장
+                .project(projectPart.getProject()) //프로젝트 저장
+                .projectPart(this.projectPart) // 프로젝트 파트 저장
                 .build();
+        userProject.addProjectPart(projectPart);
+        projectPart.getProject().getUserProjects().add(userProject); //프로젝트의 userProjectList에 양방향 주입
         return userProject;
     }
 }

@@ -59,12 +59,22 @@ public class RecruitService {
                     )).collect(Collectors.toList());
             /* 프로젝트 파트에 팀장추가 */
             ProjectPart projectPartLeader = ProjectPart.builder().build().createProjectPart(cokkiri.getProject(), 1, partRepository.findById(1L).get());
-            /* UserProject 엔티티에 팀장-작성자로 저장 */
-            UserProject userProject = UserProject.builder().build().createUserProject(findUser, cokkiri.getProject(), projectPartLeader);
-            projectPartLeader.getUserProjects().add(userProject); //양방향 - 저장?
-            projectPartLeader.increaseUserCount();
-            cokkiri.getProject().getProjects().add(userProject); //양방향
+            /**
+             * UserProject 엔티티에 [작성자]->[팀장] 으로 저장 
+             * 1. addProjectPart() 호출
+             *  -> 1. ProjetPart의 userProjects 양방향 - cascade에 의해 현재 UserProject가 ProjetPart에 Insert된다. (userProject 영속화 시)
+             *  -> 2. ProjectPart 지원자수 1 증가
+             * 2. Projet의 userProjects 양방향 - cascade에 의해 현재 UserProject가 Project에 Insert된다. (userProject 영속화 시)
+             * 3. userProject생성및 반환
+             */
+            UserProject.builder().build().createUserProject(findUser, projectPartLeader);
+            /* 팀장으로 추가된 프로젝트파트 프로젝트파트 리스트에 추가 */
             projectParts.add(projectPartLeader);
+            /**
+             * 프로젝트파트 리스트 루프
+             * 프로젝트 엔터티의 프로젝트파트 리스트에 프로젝트파트를 추가한다.
+             * casecade에 의해 -> 다수의 프로젝트파트가 insert 된다
+             */
             projectParts.forEach(projectPart -> cokkiri.getProject().getProjectParts().add(projectPart));
 //            collect.forEach(projectPartRepository::save); //반복 저장
             Cokkiri savedCokkiri = recruitRepository.save(cokkiri); // 영속되어있는 Project, ProjectPart 함께 저장
