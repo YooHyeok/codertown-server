@@ -284,8 +284,6 @@ public class UserApiController {
     @PostMapping(path="/user-update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserDto> userUpdate(@ModelAttribute UserUpdateRequest request) {
         try {
-//            System.out.println("request = " + request);
-//            return null;
             UserDto updateResult = userService.userUpdate(request);
             return ResponseEntity.ok(updateResult);
         } catch (Exception e) {

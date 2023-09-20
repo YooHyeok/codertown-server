@@ -211,12 +211,15 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
     @Transactional(readOnly = false)
     public UserDto userUpdate(UserUpdateRequest request) {
         try {
-            /* 패스워드 암호화 */
-            String encodedPassword = passwordEncoder.encode(request.getPassword());
-            request.setPassword(encodedPassword);
+            if(!request.getPassword().equals("")) {
+                /* 패스워드 암호화 */
+                String encodedPassword = passwordEncoder.encode(request.getPassword());
+                request.setPassword(encodedPassword);
+            }
             /* 변경감지 구현 */
             User findUser = (User)userRepository.findByEmail(request.getLoginEmail());
             findUser.updateUser(request);
+
             UserDto userDto = UserDto.builder().build().userEntityToDto(findUser);
             return userDto;
         } catch (Exception e) {

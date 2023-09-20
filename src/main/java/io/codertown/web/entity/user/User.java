@@ -59,8 +59,12 @@ public class User extends BaseTimeStampEntity implements UserDetails {
      */
     public void updateUser(UserUpdateRequest request) throws IOException {
         this.nickname = request.getNickname();
-        this.password = request.getPassword();
-        this.profileUrl = Base64.getDecoder().decode(request.getProfileUrl().split(",")[1]);
+        if(request.getProfileUrl() != null) { //postman 사용으로 임시 처리
+            this.profileUrl = Base64.getDecoder().decode(request.getProfileUrl().split(",")[1]);
+        }
+        if(!request.getPassword().equals("")) { //패스워드가 비어있지 않을경우에 초기화
+            this.password = request.getPassword();
+        }
     }
 
     /**
