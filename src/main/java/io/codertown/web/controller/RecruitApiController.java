@@ -146,11 +146,23 @@ public class RecruitApiController {
      * UserProject에 수락된 사용자를 파트별로 추가한다.
      * @param request
      */
-    @ApiOperation(value="프로젝트 참가 요청 API", notes="프로젝트 참여를 요청한다.")
-    @ApiResponse(description = "참여요청 성공 결과",responseCode = "200")
+    @ApiOperation(value="프로젝트 참여 수락 API", notes="프로젝트 참여를 수락한다.")
+    @ApiResponse(description = "참여수락 성공 결과",responseCode = "200")
     @PostMapping("/cokkiri/join-confirm")
     public void projectJoinConfirm() {
 //        recruitService.projectJoinConfirm();
+    }
+
+    /**
+     * 프로젝트 상태 변경 API
+     * UserProject에 수락된 사용자를 파트별로 추가한다.
+     * @param request
+     */
+    @ApiOperation(value="프로젝트 상태 변경 API", notes="프로젝트 상태를 변경한다.")
+    @ApiResponse(description = "상태변경 성공 결과",responseCode = "200")
+    @PostMapping("/project/status-change")
+    public void projectStatusChange(Long projectId String status) {
+        recruitService.projectStatusChange(projectId, status);
     }
 
     /**

@@ -5,6 +5,7 @@ import io.codertown.web.dto.*;
 import io.codertown.web.entity.Part;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.UserProject;
+import io.codertown.web.entity.project.Project;
 import io.codertown.web.entity.recruit.*;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.*;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 public class RecruitService {
 
     private final RecruitRepository recruitRepository;
+    private final ProjectRepository projectRepository;
     private final UserRepository userRepository;
     private final PartRepository partRepository;
     private final ProjectPartRepository projectPartRepository;
@@ -271,6 +273,23 @@ public class RecruitService {
     }
 
     /**
+     * 프로젝트 상태 변경
+     */
+    @Transactional(readOnly = false)
+    public void projectStatusChange(Long projectNo, String status) {
+        try {
+            Optional<Project> oProject = projectRepository.findById(projectNo);
+            if (oProject.isPresent()) {
+                Project findProject = oProject.get();
+                findProject.changeStatus(status);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    /**
      * 프로젝트 파트별 참여자 추방
      * @param
      */
@@ -381,4 +400,5 @@ public class RecruitService {
         }
         return true; //2차 Try까지 무사히 통과하면 true반환
     }
+
 }
