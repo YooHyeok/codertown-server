@@ -46,10 +46,10 @@ public class CoggleService {
                     .content(request.getContent())
                     .status(false)
                     .views(0L)
-                    .user(writer)
+                    .writer(writer)
                     .build();
             Coggle savedCoggle = coggleRepository.save(coggle);
-            return savedCoggle.getCoggleNo()!=null? true:false;
+            return savedCoggle.getId()!=null? true:false;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -169,7 +169,7 @@ public class CoggleService {
         Integer page = request.getPage();
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build()
-                .createPageRequest(page, 10, "coggleNo", "DESC");
+                .createPageRequest(page, 10, "id", "DESC");
         Page<Coggle> pages = coggleRepository.findByCategoryAndUser(request.getCategory() , request.getKeyword(), request.getUrl(), request.getLoginId(), pageInfo.getPageRequest());
         Long totalCount = pages.getTotalElements();
         pageInfo.setPageInfo(pages, pageInfo);
@@ -207,7 +207,7 @@ public class CoggleService {
             Coggle findCoggle = oCoggle.get();
             try {
                 Comment buildComment = Comment.builder()
-                        .user(findWriter)
+                        .writer(findWriter)
                         .coggle(findCoggle)
                         .parent(parentComment)
                         .content(request.getContent())
@@ -280,7 +280,6 @@ public class CoggleService {
         Optional<Coggle> oCoggle = coggleRepository.findById(coggleNo);
         if (oCoggle.isPresent()) {
             Coggle coggle = oCoggle.get();
-            System.out.println(commentRepository.findByCoggle(coggle));
             List<CommentDto> collect = commentRepository.findByCoggle(coggle).stream()
                     .filter(comment -> comment.getParent() == null) // 1. parent가 null인 최상위 댓글들만 필터한다.
                     .map(comment ->  CommentDto.builder().build()

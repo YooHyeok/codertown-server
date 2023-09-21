@@ -20,9 +20,7 @@ public class CommentDto {
     private Long coggleNo;
     private Long parentNo;
     private Long commentNo;
-//    private String writer;
     private UserDto writer;
-
     private String content;
     private Boolean status;
     private Integer depth;
@@ -32,10 +30,10 @@ public class CommentDto {
 
     public CommentDto changeEntityToDto(Comment comment) {
         return CommentDto.builder()
-                .coggleNo(comment.getCoggle().getCoggleNo())
+                .coggleNo(comment.getCoggle().getId())
                 .parentNo(comment.getParent() == null ? 0 : comment.getParent().getId())
                 .commentNo(comment.getId())
-                .writer(UserDto.userEntityToDto(comment.getUser()))
+                .writer(UserDto.userEntityToDto(comment.getWriter()))
                 .content(comment.getContent().isEmpty() ? null : comment.getContent())
                 .status(comment.getStatus())
                 .depth(comment.getDepth())

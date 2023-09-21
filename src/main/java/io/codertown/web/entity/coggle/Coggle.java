@@ -21,7 +21,8 @@ import java.util.List;
 @Getter
 public class Coggle extends BaseTimeStampEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long coggleNo;
+    @Column(name = "COGGLE_NO")
+    private Long id;
     @Check(constraints = "IN ('T', 'C', 'D')")
     private Character category;
     private String title;
@@ -32,8 +33,8 @@ public class Coggle extends BaseTimeStampEntity {
     private Boolean status; // 글상태 True : 삭제 | False : 정상
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "writer", referencedColumnName = "USER_NO")
-    private User user;
+    @JoinColumn(name = "USER_NO")
+    private User  writer;
 
     @OneToMany(mappedBy = "coggle")
     private List<LikeMark> likeMarkList = new ArrayList<>();

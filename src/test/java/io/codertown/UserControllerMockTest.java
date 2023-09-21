@@ -48,7 +48,7 @@ public class UserControllerMockTest {
         SignUpRequest buildDto = SignUpRequest.builder()
                 .email("webdevyoo@gmail.com")
                 .nickname(null)
-                .profileIcon(null)
+//                .profileIcon(null)
                 .password("1234")
                 .gender(null)
                 .role("USER_ROLE")

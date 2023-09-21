@@ -14,7 +14,6 @@ public class CoggleDto {
     private String title;
     private String content;
     private Boolean status;
-//    private String writer;
     private UserDto writer;
     private Boolean isLikeMarked;
     private Integer isLikedMarkedCount;
@@ -29,10 +28,10 @@ public class CoggleDto {
      */
     public CoggleDto changeEntityToDto(Coggle findCoggle, Boolean isLikeMarked) {
         return CoggleDto.builder()
-                .coggleNo(findCoggle.getCoggleNo())
+                .coggleNo(findCoggle.getId())
                 .category(findCoggle.getCategory())
 //                .writer(findCoggle.getUser().getEmail())
-                .writer(UserDto.userEntityToDto(findCoggle.getUser()))
+                .writer(UserDto.userEntityToDto(findCoggle.getWriter()))
                 .title(findCoggle.getTitle())
                 .content(findCoggle.getContent())
                 .status(findCoggle.getStatus())

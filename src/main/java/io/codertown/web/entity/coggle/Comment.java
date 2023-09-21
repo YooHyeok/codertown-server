@@ -35,7 +35,8 @@ public class Comment extends BaseTimeStampEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "writer_no")
-    private User user; //댓글 작성자
+    private User writer; //댓글 작성자
+//    private User user; //댓글 작성자
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mention_no")
