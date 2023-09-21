@@ -161,7 +161,7 @@ public class RecruitApiController {
     @ApiOperation(value="프로젝트 상태 변경 API", notes="프로젝트 상태를 변경한다.")
     @ApiResponse(description = "상태변경 성공 결과",responseCode = "200")
     @PostMapping("/project/status-change")
-    public void projectStatusChange(Long projectId String status) {
+    public void projectStatusChange(Long projectId, String status) {
         recruitService.projectStatusChange(projectId, status);
     }
 

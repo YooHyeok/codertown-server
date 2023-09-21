@@ -70,4 +70,32 @@ public class Project {
         this.objectWeek = objectWeek;
         this.teamName = teamName;
     }
+
+    /**
+     * status 변경감지
+     * @param status
+     */
+    public void changeStatus(String status) {
+        TotalStatusEnum changeStatus = null;
+        switch (status) {
+            case "RECRUIT" :
+                changeStatus = TotalStatusEnum.RECURUIT;
+                break;
+            case "RUN" :
+                changeStatus = TotalStatusEnum.RUN;
+                if (this.startDate == null) { // 시작일자가 단 한번도 등록된 적이 없다면
+                    this.startDate = LocalDateTime.now();
+                    this.expectedEndDate = this.startDate.plusWeeks(this.objectWeek); // 종료 예정일자를 최초시작일자 기준 3주후로 지정
+                }
+                break;
+            case "FAIL" :
+                changeStatus = TotalStatusEnum.FAIL;
+                break;
+            case "CLOSED" :
+                changeStatus = TotalStatusEnum.CLOSED;
+                this.lastClosingDate = LocalDateTime.now();
+                break;
+        }
+        this.projectStatus = changeStatus;
+    }
 }
