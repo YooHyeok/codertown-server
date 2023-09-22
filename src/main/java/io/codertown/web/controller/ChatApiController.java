@@ -2,7 +2,7 @@ package io.codertown.web.controller;
 
 import io.codertown.web.payload.SuccessBooleanResult;
 import io.codertown.web.payload.request.CreateCokkiriChatRoomRequest;
-import io.codertown.web.repository.ChatRoomRepository;
+import io.codertown.web.service.ChatRoomService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
