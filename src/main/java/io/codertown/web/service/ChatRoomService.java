@@ -1,9 +1,7 @@
 package io.codertown.web.service;
 
 
-import io.codertown.web.dto.ChatRoomDto;
-import io.codertown.web.dto.ChatRoomUserDto;
-import io.codertown.web.dto.UserDto;
+import io.codertown.web.dto.*;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.chat.ChatMessage;
 import io.codertown.web.entity.chat.ChatRoom;
@@ -78,6 +76,7 @@ public class ChatRoomService {
              * 프로젝트 파트 참여 수락 여부
              */
             ChatRoomDto chatRoomDto = ChatRoomDto.builder()
+                    .chatRoomNo(chatRoomUser.getChatRoom().getId())
                     .lastChatMessage(chatMessage.size() == 0 ? null : chatMessage.get(chatMessage.size()).getMessage()) //가장 마지막 메시지
                     .lastChatMessageDate(chatMessage.size() == 0 ? null : chatMessage.get(chatMessage.size()).getChatSendDate()) //가장 마지막 메시지 전송 시간
                     .chatUserList(userDtoList)
@@ -92,5 +91,45 @@ public class ChatRoomService {
         }).collect(Collectors.toList());
 
         return ChatRoomListResponse.builder().chatRomUserDtoList(chatRomUserDtoList).build();
+    }
+
+    /**
+     * 채팅 Room 정보 조회
+     * 1. 채팅 메시지 리스트
+     * 2. 지원한 프로젝트 정보
+     * 3. 지원한 파트 정보
+     * 4. 수락여부
+     * @param chatRoomId
+     * @return
+     */
+    public ChatRoomDetailResponse userChatDetail(String chatRoomId) {
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow();
+
+        List<ChatMessageDto> chatMessageDtoList = chatRoom.getChatMessage().stream()
+                .map(chatMessage -> {
+
+                    UserDto userDto = UserDto.builder()
+                            .email(chatMessage.getSender().getEmail())
+                            .nickname(chatMessage.getSender().getNickname())
+                            .profileUrl(chatMessage.getSender().getProfileUrl())
+                            .build();
+
+                    return ChatMessageDto.builder()
+                                    .sender(userDto)
+                                    .message(chatMessage.getMessage())
+                                    .chatSendDate(chatMessage.getChatSendDate())
+                                    .build();
+                }).collect(Collectors.toList());
+
+
+            ChatRoomDetailResponse result = ChatRoomDetailResponse.builder()
+                .chatMessageDtoList(chatMessageDtoList)
+                .project(ProjectDto.entityToDto(chatRoom.getProject(), null))
+                .projectPart(ProjectPartDto.entityToDto(chatRoom.getProjectPart()))
+                .isConfirm(chatRoom.getIsConfirm())
+                .build();
+
+
+        return result;
     }
 }
