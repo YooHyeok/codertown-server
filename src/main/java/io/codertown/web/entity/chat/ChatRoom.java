@@ -62,4 +62,9 @@ public class ChatRoom {
         newChatRoom.addMembers(roomMaker, guest);
         return newChatRoom;
     }
+
+    public void addMembers(User roomMaker, User guest) {
+        this.chatRoomUsers.add(roomMaker);
+        this.chatRoomUsers.add(guest);
+    }
 }
