@@ -52,4 +52,14 @@ public class ChatRoom {
     @Column
     private LocalDateTime createdDate;
 
+    public static ChatRoom createChatRoom(User roomMaker, User guest, Project project, ProjectPart projectPart) {
+        ChatRoom newChatRoom = ChatRoom.builder()
+                .id(UUID.randomUUID().toString())
+                .chatRoomUsers(new HashSet<>())
+                .project(project)
+                .projectPart(projectPart)
+                .build();
+        newChatRoom.addMembers(roomMaker, guest);
+        return newChatRoom;
+    }
 }
