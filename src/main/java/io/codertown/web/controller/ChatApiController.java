@@ -42,4 +42,29 @@ public class ChatApiController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+
+    /*@ApiOperation(value="코끼리&맘모스 목록 출력 API", notes="코끼리&맘모스 목록 출력에 필요한 JSON 데이터 반환")
+    @ApiResponse(description = "코끼리&맘모스 목록 리스트 JSON 데이터",responseCode = "200")
+    @GetMapping(path = "/recruit", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String,Object>> cokkiriList() {
+
+      List<ChatRoom> chatRooms = chatRoomService.findChatRoomList(userId);
+        List<ChatRoomInfoDto> chatRoomInfoDtos = new ArrayList<>();
+
+        for (ChatRoom chatRoom : chatRooms) {
+            ChatRoomInfoDto info = modelMapper.map(chatRoom, ChatRoomInfoDto.class);
+            chatRoomInfoDtos.add(info);
+        }
+
+        ChatRoomListDto chatRoomListDto = ChatRoomListDto.builder()
+                .page(page)
+                .count(chatRooms.size())
+                .reqUserId(userId)
+                .chatRooms(chatRoomInfoDtos)
+
+                .build();
+
+        return ResponseEntity.ok(list.chatRoom(chatRoomListDto));
+    }*/
+
 }

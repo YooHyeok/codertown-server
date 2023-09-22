@@ -10,8 +10,8 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -30,15 +30,12 @@ public class ChatRoom {
     @Column(name = "CHAT_ROOM_NO")
     private String id;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     @JoinColumn(name = "LAST_CHAT_MESSAGE_NO")
     private ChatMessage chatMessage;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "CHAT_ROOM_USERS",
-            joinColumns = @JoinColumn(name = "CHAT_ROOM_NO"),
-            inverseJoinColumns = @JoinColumn(name = "USER_NO"))
-    private Set<User> chatRoomUsers = new HashSet<>();
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    private List<ChatRoomUser> chatRoomUserList = new ArrayList<>();
 
     @OneToOne
     @JoinColumn(name = "PROJECT_NO")
@@ -55,16 +52,13 @@ public class ChatRoom {
     public static ChatRoom createChatRoom(User roomMaker, User guest, Project project, ProjectPart projectPart) {
         ChatRoom newChatRoom = ChatRoom.builder()
                 .id(UUID.randomUUID().toString())
-                .chatRoomUsers(new HashSet<>())
+                .chatRoomUserList(new ArrayList<>())
                 .project(project)
                 .projectPart(projectPart)
                 .build();
-        newChatRoom.addMembers(roomMaker, guest);
+        ChatRoomUser.builder().build().addMembers(newChatRoom, roomMaker, guest);
         return newChatRoom;
     }
 
-    public void addMembers(User roomMaker, User guest) {
-        this.chatRoomUsers.add(roomMaker);
-        this.chatRoomUsers.add(guest);
-    }
+
 }

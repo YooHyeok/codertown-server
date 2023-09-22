@@ -2,6 +2,7 @@ package io.codertown.web.entity.user;
 
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.UserProject;
+import io.codertown.web.entity.chat.ChatRoomUser;
 import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
@@ -52,6 +53,9 @@ public class User extends BaseTimeStampEntity implements UserDetails {
 
     @OneToMany(mappedBy = "recruitUser")
     private List<Recruit> recruitUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "chatRoomUser")
+    private List<ChatRoomUser> chatRoomUserList = new ArrayList<>();
 
     /**
      * 회원정보 수정 - 변경감지 메소드

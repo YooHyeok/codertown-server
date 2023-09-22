@@ -23,13 +23,13 @@ public class ChatMessage {
     @Column(name = "CHAT_MESSAGE_NO")
     private Long id;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "ROOM_ID", insertable = false, updatable = false)
-    private ChatRoom roomId;
+    private ChatRoom chatRoom;
 
     @OneToOne
-    @JoinColumn(name = "AUTHOR_ID", insertable = false, updatable = false)
-    private User authorId;
+    @JoinColumn(name = "SENDER_ID", insertable = false, updatable = false)
+    private User sender;
 
     @Column(name = "message")
     private String message;
