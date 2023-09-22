@@ -23,7 +23,7 @@ public class ChatMessage {
     @Column(name = "CHAT_MESSAGE_NO")
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "ROOM_ID", insertable = false, updatable = false)
     private ChatRoom chatRoom;
 

@@ -14,15 +14,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Entity
-@DynamicUpdate
+@Getter
 @Builder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@ToString(exclude = {"chatRoomUserList", "project"})
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@DynamicUpdate
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @EntityListeners(AuditingEntityListener.class)
-@Getter
-@ToString
 public class ChatRoom {
 
     @EqualsAndHashCode.Include
@@ -30,9 +30,8 @@ public class ChatRoom {
     @Column(name = "CHAT_ROOM_NO")
     private String id;
 
-    @OneToOne(mappedBy = "chatRoom", cascade = CascadeType.ALL)
-    @JoinColumn(name = "LAST_CHAT_MESSAGE_NO")
-    private ChatMessage chatMessage;
+    @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
+    private List<ChatMessage> chatMessage = new ArrayList<>();
 
     @OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
     private List<ChatRoomUser> chatRoomUserList = new ArrayList<>();
@@ -49,12 +48,16 @@ public class ChatRoom {
     @Column
     private LocalDateTime createdDate;
 
+    @Column(name = "IS_CONFIRM")
+    private Boolean isConfirm;
+
     public static ChatRoom createChatRoom(User roomMaker, User guest, Project project, ProjectPart projectPart) {
         ChatRoom newChatRoom = ChatRoom.builder()
                 .id(UUID.randomUUID().toString())
                 .chatRoomUserList(new ArrayList<>())
                 .project(project)
                 .projectPart(projectPart)
+                .isConfirm(false)
                 .build();
         ChatRoomUser.builder().build().addMembers(newChatRoom, roomMaker, guest);
         return newChatRoom;

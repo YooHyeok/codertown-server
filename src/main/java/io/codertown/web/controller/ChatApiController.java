@@ -2,6 +2,7 @@ package io.codertown.web.controller;
 
 import io.codertown.web.payload.SuccessBooleanResult;
 import io.codertown.web.payload.request.CreateCokkiriChatRoomRequest;
+import io.codertown.web.payload.response.ChatRoomListResponse;
 import io.codertown.web.service.ChatRoomService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -43,28 +44,18 @@ public class ChatApiController {
         }
     }
 
-    /*@ApiOperation(value="코끼리&맘모스 목록 출력 API", notes="코끼리&맘모스 목록 출력에 필요한 JSON 데이터 반환")
-    @ApiResponse(description = "코끼리&맘모스 목록 리스트 JSON 데이터",responseCode = "200")
-    @GetMapping(path = "/recruit", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Map<String,Object>> cokkiriList() {
+    @ApiOperation(value="코끼리 참여 채팅방 목록 출력 API", notes="코끼리 참여 채팅방 목록 출력에 필요한 JSON 데이터 반환")
+    @ApiResponse(description = "코끼리 참여 채팅방 목록 리스트 JSON 데이터",responseCode = "200")
+    @PostMapping(path = "/chat-list", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ChatRoomListResponse> cokkiriList(String loginEmail) {
 
-      List<ChatRoom> chatRooms = chatRoomService.findChatRoomList(userId);
-        List<ChatRoomInfoDto> chatRoomInfoDtos = new ArrayList<>();
-
-        for (ChatRoom chatRoom : chatRooms) {
-            ChatRoomInfoDto info = modelMapper.map(chatRoom, ChatRoomInfoDto.class);
-            chatRoomInfoDtos.add(info);
+        try {
+            ChatRoomListResponse response = chatRoomService.userChatList(loginEmail);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        ChatRoomListDto chatRoomListDto = ChatRoomListDto.builder()
-                .page(page)
-                .count(chatRooms.size())
-                .reqUserId(userId)
-                .chatRooms(chatRoomInfoDtos)
-
-                .build();
-
-        return ResponseEntity.ok(list.chatRoom(chatRoomListDto));
-    }*/
+    }
 
 }

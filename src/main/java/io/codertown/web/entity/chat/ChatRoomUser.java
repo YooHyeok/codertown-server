@@ -1,17 +1,16 @@
 package io.codertown.web.entity.chat;
 
 import io.codertown.web.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Entity
+@Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "CHAT_ROOM_USER")
+@ToString(exclude = "chatRoomUser")
+@Entity
 public class ChatRoomUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
