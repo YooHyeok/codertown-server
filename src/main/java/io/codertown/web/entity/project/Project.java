@@ -52,7 +52,7 @@ public class Project {
                 .subject(request.getProjectSubject())
                 .teamName(request.getTeamname())
                 .objectWeek(request.getObjectWeek())
-                .projectTitle(request.getProjectTitle())
+                .projectTitle(request.getCokkiriTitle())
                 .projectStatus(TotalStatusEnum.RECURUIT)
 //                .personalStatus()
                 .userProjects(new ArrayList<>())
