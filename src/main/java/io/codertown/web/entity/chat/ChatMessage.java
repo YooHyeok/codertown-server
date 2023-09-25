@@ -23,12 +23,12 @@ public class ChatMessage {
     @Column(name = "CHAT_MESSAGE_NO")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "ROOM_ID", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ROOM_ID", updatable = false)
     private ChatRoom chatRoom;
 
     @OneToOne
-    @JoinColumn(name = "SENDER_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "SENDER_ID", updatable = false)
     private User sender;
 
     @Column(name = "message")

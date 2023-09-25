@@ -77,8 +77,8 @@ public class ChatRoomService {
              */
             ChatRoomDto chatRoomDto = ChatRoomDto.builder()
                     .chatRoomNo(chatRoomUser.getChatRoom().getId())
-                    .lastChatMessage(chatMessage.size() == 0 ? null : chatMessage.get(chatMessage.size()).getMessage()) //가장 마지막 메시지
-                    .lastChatMessageDate(chatMessage.size() == 0 ? null : chatMessage.get(chatMessage.size()).getChatSendDate()) //가장 마지막 메시지 전송 시간
+                    .lastChatMessage(chatMessage.size() == 0 ? null : chatMessage.get(chatMessage.size()-1).getMessage()) //가장 마지막 메시지
+                    .lastChatMessageDate(chatMessage.size() == 0 ? null : chatMessage.get(chatMessage.size()-1).getChatSendDate()) //가장 마지막 메시지 전송 시간
                     .chatUserList(userDtoList)
                     .isConfirm(chatRoomUser.getChatRoom().getIsConfirm())
                     .build();

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-public class ChatApiController {
+public class ChatRoomApiController {
 
     private final ChatRoomService chatRoomService;
 

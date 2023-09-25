@@ -62,6 +62,10 @@ public class ChatRoom {
         ChatRoomUser.builder().build().addMembers(newChatRoom, roomMaker, guest);
         return newChatRoom;
     }
+    public ChatRoom updateChatRoom(ChatMessage chatMessage) {
+        this.chatMessage.add(chatMessage);
+        return this;
+    }
 
 
 }
