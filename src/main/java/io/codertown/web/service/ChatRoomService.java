@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -66,7 +67,8 @@ public class ChatRoomService {
             ).collect(Collectors.toList());
 
             /* 최신 채팅 메시지(가장 마지막에 저장) */
-            List<ChatMessage> chatMessage = chatRoomUser.getChatRoom().getChatMessage(); //채팅 메시지목록
+            List<ChatMessage> chatMessage = chatRoomUser.getChatRoom().getChatMessage()
+                    .stream().sorted(Comparator.comparing(ChatMessage::getChatSendDate)).collect(Collectors.toList()); //채팅 메시지목록 sorted를 사용하여 오름차순 정렬
 
             /**
              * [채팅방 DTO]
