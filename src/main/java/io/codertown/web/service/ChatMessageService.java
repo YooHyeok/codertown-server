@@ -1,12 +1,12 @@
 package io.codertown.web.service;
 
-import io.codertown.web.payload.ChatMessageSaveResult;
 import io.codertown.web.dto.ChatMessageDto;
-import io.codertown.web.payload.request.ChatMessageRequest;
 import io.codertown.web.dto.UserDto;
 import io.codertown.web.entity.chat.ChatMessage;
 import io.codertown.web.entity.chat.ChatRoom;
 import io.codertown.web.entity.user.User;
+import io.codertown.web.payload.ChatMessageSaveResult;
+import io.codertown.web.payload.request.ChatMessageRequest;
 import io.codertown.web.repository.ChatMessageRepository;
 import io.codertown.web.repository.ChatRoomRepository;
 import io.codertown.web.repository.UserRepository;
@@ -29,7 +29,6 @@ public class ChatMessageService {
 
     @Transactional(readOnly = false)
     public ChatMessageSaveResult createChatMessage(ChatMessageRequest request) {
-        System.out.println("request = " + request);
         ChatRoom findChatRoom = chatRoomSRepository.findById(request.getRoomId()).orElseThrow();
         User sender = (User) userRepository.findByEmail(request.getSenderId());
 
@@ -37,13 +36,13 @@ public class ChatMessageService {
 
         ChatRoom chatRoom = chatRoomSRepository.findById(chatMessage.getChatRoom().getId()).orElseThrow();
         chatRoom.updateChatRoom(chatMessage);
-        UserDto friend = chatRoom.getChatRoomUserList().stream()
-                .filter(m -> m.getChatRoomUser().getEmail() != request.getSenderId())
-                .map(chatRoomUser -> UserDto.userEntityToDto(chatRoomUser.getChatRoomUser()))
-                .collect(Collectors.toList())
-                .get(0);
+
+        UserDto findSenderDto = chatRoom.getChatRoomUserList()
+                .stream()
+                .filter(chatRoomUser -> chatRoomUser.getChatRoomUser().getEmail().equals(request.getSenderId()))
+                .map(chatRoomUser -> UserDto.userEntityToDto(chatRoomUser.getChatRoomUser())).findFirst().orElseThrow();
         return ChatMessageSaveResult.builder()
-                .sender(friend)
+                .sender(findSenderDto)
                 .message(chatMessage.getMessage())
                 .chatSendDate(chatMessage.getChatSendDate())
                 .build();
