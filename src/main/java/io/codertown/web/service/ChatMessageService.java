@@ -74,6 +74,7 @@ public class ChatMessageService {
                         .sender(UserDto.userEntityToDto(chatMessage.getSender()))
                         .message(chatMessage.getMessage())
                         .chatSendDate(chatMessage.getChatSendDate())
+                        .isReaded(chatMessage.getIsReaded())
                         .build())
                 .collect(Collectors.toList());
 
