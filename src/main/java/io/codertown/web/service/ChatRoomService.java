@@ -5,7 +5,6 @@ import io.codertown.web.dto.*;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.chat.ChatMessage;
 import io.codertown.web.entity.chat.ChatRoom;
-import io.codertown.web.entity.chat.ChatRoomUser;
 import io.codertown.web.entity.project.Project;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.CreateCokkiriChatRoomRequest;
@@ -49,6 +48,16 @@ public class ChatRoomService {
     }
 
     /**
+     * 회원별 신규 채팅 메시지 토탈 카운트 조회
+     * @param loginId
+     * @return
+     */
+    public Long newMsgTotalCount(String loginId) {
+        User loginUser = (User) userRepository.findByEmail(loginId);
+        return loginUser.getNewMsgTotalCount();
+    }
+
+    /**
      * 코끼리 참여 채팅방 목록 출력 API
      * @param loginEmail
      * @return
@@ -58,17 +67,11 @@ public class ChatRoomService {
         
         List<ChatRoomUserDto> chatRomUserDtoList = loginUser.getChatRoomUserList().stream().map(chatRoomUser -> {
 
-            List<ChatRoomUser> chatRoomUserList = chatRoomUser.getChatRoom().getChatRoomUserList();
-
-            ChatRoomUser chatRoomUser2 = chatRoomUserList
-                    .stream()
-                    .filter(chatRoomUser1 -> !chatRoomUser1.getChatRoomUser().getEmail().equals(loginEmail))
-                    .findAny()
-                    .orElseThrow();
-            Long newMsgCount = chatRoomUser2.getNewMsgCount();
+            /* 로그인 한 유저의 채팅방별 신규 메시지 카운트 */
+            Long newMsgCount = chatRoomUser.getNewMsgCount();
 
             /* 채팅 참여 회원 목록 */
-            List<UserDto> userDtoList = chatRoomUserList.stream().map(chatRoomUser1 ->
+            List<UserDto> userDtoList = chatRoomUser.getChatRoom().getChatRoomUserList().stream().map(chatRoomUser1 ->
                     UserDto.builder()
                             .email(chatRoomUser1.getChatRoomUser().getEmail())
                             .nickname(chatRoomUser1.getChatRoomUser().getNickname())

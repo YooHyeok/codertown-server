@@ -66,10 +66,6 @@ public class ChatMessageService {
                 .build();
     }
 
-    public ChatMessage findById(long chatMessageId) {
-        return chatMessageRepository.findById(chatMessageId).orElseThrow();
-    }
-
     public List<ChatMessageDto> findChatMessageList(String roomId) {
 
         ChatRoom chatRoom = chatRoomSRepository.findById(roomId).orElseThrow();

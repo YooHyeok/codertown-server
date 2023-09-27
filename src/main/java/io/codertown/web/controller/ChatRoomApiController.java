@@ -45,6 +45,18 @@ public class ChatRoomApiController {
         }
     }
 
+    @PostMapping(path = "/new-message-total-count")
+    public ResponseEntity<Long> newMsgTotalCount(String loginEmail) {
+
+        try {
+            Long response = chatRoomService.newMsgTotalCount(loginEmail);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
     /**
      * 채팅 Room 목록 조회
      * @param roomNo
