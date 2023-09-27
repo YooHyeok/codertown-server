@@ -11,4 +11,6 @@ public class ChatRoomUserDto {
     private ChatRoomDto chatRoom;
     private Boolean isRoomMaker;
 
+    private Long newMsgCount;
+
 }

@@ -5,6 +5,7 @@ import io.codertown.web.dto.*;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.chat.ChatMessage;
 import io.codertown.web.entity.chat.ChatRoom;
+import io.codertown.web.entity.chat.ChatRoomUser;
 import io.codertown.web.entity.project.Project;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.CreateCokkiriChatRoomRequest;
@@ -53,12 +54,21 @@ public class ChatRoomService {
      * @return
      */
     public ChatRoomListResponse userChatList(String loginEmail) {
-        User roomMaker = (User) userRepository.findByEmail(loginEmail);
+        User loginUser = (User) userRepository.findByEmail(loginEmail);
         
-        List<ChatRoomUserDto> chatRomUserDtoList = roomMaker.getChatRoomUserList().stream().map(chatRoomUser -> {
+        List<ChatRoomUserDto> chatRomUserDtoList = loginUser.getChatRoomUserList().stream().map(chatRoomUser -> {
+
+            List<ChatRoomUser> chatRoomUserList = chatRoomUser.getChatRoom().getChatRoomUserList();
+
+            ChatRoomUser chatRoomUser2 = chatRoomUserList
+                    .stream()
+                    .filter(chatRoomUser1 -> !chatRoomUser1.getChatRoomUser().getEmail().equals(loginEmail))
+                    .findAny()
+                    .orElseThrow();
+            Long newMsgCount = chatRoomUser2.getNewMsgCount();
 
             /* 채팅 참여 회원 목록 */
-            List<UserDto> userDtoList = chatRoomUser.getChatRoom().getChatRoomUserList().stream().map(chatRoomUser1 ->
+            List<UserDto> userDtoList = chatRoomUserList.stream().map(chatRoomUser1 ->
                     UserDto.builder()
                             .email(chatRoomUser1.getChatRoomUser().getEmail())
                             .nickname(chatRoomUser1.getChatRoomUser().getNickname())
@@ -88,6 +98,7 @@ public class ChatRoomService {
             return ChatRoomUserDto.builder()
                     .chatRoom(chatRoomDto) //채팅방 DTO
                     .isRoomMaker(chatRoomUser.getIsRoomMaker()) //채팅방 최초 생성 여부
+                    .newMsgCount(newMsgCount)
                     .build();
 
         }).collect(Collectors.toList());
