@@ -84,10 +84,10 @@ public class ChatRoomApiController {
     @ApiOperation(value="코끼리 참여 채팅방 상세 출력 API", notes="코끼리 참여 채팅방 상세 출력에 필요한 JSON 데이터 반환")
     @ApiResponse(description = "코끼리 참여 채팅방 상세 JSON 데이터",responseCode = "200")
     @PostMapping(path = "/cokkiri-chat-detail", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ChatRoomDetailResponse> userChatDetail(String roomNo) {
+    public ResponseEntity<ChatRoomDetailResponse> userChatDetail(String roomNo, String loginId) {
 
         try {
-            return ResponseEntity.ok(chatRoomService.userChatDetail(roomNo));
+            return ResponseEntity.ok(chatRoomService.userChatDetail(roomNo, loginId));
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

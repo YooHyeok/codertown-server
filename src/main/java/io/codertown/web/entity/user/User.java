@@ -63,8 +63,10 @@ public class User extends BaseTimeStampEntity implements UserDetails {
         this.newMsgTotalCount ++ ;
     };
 
-    public void decrementNewMsgTotalCount() {
-        this.newMsgTotalCount --;
+    public void decrementNewMsgTotalCount(Long newMsgCount) {
+        System.out.println("newMsgCount = " + newMsgCount);
+        this.newMsgTotalCount = this.newMsgTotalCount - newMsgCount;
+        System.out.println("this.newMsgTotalCount = " + this.newMsgTotalCount);
     };
 
     /**

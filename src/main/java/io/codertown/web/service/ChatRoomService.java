@@ -5,14 +5,12 @@ import io.codertown.web.dto.*;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.chat.ChatMessage;
 import io.codertown.web.entity.chat.ChatRoom;
+import io.codertown.web.entity.chat.ChatRoomUser;
 import io.codertown.web.entity.project.Project;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.CreateCokkiriChatRoomRequest;
 import io.codertown.web.payload.response.ChatRoomListResponse;
-import io.codertown.web.repository.ChatRoomRepository;
-import io.codertown.web.repository.ProjectPartRepository;
-import io.codertown.web.repository.ProjectRepository;
-import io.codertown.web.repository.UserRepository;
+import io.codertown.web.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +28,7 @@ public class ChatRoomService {
     private final ProjectRepository projectRepository;
     private final ProjectPartRepository projectPartRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatMessageRepository chatMessageRepository;
 
     /**
      * 코끼리 참여 채팅방 생성 API
@@ -118,10 +117,32 @@ public class ChatRoomService {
      * @param chatRoomId
      * @return
      */
-    public ChatRoomDetailResponse userChatDetail(String chatRoomId) {
-        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow();
+    @Transactional(readOnly = false)
+    public ChatRoomDetailResponse userChatDetail(String chatRoomId, String loginId) {
+        ChatRoom findChatRoom = chatRoomRepository.findById(chatRoomId).orElseThrow();
 
-        List<ChatMessageDto> chatMessageDtoList = chatRoom.getChatMessage().stream()
+
+        /* 나의 신규 메시지 카운트 조회 및 초기화*/
+        ChatRoomUser findChatRoomUser = findChatRoom.getChatRoomUserList()
+                .stream().filter(chatRoomUser -> chatRoomUser.getChatRoomUser().getEmail().equals(loginId))
+                .findAny().orElseThrow();
+
+        Long newMsgCount = findChatRoomUser.getNewMsgCount();
+        findChatRoomUser.decrementNewMsgCount(newMsgCount);
+
+        /* 나의 토탈 메시지 카운트 감소*/
+        User loginUser = (User) userRepository.findByEmail(loginId);
+        loginUser.decrementNewMsgTotalCount(newMsgCount);
+
+        /* 상대방의 신규 메시지 카운트 조회*/
+        User findFriend = findChatRoom.getChatRoomUserList()
+                .stream().filter(chatRoomUser -> !chatRoomUser.getChatRoomUser().getEmail().equals(loginId))
+                .findAny().orElseThrow().getChatRoomUser();
+
+        /* 상대방 메시지의 읽음여부 true로 변경 */
+        chatMessageRepository.bulkUpdateIsReadedByChatRoomAndSender(findChatRoom, findFriend);
+
+        List<ChatMessageDto> chatMessageDtoList = findChatRoom.getChatMessage().stream()
                 .map(chatMessage -> {
 
                     UserDto userDto = UserDto.builder()
@@ -140,9 +161,9 @@ public class ChatRoomService {
 
             ChatRoomDetailResponse result = ChatRoomDetailResponse.builder()
                 .chatMessageDtoList(chatMessageDtoList)
-                .project(ProjectDto.entityToDto(chatRoom.getProject(), null))
-                .projectPart(ProjectPartDto.entityToDto(chatRoom.getProjectPart()))
-                .isConfirm(chatRoom.getIsConfirm())
+                .project(ProjectDto.entityToDto(findChatRoom.getProject(), null))
+                .projectPart(ProjectPartDto.entityToDto(findChatRoom.getProjectPart()))
+                .isConfirm(findChatRoom.getIsConfirm())
                 .build();
 
 

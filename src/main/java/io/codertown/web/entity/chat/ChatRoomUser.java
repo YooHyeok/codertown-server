@@ -34,8 +34,8 @@ public class ChatRoomUser {
         this.newMsgCount ++;
     };
 
-    public void decrementNewMsgCount() {
-        this.newMsgCount --;
+    public void decrementNewMsgCount(Long newMsgCount) {
+        this.newMsgCount = this.newMsgCount - newMsgCount;
     };
 
     public static void addMembers(ChatRoom newChatRoom, User roomMaker, User guest) {
