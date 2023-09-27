@@ -57,6 +57,16 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     @OneToMany(mappedBy = "chatRoomUser")
     private List<ChatRoomUser> chatRoomUserList = new ArrayList<>();
 
+    private Long newMsgTotalCount;
+
+    public void incrementNewMsgTotalCount(Long newMsgCount) {
+        this.newMsgTotalCount = newMsgCount;
+    };
+
+    public void decrementNewMsgTotalCount() {
+        this.newMsgTotalCount --;
+    };
+
     /**
      * 회원정보 수정 - 변경감지 메소드
      * @param request

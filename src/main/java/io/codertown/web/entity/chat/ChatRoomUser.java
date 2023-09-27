@@ -28,7 +28,17 @@ public class ChatRoomUser {
     @Column(name = "IS_ROOM_MAKER")
     private Boolean isRoomMaker;
 
-    public void addMembers(ChatRoom newChatRoom, User roomMaker, User guest) {
+    private Long newMsgCount;
+
+    public void incrementNewMsgCount(Long newMsgCount) {
+        this.newMsgCount = newMsgCount;
+    };
+
+    public void decrementNewMsgCount() {
+        this.newMsgCount --;
+    };
+
+    public static void addMembers(ChatRoom newChatRoom, User roomMaker, User guest) {
         ChatRoomUser roomMakerUser = createChatRoomMakerUser(newChatRoom, roomMaker);
         ChatRoomUser guestUser = createChatRoomGuestUser(newChatRoom, guest);
         newChatRoom.getChatRoomUserList().add(roomMakerUser);
@@ -40,6 +50,7 @@ public class ChatRoomUser {
                 .chatRoom(newChatRoom)
                 .chatRoomUser(user)
                 .isRoomMaker(true)
+                .newMsgCount(0L)
                 .build();
         user.getChatRoomUserList().add(chatRoomUser);
         return chatRoomUser;
@@ -50,6 +61,7 @@ public class ChatRoomUser {
                 .chatRoom(newChatRoom)
                 .chatRoomUser(user)
                 .isRoomMaker(false)
+                .newMsgCount(0L)
                 .build();
         user.getChatRoomUserList().add(chatRoomUser);
         return chatRoomUser;

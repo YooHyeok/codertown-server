@@ -59,7 +59,7 @@ public class ChatRoom {
                 .projectPart(projectPart)
                 .isConfirm(false)
                 .build();
-        ChatRoomUser.builder().build().addMembers(newChatRoom, roomMaker, guest);
+        ChatRoomUser.addMembers(newChatRoom, roomMaker, guest);
         return newChatRoom;
     }
     public ChatRoom updateChatRoom(ChatMessage chatMessage) {

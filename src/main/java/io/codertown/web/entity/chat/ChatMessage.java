@@ -37,4 +37,6 @@ public class ChatMessage {
     @CreatedDate
     @Column
     private LocalDateTime chatSendDate;
+
+    private Boolean isReaded;
 }
