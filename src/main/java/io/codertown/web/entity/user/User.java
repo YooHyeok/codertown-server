@@ -59,8 +59,8 @@ public class User extends BaseTimeStampEntity implements UserDetails {
 
     private Long newMsgTotalCount;
 
-    public void incrementNewMsgTotalCount(Long newMsgCount) {
-        this.newMsgTotalCount = newMsgCount;
+    public void incrementNewMsgTotalCount() {
+        this.newMsgTotalCount ++ ;
     };
 
     public void decrementNewMsgTotalCount() {

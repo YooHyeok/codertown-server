@@ -16,4 +16,6 @@ public class ChatMessageDto {
     private String message;
 
     private LocalDateTime chatSendDate;
+
+    private Boolean isReaded;
 }

@@ -41,31 +41,19 @@ public class ChatMessageService {
                 .chatSendDate(LocalDateTime.now())
                 .isReaded(false)
                 .build();
+
+        /* 채팅방회원에서 상대방의 신규 메시지 카운트 증가 */
+        ChatRoomUser friendChatRoomUser = findChatRoom.getChatRoomUserList()
+                .stream().filter(chatRoomUser -> !chatRoomUser.getChatRoomUser().getEmail().equals(request.getSenderId()))
+                .findAny().orElseThrow();
+        friendChatRoomUser.incrementNewMsgCount();
+
+        /* 상대방의 신규 메시지 토탈 카운트 증가 */
+        User friendUser = friendChatRoomUser.getChatRoomUser();
+        friendUser.incrementNewMsgTotalCount();
+
         /* 메시지 저장 */
         ChatRoom chatRoom = findChatRoom.updateChatRoom(chatMessage);
-
-        /* 저장된 채팅중 상대방이 보낸 메시지 필터링 후 신규 메시지 갯수 조회 */
-        Long newMsgcount = chatRoom.getChatMessage().stream().filter(chatMessage1 -> chatMessage1.getIsReaded() == false).count();
-
-        /* 전송자의 아이디와 일치하지 않는 채팅참여자 정보 조회 */
-        ChatRoomUser findChatRoomUser = chatRoom.getChatRoomUserList()
-                .stream().filter(chatRoomUser -> !chatRoomUser.getChatRoomUser().getEmail().equals(request.getSenderId())).findAny().orElseThrow();
-        /* 채팅별 참여회원중 수신자의 신규채팅 카운트 초기화. */
-        findChatRoomUser.incrementNewMsgCount(newMsgcount); // 채팅수 초기화
-
-        /* 전송자의 아이디와 일치하지 않는 회원 정보 조회 */
-        User friend = findChatRoomUser.getChatRoomUser();
-
-        /* 해당 회원이 참여중인 모든 채팅방의 메시지중 읽지않은 채팅의 갯수 총합 */
-        Long newMsgTotalcount = friend.getChatRoomUserList().stream().map(chatRoomUser -> {
-            Long sum = 0L;
-            sum += chatRoomUser.getChatRoom().getChatMessage().stream().filter(chatMessage1 -> chatMessage1.getIsReaded() == false).count();
-            return sum;
-        }).findAny().orElseThrow();
-
-        /* 수신자의 신규채팅 토탈 카운트 증가 */
-        friend.incrementNewMsgTotalCount(newMsgTotalcount);
-
 
         UserDto findSenderDto = chatRoom.getChatRoomUserList()
                 .stream()

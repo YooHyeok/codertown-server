@@ -30,8 +30,8 @@ public class ChatRoomUser {
 
     private Long newMsgCount;
 
-    public void incrementNewMsgCount(Long newMsgCount) {
-        this.newMsgCount = newMsgCount;
+    public void incrementNewMsgCount() {
+        this.newMsgCount ++;
     };
 
     public void decrementNewMsgCount() {
