@@ -43,6 +43,9 @@ public class ProjectPart {
 
     public void increaseUserCount() {
         int resultCount  = this.currentCount + 1;
+        System.out.println("resultCount = " + resultCount);
+        System.out.println("this.currentCount = " + this.currentCount);
+        System.out.println("(resultCount > recruitCount) = " + (resultCount > recruitCount));
         if (resultCount > recruitCount) {
             throw new RuntimeException("모집 인원보다 토탈 인원이 큽니다.");
         }
@@ -57,12 +60,4 @@ public class ProjectPart {
         this.currentCount = resultCount;
     }
 
-    /**
-     * ProjectPart 모집인원 변경감지 메소드 <br/>
-     * ProjectPart의 모집인원을 수정한다
-     * @param recruitCount
-     */
-    public void updateProjectPart(int recruitCount) {
-        this.recruitCount = recruitCount;
-    }
 }

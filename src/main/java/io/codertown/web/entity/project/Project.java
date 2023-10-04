@@ -2,6 +2,7 @@ package io.codertown.web.entity.project;
 
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.UserProject;
+import io.codertown.web.entity.chat.ChatRoom;
 import io.codertown.web.entity.recruit.Cokkiri;
 import io.codertown.web.payload.request.CokkiriSaveRequest;
 import lombok.*;
@@ -27,8 +28,6 @@ public class Project {
 
     @Enumerated(EnumType.STRING)
     private TotalStatusEnum projectStatus; //프로젝트 전체 상태 - 모집(RECURUIT), 진행(RUN), 무산(FAIL), 종료(CLOSED)
-    @Enumerated(EnumType.STRING)
-    private PersonalStatusEnum personalStatus; //프로젝트 개인 상태 - 참여(JOIN), 종료(END), 하차(QUIT)
 
     @OneToMany(mappedBy = "project")
     private List<UserProject> userProjects = new ArrayList<>();
@@ -42,6 +41,9 @@ public class Project {
 
     @OneToOne(mappedBy = "project", orphanRemoval = true)
     private Cokkiri cokkiri;
+
+    @OneToOne(mappedBy = "project", orphanRemoval = true)
+    private ChatRoom chatRoom;
 
     public void addProjectParts(ProjectPart projectPart) {
         this.projectParts.add(projectPart);

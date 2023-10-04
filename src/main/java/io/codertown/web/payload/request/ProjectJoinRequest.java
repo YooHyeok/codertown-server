@@ -13,5 +13,4 @@ public class ProjectJoinRequest {
 
     private String requesterEmail;
     private Long projectPartNo;
-    private Long partNo;
 }

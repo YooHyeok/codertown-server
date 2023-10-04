@@ -6,7 +6,10 @@ import io.codertown.web.entity.Part;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.UserProject;
 import io.codertown.web.entity.project.Project;
-import io.codertown.web.entity.recruit.*;
+import io.codertown.web.entity.recruit.BookMark;
+import io.codertown.web.entity.recruit.Cokkiri;
+import io.codertown.web.entity.recruit.Mammoth;
+import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.*;
 import io.codertown.web.payload.response.CokkiriDetailResponse;
@@ -266,10 +269,27 @@ public class RecruitService {
     }
 
     /**
-     * 프로젝트 참가 요청
+     * 프로젝트 참여 수락
      * @param request
      */
-    public void projectJoinRequest(ProjectJoinRequest request) {
+    @Transactional(readOnly = false)
+    public void projectJoinConfirm(ProjectJoinRequest request) {
+        User findUser = (User) userRepository.findByEmail(request.getRequesterEmail());
+        ProjectPart findProjectPart = projectPartRepository.findById(request.getProjectPartNo()).orElseThrow();
+
+        /**
+         * UserProject 엔티티에 추가
+         * 1. addProjectPart() 호출
+         *  -> 1. ProjetPart의 userProjects 양방향 - cascade에 의해 현재 UserProject가 ProjetPart에 Insert된다. (userProject 영속화 시)
+         *  -> 2. ProjectPart 지원자수 1 증가
+         * 2. Projet의 userProjects 양방향 - cascade에 의해 현재 UserProject가 Project에 Insert된다. (userProject 영속화 시)
+         * 3. userProject생성및 반환
+         */
+        UserProject userProject = UserProject.builder().build().createUserProject(findUser, findProjectPart);
+        userProjectRepository.save(userProject);
+
+        findProjectPart.getProject().getChatRoom().updateConfirmTrue();//컨펌을 true로 변경
+
     }
 
     /**

@@ -1,6 +1,7 @@
 package io.codertown.web.entity;
 
 
+import io.codertown.web.entity.project.PersonalStatusEnum;
 import io.codertown.web.entity.project.Project;
 import io.codertown.web.entity.user.User;
 import lombok.*;
@@ -26,6 +27,9 @@ public class UserProject {
     @JoinColumn(name = "USER_NO")
     private User projectUser;
 
+    @Enumerated(EnumType.STRING)
+    private PersonalStatusEnum personalStatus; //프로젝트 개인 상태 - 참여(JOIN), 종료(END), 하차(QUIT)
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "PROJECT_NO")
     private Project project;
@@ -47,6 +51,7 @@ public class UserProject {
 
     public void removeProjectPart() {
         this.projectPart.getUserProjects().remove(this);
+        this.getProjectUser().getProjectUsers().remove(this);
         this.projectPart.decreaseUserCount();
     }
 
@@ -60,6 +65,7 @@ public class UserProject {
     public UserProject createUserProject(User projectUser, ProjectPart projectPart) {
         UserProject userProject = UserProject.builder()
                 .projectUser(projectUser) //참여자 저장
+                .personalStatus(PersonalStatusEnum.JOIN) //참여하는 순간 기본값은 참여로 변경된다.
                 .project(projectPart.getProject()) //프로젝트 저장
                 .projectPart(this.projectPart) // 프로젝트 파트 저장
                 .build();

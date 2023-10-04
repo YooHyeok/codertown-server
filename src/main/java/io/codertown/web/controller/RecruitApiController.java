@@ -128,19 +128,7 @@ public class RecruitApiController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);        }
     }
-
-    /**
-     * 프로젝트 참가 요청 API
-     * 요청 회원 정보, 원하는 파트 정보에 대한 DM을 전송한다.
-     * @param request
-     */
-    @ApiOperation(value="프로젝트 참가 요청 API", notes="프로젝트 참여를 요청한다.")
-    @ApiResponse(description = "참여요청 성공 결과",responseCode = "200")
-    @PostMapping("/cokkiri/join-request")
-    public void projectJoinRequest(@RequestBody ProjectJoinRequest request) {
-        recruitService.projectJoinRequest(request);
-    }
-
+    
     /**
      * 프로젝트 참여 수락 API
      * UserProject에 수락된 사용자를 파트별로 추가한다.
@@ -149,8 +137,8 @@ public class RecruitApiController {
     @ApiOperation(value="프로젝트 참여 수락 API", notes="프로젝트 참여를 수락한다.")
     @ApiResponse(description = "참여수락 성공 결과",responseCode = "200")
     @PostMapping("/cokkiri/join-confirm")
-    public void projectJoinConfirm() {
-//        recruitService.projectJoinConfirm();
+    public void projectJoinConfirm(@RequestBody ProjectJoinRequest request) {
+        recruitService.projectJoinConfirm(request);
     }
 
     /**

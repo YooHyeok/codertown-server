@@ -67,5 +67,9 @@ public class ChatRoom {
         return this;
     }
 
+    public void updateConfirmTrue() {
+        this.isConfirm = true;
+    }
+
 
 }
