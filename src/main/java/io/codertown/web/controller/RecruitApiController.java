@@ -136,9 +136,18 @@ public class RecruitApiController {
      */
     @ApiOperation(value="프로젝트 참여 수락 API", notes="프로젝트 참여를 수락한다.")
     @ApiResponse(description = "참여수락 성공 결과",responseCode = "200")
-    @PostMapping("/cokkiri/join-confirm")
+    @PostMapping("/project/join-confirm")
     public void projectJoinConfirm(@RequestBody ProjectJoinRequest request) {
         recruitService.projectJoinConfirm(request);
+    }
+
+    /**
+     * 프로젝트 추방 및 하차 API
+     * @param userProjectNo
+     */
+    @PostMapping("/project/quit-exit")
+    public void projectQuitExit(@RequestParam("userProjectNo") Long userProjectNo) {
+        recruitService.projectQuitExit(userProjectNo);
     }
 
     /**

@@ -314,7 +314,7 @@ public class RecruitService {
      * @param
      */
     @Transactional(readOnly = false)
-    public Boolean projectQuitUser(Long userProjectNo) {
+    public Boolean projectQuitExit(Long userProjectNo) {
         try {
             Optional<UserProject> oUserProject = userProjectRepository.findById(userProjectNo);
             if (oUserProject.isPresent()) {
