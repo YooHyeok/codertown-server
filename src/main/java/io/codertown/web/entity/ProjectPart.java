@@ -43,9 +43,6 @@ public class ProjectPart {
 
     public void increaseUserCount() {
         int resultCount  = this.currentCount + 1;
-        System.out.println("resultCount = " + resultCount);
-        System.out.println("this.currentCount = " + this.currentCount);
-        System.out.println("(resultCount > recruitCount) = " + (resultCount > recruitCount));
         if (resultCount > recruitCount) {
             throw new RuntimeException("모집 인원보다 토탈 인원이 큽니다.");
         }
