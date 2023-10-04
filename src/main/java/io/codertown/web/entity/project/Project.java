@@ -28,7 +28,7 @@ public class Project {
     @Enumerated(EnumType.STRING)
     private TotalStatusEnum projectStatus; //프로젝트 전체 상태 - 모집(RECURUIT), 진행(RUN), 무산(FAIL), 종료(CLOSED)
     @Enumerated(EnumType.STRING)
-    private PersonalStatusEnum personalStatus; //프로젝트 개인 상태 - 대기(WAIT), 진행(RUN), 하차(QUIT), 종료(CLOSED)
+    private PersonalStatusEnum personalStatus; //프로젝트 개인 상태 - 참여(JOIN), 종료(END), 하차(QUIT)
 
     @OneToMany(mappedBy = "project")
     private List<UserProject> userProjects = new ArrayList<>();
