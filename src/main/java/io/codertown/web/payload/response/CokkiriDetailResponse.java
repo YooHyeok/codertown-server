@@ -14,4 +14,5 @@ import lombok.NoArgsConstructor;
 public class CokkiriDetailResponse {
     private RecruitDto cokkiriDto;
     private ProjectDto projectDto;
+    private Boolean isChatMaden;
 }
