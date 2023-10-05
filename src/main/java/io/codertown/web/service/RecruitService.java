@@ -168,7 +168,8 @@ public class RecruitService {
                 // 프로젝트 조회 정보
                 ProjectDto projectDto = ProjectDto.builder().build().entityToDto(cokkiri.getProject() ,projectPartList);
                 /* 채팅방 존재 여부 */
-                Boolean isChatMaden = loginId.equals("null") ?  false : cokkiri.getProject().getChatRoom().getChatRoomUserList()
+                Boolean isChatMaden =
+                        loginId.equals("null") ?  false : cokkiri.getProject().getChatRoom() == null ? false : cokkiri.getProject().getChatRoom().getChatRoomUserList()
                         .stream().anyMatch(user -> user.getChatRoomUser().getEmail().equals(loginId)) ? true : false;
                 /* 로그인 한 회원이 채팅방 정보 (확장성 고려 - Project One To Many ChatRoom )*/
                 /*ChatRoom chatRoom = loginId.equals("null") ? null : cokkiri.getProject().getChatRoom().getChatRoomUserList()
