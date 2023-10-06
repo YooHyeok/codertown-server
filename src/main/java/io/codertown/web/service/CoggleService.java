@@ -228,10 +228,6 @@ public class CoggleService {
         User notifyUser = null;
         /* 내 글에 대한 댓글 */
         if(!findCoggle.getWriter().getEmail().equals(savedComment.getWriter().getEmail()) ) { //내가 작성한 글
-            System.out.println("코글작성자 = " + findCoggle.getWriter().getEmail());
-            System.out.println("댓글작성자 = " + savedComment.getWriter().getEmail());
-            System.out.println("멘션대상자 = " + savedComment.getMention().getEmail());
-            System.out.println("코글작성자 != 댓글 작성자");
             notifyUser = findCoggle.getWriter(); // : findCoggle.getWriter() - 코글 작성자 아이디
             /**
              * 내 글에대한 다른사람의 '댓글'
@@ -325,7 +321,6 @@ public class CoggleService {
         }
         throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
     }
-
 
     /**
      * 코글-댓글 출력

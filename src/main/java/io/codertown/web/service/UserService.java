@@ -12,6 +12,7 @@ import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
 import io.codertown.web.payload.response.JoinedProjectResponse;
+import io.codertown.web.payload.response.NotificationResponse;
 import io.codertown.web.payload.response.SignInResponse;
 import io.codertown.web.repository.ProjectRepository;
 import io.codertown.web.repository.UserRepository;
@@ -27,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -286,5 +288,35 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
     public byte[] profileImage(String loginEmail) throws Exception {
         User user = (User)loadUserByUsername(loginEmail);
         return user.getProfileUrl();
+    }
+
+    /**
+     * Notification-멘션목록 출력
+     *
+     * @param
+     * @return
+     */
+    public NotificationResponse myNotificationList(String loginId) throws Exception {
+        User findUser = (User)userRepository.findByEmail(loginId);
+        List<NotificationDto> notificationDtoList = findUser.getNotifications().stream().map(notification ->
+            NotificationDto.builder()
+                    .notificationNo(notification.getId())
+                    .replyCondition(notification.getReplyCondition().name())
+                    .commentNo(notification.getComment().getId())
+                    .writerNickname(notification.getComment().getWriter().getNickname())
+                    .profileUrl(notification.getComment().getWriter().getProfileUrl())
+                    .mentionNickname(Optional.ofNullable(notification.getComment().getMention()).isEmpty() ? null :  notification.getComment().getMention().getNickname())
+                    .commentContent(notification.getComment().getContent())
+                    .firstRegDate(notification.getComment().getFirstRegDate())
+                    .coggleNo(notification.getCoggle().getId())
+                    .coggleTitle(notification.getCoggle().getTitle())
+                    .isClicked(notification.getIsCliked())
+                    .build()
+
+        ).collect(Collectors.toList());
+        return NotificationResponse.builder()
+                .notificationDtoList(notificationDtoList)
+                .newNotifyCount(findUser.getNewNotifyCount())
+                .build();
     }
 }

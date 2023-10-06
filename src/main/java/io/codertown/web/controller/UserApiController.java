@@ -8,6 +8,7 @@ import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
 import io.codertown.web.payload.response.JoinedProjectResponse;
+import io.codertown.web.payload.response.NotificationResponse;
 import io.codertown.web.payload.response.SignInResponse;
 import io.codertown.web.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -331,5 +332,17 @@ public class UserApiController {
         }
     }
 
-
+    @ApiOperation(value="헤더 Notification 푸시알림 리스트 조회 API", notes="회원정보 출력")
+    @ApiResponse(description = "Notification리스트 조회 성공 결과",responseCode = "200")
+    @PostMapping(path = "/my-notification-list", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<NotificationResponse> myNotificationList(@RequestParam("loginEmail") String loginEmail) {
+        try {
+            NotificationResponse notificationListResponse = userService.myNotificationList(loginEmail);
+            return ResponseEntity.ok(notificationListResponse);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 }
+
