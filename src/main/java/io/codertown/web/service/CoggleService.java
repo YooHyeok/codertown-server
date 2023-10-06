@@ -4,19 +4,15 @@ import io.codertown.support.PageInfo;
 import io.codertown.web.dto.CoggleDto;
 import io.codertown.web.dto.CoggleListDto;
 import io.codertown.web.dto.CommentDto;
-import io.codertown.web.entity.coggle.Coggle;
-import io.codertown.web.entity.coggle.Comment;
-import io.codertown.web.entity.coggle.LikeMark;
+import io.codertown.web.entity.coggle.*;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.request.*;
-import io.codertown.web.repository.CoggleRepository;
-import io.codertown.web.repository.CommentRepository;
-import io.codertown.web.repository.LikeMarkRepository;
-import io.codertown.web.repository.UserRepository;
+import io.codertown.web.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +26,7 @@ public class CoggleService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final LikeMarkRepository likeMarkRepository;
+    private final NotificationRepository notificationRepository;
 
     /**
      * 코글 저장
@@ -217,6 +214,7 @@ public class CoggleService {
                         .build();
                 if (parentComment != null) parentComment.getChildren().add(buildComment); // 현재자식을 부모의 자식리스트에 저장
                 Comment savedComment = commentRepository.save(buildComment);
+                saveIntegratedNotification(request, findMentionUser, findCoggle, buildComment); //Notification 통합 저장
                 return savedComment.getId()!=null? true:false;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -224,6 +222,58 @@ public class CoggleService {
             }
         }
         throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
+    }
+
+    private void saveIntegratedNotification(CommentSaveRequest request, User findMentionUser, Coggle findCoggle, Comment buildComment) {
+
+        User notifyUser = null;
+        /* 내 글에 대한 댓글 */
+        if(!findCoggle.getWriter().getEmail().equals(buildComment.getWriter().getEmail()) ) { //내가 작성한 글
+
+            notifyUser = findCoggle.getWriter(); // : findCoggle.getWriter() - 코글 작성자 아이디
+            /**
+             * 내 글에대한 다른사람의 '댓글'
+             * 알림받을 사용자 아이디 : findCoggle.getWriter() - 코글 작성자 아이디
+             * 조건 : 멘션이 존재하지 않는다
+             * 댓글 유형 : MYPOST
+             */
+            if(!StringUtils.hasText(buildComment.getMention().getEmail()) ) { //멘션이 존재하지 않다.
+                saveSingleNotification(findCoggle, buildComment, notifyUser, ReplyConditionEnum.MYPOST);
+            }
+            /**
+             * 내 글에대한 타인끼리 '멘션 대댓글'
+             * 알림받을 사용자 아이디 : findCoggle.getWriter() - 코글 작성자 아이디
+             * 조건 1. : 멘션이 존재한다.
+             * 조건 2. : 멘션사용자와, 댓글작성자(나)가 일치하지 않는다.
+             * 댓글 유형 : OTHERMENTION
+             */
+            if(StringUtils.hasText(buildComment.getMention().getEmail())) { //멘션이 존재한다.
+                if(!buildComment.getMention().getEmail().equals(buildComment.getWriter().getEmail())) { // 멘션사용자와, 댓글작성자(나)가 일치하지 않는다.
+                    saveSingleNotification(findCoggle, buildComment, notifyUser, ReplyConditionEnum.OTHERMENTION);
+                }
+            }
+        }
+
+        /**
+         * 내 글과 상관없이 내 댓글의 '멘션 대댓글'
+         * 조건 : 멘션이 존재하고, 멘션 사용자와, 댓글작성자(나)가 일치하지 않는다.
+         * 알림받을 사용자 아이디 : request.getMentionUser() - 멘션 대상 아이디
+         * 댓글 유형 : MYMENTION
+         */
+        if(StringUtils.hasText(buildComment.getMention().getEmail()) && !buildComment.getMention().getEmail().equals(buildComment.getWriter().getEmail())){ // 멘션 사용자와, 댓글작성자(나)가 일치하지 않는다.
+            notifyUser = findMentionUser; // : request.getMentionUser() - 멘션 대상 아이디
+            saveSingleNotification(findCoggle, buildComment, notifyUser, ReplyConditionEnum.MYMENTION);
+        }
+    }
+
+    /**
+     * Notification 단일 저장 메소드
+     * @param findCoggle - 코글 정보
+     * @param buildComment - 댓글 정보
+     * @param notifyUser - 댓글 알림 대상 user정보
+     */
+    private void saveSingleNotification(Coggle findCoggle, Comment buildComment, User notifyUser, ReplyConditionEnum replyCondition) {
+        notificationRepository.save(Notification.createNotification(notifyUser, findCoggle, buildComment, replyCondition));
     }
 
     /**
