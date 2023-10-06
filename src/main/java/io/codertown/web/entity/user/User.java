@@ -3,6 +3,7 @@ package io.codertown.web.entity.user;
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.UserProject;
 import io.codertown.web.entity.chat.ChatRoomUser;
+import io.codertown.web.entity.coggle.Notification;
 import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
@@ -57,6 +58,9 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     @OneToMany(mappedBy = "chatRoomUser")
     private List<ChatRoomUser> chatRoomUserList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "notifyUser")
+    private List<Notification> notifications = new ArrayList<>();
+
     private Long newMsgTotalCount;
 
     public void incrementNewMsgTotalCount() {
@@ -66,6 +70,11 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     public void decrementNewMsgTotalCount(Long newMsgCount) {
         this.newMsgTotalCount = this.newMsgTotalCount - newMsgCount;
     };
+
+    /* Notification과의 양방향 연관관계 편의 메소드 */
+    public void relatedNotificationSet(Notification notification) {
+        this.notifications.add(notification);
+    }
 
     /**
      * 회원정보 수정 - 변경감지 메소드
