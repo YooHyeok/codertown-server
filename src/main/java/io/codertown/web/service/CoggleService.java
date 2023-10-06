@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -214,7 +213,7 @@ public class CoggleService {
                         .build();
                 if (parentComment != null) parentComment.getChildren().add(buildComment); // 현재자식을 부모의 자식리스트에 저장
                 Comment savedComment = commentRepository.save(buildComment);
-                saveIntegratedNotification(request, findMentionUser, findCoggle, buildComment); //Notification 통합 저장
+                saveIntegratedNotification(findMentionUser, findCoggle, savedComment); //Notification 통합 저장
                 return savedComment.getId()!=null? true:false;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -224,12 +223,15 @@ public class CoggleService {
         throw new RuntimeException("현재 코글을 찾을수 없습니다."); //Controller에서 Catch
     }
 
-    private void saveIntegratedNotification(CommentSaveRequest request, User findMentionUser, Coggle findCoggle, Comment buildComment) {
+    private void saveIntegratedNotification(User findMentionUser, Coggle findCoggle, Comment savedComment) {
 
         User notifyUser = null;
         /* 내 글에 대한 댓글 */
-        if(!findCoggle.getWriter().getEmail().equals(buildComment.getWriter().getEmail()) ) { //내가 작성한 글
-
+        if(!findCoggle.getWriter().getEmail().equals(savedComment.getWriter().getEmail()) ) { //내가 작성한 글
+            System.out.println("코글작성자 = " + findCoggle.getWriter().getEmail());
+            System.out.println("댓글작성자 = " + savedComment.getWriter().getEmail());
+            System.out.println("멘션대상자 = " + savedComment.getMention().getEmail());
+            System.out.println("코글작성자 != 댓글 작성자");
             notifyUser = findCoggle.getWriter(); // : findCoggle.getWriter() - 코글 작성자 아이디
             /**
              * 내 글에대한 다른사람의 '댓글'
@@ -237,19 +239,25 @@ public class CoggleService {
              * 조건 : 멘션이 존재하지 않는다
              * 댓글 유형 : MYPOST
              */
-            if(!StringUtils.hasText(buildComment.getMention().getEmail()) ) { //멘션이 존재하지 않다.
-                saveSingleNotification(findCoggle, buildComment, notifyUser, ReplyConditionEnum.MYPOST);
+            if(Optional.ofNullable(savedComment.getMention()).isEmpty()) { //멘션이 존재하지 않다.
+                saveSingleNotification(findCoggle, savedComment, notifyUser, ReplyConditionEnum.MYPOST);
             }
             /**
              * 내 글에대한 타인끼리 '멘션 대댓글'
              * 알림받을 사용자 아이디 : findCoggle.getWriter() - 코글 작성자 아이디
-             * 조건 1. : 멘션이 존재한다.
-             * 조건 2. : 멘션사용자와, 댓글작성자(나)가 일치하지 않는다.
+             * 조건 1. : 코글작성자와, 멘션대상자가 일치하지 않는다
+             * ㄴ (내글의 내댓글에 타인이 댓글을 달았을때 MYMENTION에만 해당하게끔 처리해야하므로 - OTHERMENTION이 날라가면 안되기 때문에)
+             * 조건 2. : 멘션이 존재한다.
+             * 조건 3. : 멘션사용자와, 댓글작성자(나)가 일치하지 않는다.
              * 댓글 유형 : OTHERMENTION
+             * 내 글이면서 내댓글에 타인이댓글을 달면
+             * OtherMention이 저장되면 안된다.
              */
-            if(StringUtils.hasText(buildComment.getMention().getEmail())) { //멘션이 존재한다.
-                if(!buildComment.getMention().getEmail().equals(buildComment.getWriter().getEmail())) { // 멘션사용자와, 댓글작성자(나)가 일치하지 않는다.
-                    saveSingleNotification(findCoggle, buildComment, notifyUser, ReplyConditionEnum.OTHERMENTION);
+            if( !findCoggle.getWriter().getEmail().equals(savedComment.getMention().getEmail())) {
+                if(Optional.ofNullable(savedComment.getMention()).isPresent()){ //멘션이 존재한다.
+                    if (!savedComment.getMention().getEmail().equals(savedComment.getWriter().getEmail())) { // 멘션사용자와, 댓글작성자(나)가 일치하지 않는다.
+                        saveSingleNotification(findCoggle, savedComment, notifyUser, ReplyConditionEnum.OTHERMENTION);
+                    }
                 }
             }
         }
@@ -260,9 +268,9 @@ public class CoggleService {
          * 알림받을 사용자 아이디 : request.getMentionUser() - 멘션 대상 아이디
          * 댓글 유형 : MYMENTION
          */
-        if(StringUtils.hasText(buildComment.getMention().getEmail()) && !buildComment.getMention().getEmail().equals(buildComment.getWriter().getEmail())){ // 멘션 사용자와, 댓글작성자(나)가 일치하지 않는다.
+        if(Optional.ofNullable(savedComment.getMention()).isPresent() && !savedComment.getMention().getEmail().equals(savedComment.getWriter().getEmail())){ // 멘션 사용자와, 댓글작성자(나)가 일치하지 않는다.
             notifyUser = findMentionUser; // : request.getMentionUser() - 멘션 대상 아이디
-            saveSingleNotification(findCoggle, buildComment, notifyUser, ReplyConditionEnum.MYMENTION);
+            saveSingleNotification(findCoggle, savedComment, notifyUser, ReplyConditionEnum.MYMENTION);
         }
     }
 
