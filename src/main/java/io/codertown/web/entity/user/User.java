@@ -62,6 +62,7 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     private List<Notification> notifications = new ArrayList<>();
 
     private Long newMsgTotalCount;
+    private Long newNotifyCount; // Notification 새글 갯수
 
     public void incrementNewMsgTotalCount() {
         this.newMsgTotalCount ++ ;
@@ -69,6 +70,14 @@ public class User extends BaseTimeStampEntity implements UserDetails {
 
     public void decrementNewMsgTotalCount(Long newMsgCount) {
         this.newMsgTotalCount = this.newMsgTotalCount - newMsgCount;
+    };
+
+    public void incrementNewNotifyCount() {
+        this.newNotifyCount ++ ;
+    };
+
+    public void decrementNewNotifyCount() {
+        this.newNotifyCount -- ;
     };
 
     /* Notification과의 양방향 연관관계 편의 메소드 */
@@ -117,6 +126,7 @@ public class User extends BaseTimeStampEntity implements UserDetails {
                 .gender(request.getGender())
                 .roles(Collections.singletonList(role))
                 .newMsgTotalCount(0L)
+                .newNotifyCount(0L)
                 .build();
     }
 

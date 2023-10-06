@@ -45,6 +45,8 @@ public class Notification {
                 .replyCondition(replyCondition)
                 .isCliked(false)
                 .build();
+        notifyUser.relatedNotificationSet(createdNotification); /* User엔티티에서 양방향 연관관계 추가 */
+        notifyUser.incrementNewNotifyCount();/* 새소식 증가 */
         return  createdNotification;
     }
 
