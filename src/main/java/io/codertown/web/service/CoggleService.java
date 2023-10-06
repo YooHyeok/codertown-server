@@ -215,7 +215,6 @@ public class CoggleService {
                         .mention(findMentionUser)
                         .status(false)
                         .build();
-                //                    System.out.println("buildComment.getParent().getChildren() = " + buildComment.getParent().getChildren());
                 if (parentComment != null) parentComment.getChildren().add(buildComment); // 현재자식을 부모의 자식리스트에 저장
                 Comment savedComment = commentRepository.save(buildComment);
                 return savedComment.getId()!=null? true:false;

@@ -64,9 +64,7 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     };
 
     public void decrementNewMsgTotalCount(Long newMsgCount) {
-        System.out.println("newMsgCount = " + newMsgCount);
         this.newMsgTotalCount = this.newMsgTotalCount - newMsgCount;
-        System.out.println("this.newMsgTotalCount = " + this.newMsgTotalCount);
     };
 
     /**
@@ -109,6 +107,7 @@ public class User extends BaseTimeStampEntity implements UserDetails {
                 .profileUrl(Base64.getDecoder().decode(request.getProfileUrl().split(",")[1]))
                 .gender(request.getGender())
                 .roles(Collections.singletonList(role))
+                .newMsgTotalCount(0L)
                 .build();
     }
 
