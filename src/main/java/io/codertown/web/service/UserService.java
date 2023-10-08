@@ -319,4 +319,10 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
                 .newNotifyCount(findUser.getNewNotifyCount())
                 .build();
     }
+
+    @Transactional(readOnly = false)
+    public void initNewNotifyCount(String loginEmail) {
+        User findUser = (User)userRepository.findByEmail(loginEmail);
+        findUser.initNewNotifyCount();
+    }
 }

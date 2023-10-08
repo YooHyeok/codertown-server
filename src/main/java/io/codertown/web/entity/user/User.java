@@ -76,8 +76,8 @@ public class User extends BaseTimeStampEntity implements UserDetails {
         this.newNotifyCount ++ ;
     };
 
-    public void decrementNewNotifyCount() {
-        this.newNotifyCount -- ;
+    public void initNewNotifyCount() {
+        this.newNotifyCount = 0L ;
     };
 
     /* Notification과의 양방향 연관관계 편의 메소드 */
