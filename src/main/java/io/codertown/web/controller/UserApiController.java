@@ -355,5 +355,16 @@ public class UserApiController {
             e.printStackTrace();
         }
     }
+
+    @ApiOperation(value="Notification 클릭(확인) 여부 API", notes="회원정보 출력")
+    @ApiResponse(description = "클릭여부  결과",responseCode = "200")
+    @PostMapping(path = "/notify-change-clicked", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void notifyChangeClicked(@RequestParam("notificationNo") Long notificationNo) {
+        try {
+            userService.notifyChangeClicked(notificationNo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
 

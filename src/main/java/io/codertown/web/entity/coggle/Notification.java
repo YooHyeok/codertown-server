@@ -50,5 +50,8 @@ public class Notification {
         return  createdNotification;
     }
 
+    public void notifyChangeClicked() {
+        this.isCliked = true;
+    }
 
 }

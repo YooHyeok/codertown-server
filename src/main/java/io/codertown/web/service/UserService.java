@@ -4,6 +4,7 @@ import io.codertown.support.PageInfo;
 import io.codertown.support.base.CommonLoggerComponent;
 import io.codertown.support.jwt.JwtTokenProvider;
 import io.codertown.web.dto.*;
+import io.codertown.web.entity.coggle.Notification;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.SignInResult;
 import io.codertown.web.payload.SignStatus;
@@ -14,6 +15,7 @@ import io.codertown.web.payload.request.UserUpdateRequest;
 import io.codertown.web.payload.response.JoinedProjectResponse;
 import io.codertown.web.payload.response.NotificationResponse;
 import io.codertown.web.payload.response.SignInResponse;
+import io.codertown.web.repository.NotificationRepository;
 import io.codertown.web.repository.ProjectRepository;
 import io.codertown.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,13 +48,16 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final ProjectRepository projectRepository;
+    private final NotificationRepository notificationRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
+
     @Autowired
-    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, ProjectRepository projectRepository, @Lazy JwtTokenProvider jwtTokenProvider) {
+    public UserService(PasswordEncoder passwordEncoder, UserRepository userRepository, ProjectRepository projectRepository, NotificationRepository notificationRepository, @Lazy JwtTokenProvider jwtTokenProvider) {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
         this.projectRepository = projectRepository;
+        this.notificationRepository = notificationRepository;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
@@ -324,5 +329,11 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
     public void initNewNotifyCount(String loginEmail) {
         User findUser = (User)userRepository.findByEmail(loginEmail);
         findUser.initNewNotifyCount();
+    }
+
+    @Transactional(readOnly = false)
+    public void notifyChangeClicked(Long notificationNo) {
+        Notification notification = notificationRepository.findById(notificationNo).orElseThrow();
+        notification.notifyChangeClicked();
     }
 }
