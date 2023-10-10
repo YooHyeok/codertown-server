@@ -42,8 +42,8 @@ public class Project {
     @OneToOne(mappedBy = "project", orphanRemoval = true)
     private Cokkiri cokkiri;
 
-    @OneToOne(mappedBy = "project", orphanRemoval = true)
-    private ChatRoom chatRoom;
+    @OneToMany(mappedBy = "project", orphanRemoval = true)
+    private List<ChatRoom> chatRoomList;
 
     public void addProjectParts(ProjectPart projectPart) {
         this.projectParts.add(projectPart);
