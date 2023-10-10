@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProjectPartSaveDto {
+public class ProjectPartDetailDto {
 
     private Long projectPartNo;
     private Long partNo;
@@ -21,8 +21,8 @@ public class ProjectPartSaveDto {
     private int recruitCount;
     private int currentCount;
 
-    public static ProjectPartSaveDto entityToDto(ProjectPart projectPart, List<UserProjectDto> userProjectDtoList) {
-        return ProjectPartSaveDto.builder()
+    public static ProjectPartDetailDto entityToDto(ProjectPart projectPart, List<UserProjectDto> userProjectDtoList) {
+        return ProjectPartDetailDto.builder()
                 .projectPartNo(projectPart.getId()) // 프로젝트파트 번호
                 .partNo(projectPart.getPart().getId()) // 파트 번호
                 .partName(projectPart.getPart().getPartName()) // 파트 이름

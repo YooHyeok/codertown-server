@@ -1,6 +1,6 @@
 package io.codertown.web.payload.request;
 
-import io.codertown.web.dto.ProjectPartSaveDto;
+import io.codertown.web.dto.ProjectPartDto;
 import io.codertown.web.entity.user.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -25,6 +25,6 @@ public class CokkiriSaveRequest {
     private String teamname; // 프로젝트 팀명
     private Integer objectWeek; // 목표 소요 기간(주)
     private String link;
-    private List<ProjectPartSaveDto> projectParts = new ArrayList<>(); // 파트
+    private List<ProjectPartDto> projectParts = new ArrayList<>(); // 파트
     private String content;
 }

@@ -6,6 +6,7 @@ import io.codertown.web.entity.user.User;
 import io.codertown.web.repository.UserRepository;
 import io.codertown.web.entity.UserProject;
 import io.codertown.web.repository.UserProjectRepository;
+import io.codertown.web.service.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class UserControllerRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UserProjectRepository userProjectRepository;
@@ -51,4 +54,5 @@ public class UserControllerRepositoryTest {
         System.out.println("projects = " + projects);
 
     }
+
 }

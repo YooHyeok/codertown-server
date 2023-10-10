@@ -22,9 +22,9 @@ public class ProjectDto {
     private LocalDateTime expectedEndDate; // 종료 예정 일자
     private LocalDateTime lastClosingDate; // 최종 종료 일자 (목표)
 
-    private List<ProjectPartSaveDto> projectParts; // 파트
+    private List<ProjectPartDto> projectParts; // 파트
 
-    public static ProjectDto entityToDto(Project project, List<ProjectPartSaveDto> projectParts) {
+    public static ProjectDto entityToDto(Project project, List<ProjectPartDto> projectParts) {
         return ProjectDto.builder()
                 .projectNo(project.getId())
                 .subject(project.getSubject()) // 주제

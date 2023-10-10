@@ -7,6 +7,7 @@ import io.codertown.web.payload.SuccessBooleanResult;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
+import io.codertown.web.payload.response.JoinedProjectDetailResponse;
 import io.codertown.web.payload.response.JoinedProjectResponse;
 import io.codertown.web.payload.response.NotificationResponse;
 import io.codertown.web.payload.response.SignInResponse;
@@ -302,12 +303,30 @@ public class UserApiController {
     @ApiOperation(value="마이페이지 - 프로젝트 목록 출력 API", notes="프로젝트 목록 출력에 필요한 JSON 데이터 반환")
     @ApiResponse(description = "프로젝트 목록 리스트 JSON 데이터",responseCode = "200")
     @GetMapping(path = "/joined-project", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<JoinedProjectResponse> joinedProject(@RequestParam(required = false) Integer page,
+    public ResponseEntity<JoinedProjectResponse> joinedProjectList(@RequestParam(required = false) Integer page,
                                                                @RequestParam(required = false, defaultValue = "10") Integer size,
                                                                @RequestParam String loginId) {
         try {
             JoinedProjectResponse joinedProject = userService.findJoinedProject(page, size, loginId);
             return ResponseEntity.ok(joinedProject);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * 프로젝트 인원현황 상세보기 API
+     * @param page
+     * @return
+     */
+    @ApiOperation(value="마이페이지 - 프로젝트 인원현황 상세보기 API", notes="프로젝트 인원현황 상세보기에 필요한 JSON 데이터 반환")
+    @ApiResponse(description = "프로젝트 인원현황 상세보기 JSON 데이터",responseCode = "200")
+    @PostMapping(path = "/joined-project-detail", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<JoinedProjectDetailResponse> joinedProjectDetail(@RequestParam Long projectNo) {
+        try {
+            JoinedProjectDetailResponse joinedProjectDetail = userService.joinedProjectDetail(projectNo);
+            return ResponseEntity.ok(joinedProjectDetail);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

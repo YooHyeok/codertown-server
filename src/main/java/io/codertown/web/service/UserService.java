@@ -12,6 +12,7 @@ import io.codertown.web.payload.SuccessBooleanResult;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
+import io.codertown.web.payload.response.JoinedProjectDetailResponse;
 import io.codertown.web.payload.response.JoinedProjectResponse;
 import io.codertown.web.payload.response.NotificationResponse;
 import io.codertown.web.payload.response.SignInResponse;
@@ -243,7 +244,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
     }
 
     /**
-     * 참여중인 프로젝트 목록 출력 메소드
+     * 참여중인 프로젝트 목록 출력 메소드 <br/>
      * @param page
      * @param size
      * @param loginEmail
@@ -253,24 +254,11 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
         page = page == null ? 1 : page;
         PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, size, "id", "DESC");
         try {
-
-
             User loginUser = (User)loadUserByUsername(loginEmail);
             Page<JoinedProjectSimpleConvertDto> pages = projectRepository.findJoinedProject(loginUser, pageInfo.getPageRequest());
             pageInfo.setPageInfo(pages, pageInfo);
             List<JoinedProjectResponseDto> projectList = pages.getContent().stream().map(joinedProjectDto -> {
-                        /* 프로젝트 파트 리스트 DTO 변환 */
-                        List<ProjectPartSaveDto> projectPartList = joinedProjectDto.getProject().getProjectParts().stream()
-                                .map(projectPart -> {
-                                    /* 프로젝트별 참여중인 회원 리스트 DTO변환  */
-                                    List<UserProjectDto> userProjectDtoList = projectPart.getUserProjects().stream().map(userProject ->
-                                            UserProjectDto.builder().build().convertEntityToDto(userProject)
-                                    ).collect(Collectors.toList());
-                                    return ProjectPartSaveDto.builder().build().entityToDto(projectPart, userProjectDtoList);
-                                })
-                                .collect(Collectors.toList());
-                        /* Projet dto 변환 */
-                        ProjectDto projectDto = ProjectDto.builder().build().entityToDto(joinedProjectDto.getProject(), projectPartList);
+                        ProjectDto projectDto = ProjectDto.builder().build().entityToDto(joinedProjectDto.getProject(), null);
                         /* PartDto 변환 */
                         PartDto partDto = PartDto.builder()
                                 .partNo(joinedProjectDto.getProjectPart().getPart().getId())
@@ -289,6 +277,28 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             return null;
         }
     }
+
+    /**
+     * 프로젝트 인원현황 상세보기 <br/>
+     * 프로젝트 파트 리스트 및 프로젝트 파트별 참여자 현황 조회 <br/>
+     * @param projectNo
+     * @return
+     */
+    public JoinedProjectDetailResponse joinedProjectDetail(Long projectNo) {
+        /* 프로젝트 파트 리스트 DTO 변환 */
+        List<ProjectPartDetailDto> projectPartList = projectRepository.findById(projectNo).orElseThrow().getProjectParts().stream()
+                .map(projectPart -> {
+                    /* 프로젝트별 참여중인 회원 리스트 DTO변환  */
+                    List<UserProjectDto> userProjectDtoList = projectPart.getUserProjects().stream().map(userProject ->
+                            UserProjectDto.builder().build().convertEntityToDto(userProject)
+                    ).collect(Collectors.toList());
+                    return ProjectPartDetailDto.builder().build().entityToDto(projectPart, userProjectDtoList);
+                })
+                .collect(Collectors.toList());
+        return JoinedProjectDetailResponse.builder().projectPartList(projectPartList).build();
+
+    }
+
 
     public byte[] profileImage(String loginEmail) throws Exception {
         User user = (User)loadUserByUsername(loginEmail);
