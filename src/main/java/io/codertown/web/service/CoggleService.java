@@ -241,16 +241,16 @@ public class CoggleService {
             /**
              * 내 글에대한 타인끼리 '멘션 대댓글'
              * 알림받을 사용자 아이디 : findCoggle.getWriter() - 코글 작성자 아이디
-             * 조건 1. : 코글작성자와, 멘션대상자가 일치하지 않는다
+             * 조건 1. : 멘션이 존재한다.
+             * 조건 2. : 코글작성자와, 멘션대상자가 일치하지 않는다
              * ㄴ (내글의 내댓글에 타인이 댓글을 달았을때 MYMENTION에만 해당하게끔 처리해야하므로 - OTHERMENTION이 날라가면 안되기 때문에)
-             * 조건 2. : 멘션이 존재한다.
              * 조건 3. : 멘션사용자와, 댓글작성자(나)가 일치하지 않는다.
              * 댓글 유형 : OTHERMENTION
              * 내 글이면서 내댓글에 타인이댓글을 달면
              * OtherMention이 저장되면 안된다.
              */
-            if( !findCoggle.getWriter().getEmail().equals(savedComment.getMention().getEmail())) {
-                if(Optional.ofNullable(savedComment.getMention()).isPresent()){ //멘션이 존재한다.
+            if(Optional.ofNullable(savedComment.getMention()).isPresent()){ //멘션이 존재한다.
+                if( !findCoggle.getWriter().getEmail().equals(savedComment.getMention().getEmail())) {
                     if (!savedComment.getMention().getEmail().equals(savedComment.getWriter().getEmail())) { // 멘션사용자와, 댓글작성자(나)가 일치하지 않는다.
                         saveSingleNotification(findCoggle, savedComment, notifyUser, ReplyConditionEnum.OTHERMENTION);
                     }
