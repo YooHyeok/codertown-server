@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProjectJoinRequest {
 
+    private String chatRoomNo;
     private String requesterEmail;
     private Long projectPartNo;
 }

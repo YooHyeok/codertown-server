@@ -33,7 +33,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        registry.enableSimpleBroker("/connected-success", "/sub"); //송신
+        registry.enableSimpleBroker("/connected-success", "/sub", "/confirm"); //송신
         registry.setApplicationDestinationPrefixes("/pub"); //수신
     }
 }
