@@ -28,7 +28,14 @@ public class ChatRoomUser {
     @Column(name = "IS_ROOM_MAKER")
     private Boolean isRoomMaker;
 
+    @Column(name = "IS_CONNECTED_ROOM")
+    private Boolean isConnectedRoom;
+
     private Long newMsgCount;
+
+    public void changeConnected(Boolean connectedValue) {
+        this.isConnectedRoom = connectedValue;
+    };
 
     public void incrementNewMsgCount() {
         this.newMsgCount ++;
@@ -51,6 +58,7 @@ public class ChatRoomUser {
                 .chatRoomUser(user)
                 .isRoomMaker(true)
                 .newMsgCount(0L)
+                .isConnectedRoom(false)
                 .build();
         user.getChatRoomUserList().add(chatRoomUser);
         return chatRoomUser;

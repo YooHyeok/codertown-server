@@ -12,6 +12,7 @@ import io.codertown.web.payload.request.CreateCokkiriChatRoomRequest;
 import io.codertown.web.payload.response.ChatRoomListResponse;
 import io.codertown.web.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,8 @@ public class ChatRoomService {
     private final ProjectPartRepository projectPartRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatMessageRepository chatMessageRepository;
+    private final ApplicationEventPublisher eventPublisher;
+
 
     /**
      * 코끼리 참여 채팅방 생성 API
@@ -168,5 +171,18 @@ public class ChatRoomService {
 
 
         return result;
+    }
+
+    @Transactional(readOnly = false)
+    public void changeConnected(String connectedRoomId, String connectedUserEmail, Boolean connectedValue) {
+
+            ChatRoom findChatRoom = chatRoomRepository.findById(connectedRoomId).orElseThrow();
+            ChatRoomUser connectedChatRoomUser = findChatRoom.getChatRoomUserList()
+                    .stream()
+                    .filter(chatRoomUser ->
+                            chatRoomUser.getChatRoomUser().getEmail().equals(connectedUserEmail))
+                    .findAny().orElseThrow();
+            connectedChatRoomUser.changeConnected(connectedValue);
+
     }
 }

@@ -33,25 +33,28 @@ public class ChatMessageService {
         ChatRoom findChatRoom = chatRoomSRepository.findById(request.getRoomId()).orElseThrow();
         User sender = (User) userRepository.findByEmail(request.getSenderId());
 
+        System.out.println("request.getIsConnectedFriend() = " + request.getIsConnectedFriend());
+
+        if(!request.getIsConnectedFriend()) {
+            /* 채팅방회원에서 상대방의 신규 메시지 카운트 증가 */
+
+            ChatRoomUser friendChatRoomUser = findChatRoom.getChatRoomUserList()
+                    .stream().filter(chatRoomUser -> !chatRoomUser.getChatRoomUser().getEmail().equals(request.getSenderId()))
+                    .findAny().orElseThrow();
+            friendChatRoomUser.incrementNewMsgCount();
+
+            /* 상대방의 신규 메시지 토탈 카운트 증가 */
+            User friendUser = friendChatRoomUser.getChatRoomUser();
+            friendUser.incrementNewMsgTotalCount();
+        }
         /* 메시지 생성 */
         ChatMessage chatMessage = ChatMessage.builder()
                 .chatRoom(findChatRoom)
                 .message(request.getMessage())
                 .sender(sender)
                 .chatSendDate(LocalDateTime.now())
-                .isReaded(false)
+                .isReaded(request.getIsConnectedFriend())
                 .build();
-
-        /* 채팅방회원에서 상대방의 신규 메시지 카운트 증가 */
-        ChatRoomUser friendChatRoomUser = findChatRoom.getChatRoomUserList()
-                .stream().filter(chatRoomUser -> !chatRoomUser.getChatRoomUser().getEmail().equals(request.getSenderId()))
-                .findAny().orElseThrow();
-        friendChatRoomUser.incrementNewMsgCount();
-
-        /* 상대방의 신규 메시지 토탈 카운트 증가 */
-        User friendUser = friendChatRoomUser.getChatRoomUser();
-        friendUser.incrementNewMsgTotalCount();
-
         /* 메시지 저장 */
         ChatRoom chatRoom = findChatRoom.updateChatRoom(chatMessage);
 

@@ -10,13 +10,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
@@ -31,13 +29,6 @@ public class ChatMessageController {
     private final ChatMessageService chatMessageService;
     private final RecruitService recruitService;
 
-
-
-    /* 연결 성공시 해당 접속 완료 알림 전송 */
-    @MessageMapping("/chat/connect")
-    public void sendConnectMsg(@Payload Map<String,Object> data){
-        simpMessagingTemplate.convertAndSend("/connected-success",data); // 채팅방1번으로 연결 완료 data전송
-    }
 
     /* 요청 수락 Web Socket API */
     @MessageMapping("/chat.confirm")

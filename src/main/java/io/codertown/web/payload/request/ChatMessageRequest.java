@@ -11,4 +11,6 @@ public class ChatMessageRequest {
     private String roomId;
     private String senderId;
     private String message;
+    private Boolean isConnectedFriend;
+
 }
