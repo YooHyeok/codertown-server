@@ -5,6 +5,7 @@ import io.codertown.web.dto.*;
 import io.codertown.web.entity.Part;
 import io.codertown.web.entity.ProjectPart;
 import io.codertown.web.entity.UserProject;
+import io.codertown.web.entity.chat.ChatRoomUser;
 import io.codertown.web.entity.project.Project;
 import io.codertown.web.entity.recruit.BookMark;
 import io.codertown.web.entity.recruit.Cokkiri;
@@ -178,16 +179,39 @@ public class RecruitService {
                                 cokkiri.getProject().getChatRoomList().stream()
                                         .anyMatch(chatRoom -> chatRoom.getChatRoomUserList().stream()
                                                 .anyMatch(chatRoomUser -> chatRoomUser.getChatRoomUser().getEmail().equals(loginId))) ? true:false;
-                /* 로그인 한 회원이 채팅방 정보 (확장성 고려 - Project One To Many ChatRoom )*/
-                /*ChatRoom chatRoom = loginId.equals("null") ? null : cokkiri.getProject().getChatRoom().getChatRoomUserList()
-                        .stream().filter(user -> user.getChatRoomUser().getEmail().equals(loginId)).findAny().orElseThrow().getChatRoom();*/
+
+                /* 로그인 한 회원이 참여 요청한 프로젝트파트 번호 (확장성 고려 - Project One To Many ChatRoom )*/
+                /*List<List<Long>> collect1 = cokkiri.getProject().getChatRoomList().stream()
+                        .filter(chatRoom -> chatRoom.getProject().getId() == cokkiri.getProject().getId())
+                        .map(chatRoom -> {
+                            List<ChatRoom> collect = chatRoom.getChatRoomUserList().stream()
+                                    .filter(chatRoomUser -> chatRoomUser.getChatRoomUser().getEmail().equals(loginId))
+                                    .map(chatRoomUser -> chatRoomUser.getChatRoom()).collect(Collectors.toList());
+                            return collect.stream().map(chatRoom1 -> chatRoom1.getProjectPart().getId()).collect(Collectors.toList());
+                        }).collect(Collectors.toList());*/
+
+                /* flatMap에대해서 공부할것... */
+                List<Long> takedProjectPartNos = cokkiri.getProject().getChatRoomList().stream()
+                        .filter(chatRoom -> chatRoom.getProject().getId() == cokkiri.getProject().getId()) // 프로젝트 번호 일치 필터링
+                        .filter(chatRoom -> chatRoom.getChatRoomUserList().stream()
+                                .anyMatch(chatRoomUser -> chatRoomUser.getChatRoomUser().getEmail().equals(loginId))
+                        ) // 참여 중인 회원 필터링
+                        .flatMap(chatRoom -> chatRoom.getChatRoomUserList().stream()
+                                .filter(chatRoomUser -> chatRoomUser.getChatRoomUser().getEmail().equals(loginId))
+                                .map(ChatRoomUser::getChatRoom)) // 참여 중인 회원의 채팅 룸 추출
+                        .map(chatRoom -> chatRoom.getProjectPart().getId()) // ProjectPart의 ID를 추출
+                        .collect(Collectors.toList());
+                takedProjectPartNos.forEach(aLong -> System.out.println("aLong = " + aLong));
+
                 // 코끼리 조회 정보
 //                Optional<BookMark> like = bookMarkRepository.findByUserAndRecruit(cokkiri.getRecruitUser(), cokkiri);
                 RecruitDto cokkiriDto = RecruitDto.builder().build().cokkiriEntityToDto(cokkiri, userDto, null, isBookmarked);
+
                 return CokkiriDetailResponse.builder()
                         .projectDto(projectDto)
                         .cokkiriDto(cokkiriDto)
-                        .isChatMaden(isChatMaden)
+//                        .isChatMaden(isChatMaden)
+                        .takedProjectPartNos(takedProjectPartNos)
                         .build();
             }
             throw new RuntimeException("게시글 없음");

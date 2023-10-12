@@ -70,6 +70,7 @@ public class ChatRoomUser {
                 .chatRoomUser(user)
                 .isRoomMaker(false)
                 .newMsgCount(0L)
+                .isConnectedRoom(false)
                 .build();
         user.getChatRoomUserList().add(chatRoomUser);
         return chatRoomUser;
