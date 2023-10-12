@@ -14,7 +14,7 @@ public class ChatRoomDto {
     private String chatRoomNo;
     private String lastChatMessage;
     private LocalDateTime lastChatMessageDate;
-    private List<UserDto> chatUserList;
+    private List<ChatRoomUserDto> chatUserList;
 
     private Boolean isConfirm;
     

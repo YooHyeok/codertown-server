@@ -57,6 +57,16 @@ public class ChatRoomApiController {
         }
     }
 
+    @PostMapping(path = "/chat-room-disconnect")
+    public void allChatRoomDisconnect(String userId) {
+
+        try {
+            chatRoomService.allChatRoomDisconnect(userId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * 채팅 Room 목록 조회
      * @param roomNo

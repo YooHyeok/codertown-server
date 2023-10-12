@@ -66,19 +66,20 @@ public class ChatRoomService {
      */
     public ChatRoomListResponse userChatList(String loginEmail) {
         User loginUser = (User) userRepository.findByEmail(loginEmail);
-        
-        List<ChatRoomUserDto> chatRomUserDtoList = loginUser.getChatRoomUserList().stream().map(chatRoomUser -> {
+        List<ChatRoomUserListDto> chatRomUserDtoList = loginUser.getChatRoomUserList().stream().map(chatRoomUser -> {
 
             /* 로그인 한 유저의 채팅방별 신규 메시지 카운트 */
             Long newMsgCount = chatRoomUser.getNewMsgCount();
-
+//            Boolean isConnectedRoom = chatRoomUser.getIsConnectedRoom();
             /* 채팅 참여 회원 목록 */
-            List<UserDto> userDtoList = chatRoomUser.getChatRoom().getChatRoomUserList().stream().map(chatRoomUser1 ->
-                    UserDto.builder()
-                            .email(chatRoomUser1.getChatRoomUser().getEmail())
-                            .nickname(chatRoomUser1.getChatRoomUser().getNickname())
-                            .profileUrl(chatRoomUser1.getChatRoomUser().getProfileUrl())
-                            .build()
+            List<ChatRoomUserDto> chatRoomUserDtos = chatRoomUser.getChatRoom().getChatRoomUserList().stream().map(chatRoomUser1 -> {
+                UserDto findUser = UserDto.builder()
+                        .email(chatRoomUser1.getChatRoomUser().getEmail())
+                        .nickname(chatRoomUser1.getChatRoomUser().getNickname())
+                        .profileUrl(chatRoomUser1.getChatRoomUser().getProfileUrl())
+                        .build();
+                return ChatRoomUserDto.builder().userDto(findUser).isConnectedRoom(chatRoomUser1.getIsConnectedRoom()).build();
+                }
             ).collect(Collectors.toList());
 
             /* 최신 채팅 메시지(가장 마지막에 저장) */
@@ -96,11 +97,12 @@ public class ChatRoomService {
                     .chatRoomNo(chatRoomUser.getChatRoom().getId())
                     .lastChatMessage(chatMessage.size() == 0 ? null : chatMessage.get(chatMessage.size()-1).getMessage()) //가장 마지막 메시지
                     .lastChatMessageDate(chatMessage.size() == 0 ? null : chatMessage.get(chatMessage.size()-1).getChatSendDate()) //가장 마지막 메시지 전송 시간
-                    .chatUserList(userDtoList)
+                    .chatUserList(chatRoomUserDtos)
                     .isConfirm(chatRoomUser.getChatRoom().getIsConfirm())
                     .build();
 
-            return ChatRoomUserDto.builder()
+
+            return ChatRoomUserListDto.builder()
                     .chatRoom(chatRoomDto) //채팅방 DTO
                     .isRoomMaker(chatRoomUser.getIsRoomMaker()) //채팅방 최초 생성 여부
                     .newMsgCount(newMsgCount)
@@ -184,5 +186,13 @@ public class ChatRoomService {
                     .findAny().orElseThrow();
             connectedChatRoomUser.changeConnected(connectedValue);
 
+    }
+
+    @Transactional(readOnly = false)
+    public void allChatRoomDisconnect(String userId) {
+        User findUser = (User) userRepository.findByEmail(userId);
+        findUser.getChatRoomUserList().stream()
+                .filter(chatRoomUser -> chatRoomUser.getChatRoomUser().getEmail().equals(userId))
+                .forEach(chatRoomUser -> chatRoomUser.changeConnected(false));
     }
 }

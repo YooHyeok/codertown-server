@@ -44,7 +44,4 @@ public class StompHandler implements ChannelInterceptor {
         }
         return ChannelInterceptor.super.preSend(message, channel);
     }
-
-
-
 }

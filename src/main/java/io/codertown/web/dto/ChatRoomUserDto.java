@@ -1,16 +1,11 @@
 package io.codertown.web.dto;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 @Data
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 public class ChatRoomUserDto {
-    private ChatRoomDto chatRoom;
-    private Boolean isRoomMaker;
-
-    private Long newMsgCount;
-
+    private UserDto userDto;
+    private Boolean isConnectedRoom;
 }
