@@ -164,6 +164,7 @@ public class RecruitService {
                         .stream().anyMatch(bookMark ->  bookMark.getUser().getEmail().equals(loginId));
                 // 프로젝트별 파트 조회 정보
                 List<ProjectPartDto> projectPartList = cokkiri.getProject().getProjectParts().stream()
+                        .filter(projectPart -> projectPart.getPart().getId() != 1L)
                         .map(projectPart -> ProjectPartDto.builder().build().entityToDto(projectPart))
                         .collect(Collectors.toList());
                 // 프로젝트 조회 정보
@@ -190,7 +191,7 @@ public class RecruitService {
                             return collect.stream().map(chatRoom1 -> chatRoom1.getProjectPart().getId()).collect(Collectors.toList());
                         }).collect(Collectors.toList());*/
 
-                /* flatMap에대해서 공부할것... */
+                /* (flatMap에대해서 공부할것...) */
                 List<Long> takedProjectPartNos = cokkiri.getProject().getChatRoomList().stream()
                         .filter(chatRoom -> chatRoom.getProject().getId() == cokkiri.getProject().getId()) // 프로젝트 번호 일치 필터링
                         .filter(chatRoom -> chatRoom.getChatRoomUserList().stream()

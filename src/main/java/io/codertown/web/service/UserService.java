@@ -287,9 +287,11 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
     public JoinedProjectDetailResponse joinedProjectDetail(Long projectNo) {
         /* 프로젝트 파트 리스트 DTO 변환 */
         List<ProjectPartDetailDto> projectPartList = projectRepository.findById(projectNo).orElseThrow().getProjectParts().stream()
+                .filter(projectPart -> projectPart.getPart().getId() != 1L)
                 .map(projectPart -> {
                     /* 프로젝트별 참여중인 회원 리스트 DTO변환  */
-                    List<UserProjectDto> userProjectDtoList = projectPart.getUserProjects().stream().map(userProject ->
+                    List<UserProjectDto> userProjectDtoList = projectPart.getUserProjects().stream()
+                            .map(userProject ->
                             UserProjectDto.builder().build().convertEntityToDto(userProject)
                     ).collect(Collectors.toList());
                     return ProjectPartDetailDto.builder().build().entityToDto(projectPart, userProjectDtoList);
