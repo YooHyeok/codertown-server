@@ -202,7 +202,6 @@ public class RecruitService {
                                 .map(ChatRoomUser::getChatRoom)) // 참여 중인 회원의 채팅 룸 추출
                         .map(chatRoom -> chatRoom.getProjectPart().getId()) // ProjectPart의 ID를 추출
                         .collect(Collectors.toList());
-                takedProjectPartNos.forEach(aLong -> System.out.println("aLong = " + aLong));
 
                 // 코끼리 조회 정보
 //                Optional<BookMark> like = bookMarkRepository.findByUserAndRecruit(cokkiri.getRecruitUser(), cokkiri);

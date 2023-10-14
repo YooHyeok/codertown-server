@@ -46,7 +46,6 @@ public class JwtTokenProvider extends CommonLoggerComponent {
         Claims claims = Jwts.claims().setSubject(nickname);
         claims.put("roles", roles);
         Date now = new Date();
-
         String token = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
@@ -62,13 +61,13 @@ public class JwtTokenProvider extends CommonLoggerComponent {
      * Client에서 Cookie에 저장해둔다.
      * createToken을 통해 생성/발급된 토큰과 비교한다. 만료되었을 때 새로운 토큰을 발급해주는 토큰이다.
      *
-     * @param nickname
+     * @param email
      * @param roles
      * @return
      */
-    public String refreshToken(String nickname, List<String> roles) {
+    public String refreshToken(String email, List<String> roles) {
         LOGGER.info("[refreshToken] Start token createing");
-        Claims claims = Jwts.claims().setSubject(nickname);
+        Claims claims = Jwts.claims().setSubject(email);
         claims.put("roles", roles);
         Date now = new Date();
 
@@ -88,9 +87,8 @@ public class JwtTokenProvider extends CommonLoggerComponent {
      * @param token
      * @return
      */
-    public String getUserNickname(String token) {
+    public String getUsername(String token) {
         LOGGER.info("[getUserNickname] Token-based user identification information extraction");
-
         String info = Jwts.parserBuilder()
                 .setSigningKey(secretKey).build()
                 .parseClaimsJws(token)
@@ -107,7 +105,7 @@ public class JwtTokenProvider extends CommonLoggerComponent {
      */
     public Authentication getAuthentication(String token) {
         LOGGER.info("[getAuthentication] Start querying token authentication information");
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserNickname(token));
+        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUsername(token));
         LOGGER.info("[getAuthentication] Success querying token authentication information, UserDetails UserNickname : {}", userDetails.getUsername());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }

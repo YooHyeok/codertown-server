@@ -14,7 +14,10 @@ public class WebConfig implements WebMvcConfigurer {
     private final JwtAuthenticationInterceptor jwtAuthenticationInterceptor;
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(jwtAuthenticationInterceptor);
+        registry.addInterceptor(jwtAuthenticationInterceptor)
+                .addPathPatterns("/sign-in")
+                .addPathPatterns("/userInfo")
+                .addPathPatterns("/loginCheck");
     }
 
     @Override

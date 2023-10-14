@@ -23,7 +23,6 @@ public class StompHandler implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        System.out.println("accessor = " + accessor);
         if (accessor.containsNativeHeader("connectedRoomId")) {
             // 첫 번째로 해당 요소의 존재 여부를 확인
             String connectedRoomId = accessor.getFirstNativeHeader("connectedRoomId");
