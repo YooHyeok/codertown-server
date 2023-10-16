@@ -7,6 +7,7 @@ import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.SuccessBooleanResult;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
+import io.codertown.web.payload.request.UserDisabledRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
 import io.codertown.web.payload.response.JoinedProjectDetailResponse;
 import io.codertown.web.payload.response.JoinedProjectResponse;
@@ -196,6 +197,29 @@ public class UserApiController {
         try {
             SignStatus signUpResult = userService.signUp(request);
             return ResponseEntity.ok(signUpResult);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    /**
+     * 마이페이지 회원상태 수정 API
+     * @param request UserDisabledRequest
+     * <pre>
+     *       loginEmail : 기존 이메일 (로그인계정) <br/>
+     *       changeStatus : 변경할 상태값  <br/>
+
+     * </pre>
+     * @return SuccessBooleanResult - [성공여부]
+     */
+    @ApiOperation(value="마이페이지 - 회원상태 수정 API", notes="회원상태 수정")
+    @ApiResponse(description = "회원상태 수정 성공 결과",responseCode = "200")
+    @PostMapping(path="/change-status-account", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<SuccessBooleanResult> changeStatusAccount(@ModelAttribute UserDisabledRequest request) {
+        try {
+            SuccessBooleanResult successBooleanResult = userService.changeStatusAccount(request);
+            return ResponseEntity.ok(successBooleanResult);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

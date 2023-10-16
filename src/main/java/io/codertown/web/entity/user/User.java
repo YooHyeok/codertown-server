@@ -100,6 +100,14 @@ public class User extends BaseTimeStampEntity implements UserDetails {
     }
 
     /**
+     * 회원정보 비활성화 - 변경감지 메소드
+     * @param status
+     */
+    public void changeStatusAccount(UserStatusEnum status) throws IOException {
+        this.status = status;
+    }
+
+    /**
      * Roles 필드 문자열 Split 함수
      * @return
      */

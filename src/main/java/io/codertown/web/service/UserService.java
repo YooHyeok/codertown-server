@@ -11,6 +11,7 @@ import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.SuccessBooleanResult;
 import io.codertown.web.payload.request.SignInRequest;
 import io.codertown.web.payload.request.SignUpRequest;
+import io.codertown.web.payload.request.UserDisabledRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
 import io.codertown.web.payload.response.JoinedProjectDetailResponse;
 import io.codertown.web.payload.response.JoinedProjectResponse;
@@ -106,6 +107,30 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             responseStatus.setFailResult(responseStatus); //실패코드 객체반환
         }
         return responseStatus;
+    }
+
+    /**
+     * 회원 비활성화 (자진탈퇴, 관리자에 의한 정지)
+     * @param request Client 요청 DTO 객체
+     * <pre>
+     *       loginEmail : 이메일 (로그인계정) <br/>
+     *    changeStatus : 변경할 상태 <br/>
+     * </pre>
+     * @return Boolean 저장 성공/실패 여부
+     * @throws RuntimeException 저장중 닉네임 불일치 저장실패 예외
+     */
+    @Transactional(readOnly = false)
+    public SuccessBooleanResult changeStatusAccount(UserDisabledRequest request) throws IOException {
+        try {
+
+            /* 변경감지 구현 */
+            User findUser = (User)userRepository.findByEmail(request.getLoginEmail());
+            findUser.changeStatusAccount(request.getChangeStatus());
+            return SuccessBooleanResult.builder().build().setResult(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
