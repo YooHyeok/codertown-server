@@ -8,6 +8,7 @@ import io.codertown.web.entity.chat.ChatRoom;
 import io.codertown.web.entity.chat.ChatRoomUser;
 import io.codertown.web.entity.project.Project;
 import io.codertown.web.entity.user.User;
+import io.codertown.web.entity.user.UserStatusEnum;
 import io.codertown.web.payload.request.CreateCokkiriChatRoomRequest;
 import io.codertown.web.payload.response.ChatRoomListResponse;
 import io.codertown.web.repository.*;
@@ -73,11 +74,14 @@ public class ChatRoomService {
 //            Boolean isConnectedRoom = chatRoomUser.getIsConnectedRoom();
             /* 채팅 참여 회원 목록 */
             List<ChatRoomUserDto> chatRoomUserDtos = chatRoomUser.getChatRoom().getChatRoomUserList().stream().map(chatRoomUser1 -> {
-                UserDto findUser = UserDto.builder()
-                        .email(chatRoomUser1.getChatRoomUser().getEmail())
-                        .nickname(chatRoomUser1.getChatRoomUser().getNickname())
-                        .profileUrl(chatRoomUser1.getChatRoomUser().getProfileUrl())
-                        .build();
+                UserDto findUser = null;
+                if (chatRoomUser1.getChatRoomUser().getStatus().equals(UserStatusEnum.USING)) { // 정상 회원인경우
+                    findUser = UserDto.builder()
+                            .email(chatRoomUser1.getChatRoomUser().getEmail())
+                            .nickname(chatRoomUser1.getChatRoomUser().getNickname())
+                            .profileUrl(chatRoomUser1.getChatRoomUser().getProfileUrl())
+                            .build();
+                }
                 return ChatRoomUserDto.builder().userDto(findUser).isConnectedRoom(chatRoomUser1.getIsConnectedRoom()).build();
                 }
             ).collect(Collectors.toList());
