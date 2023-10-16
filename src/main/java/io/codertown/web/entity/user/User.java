@@ -125,6 +125,7 @@ public class User extends BaseTimeStampEntity implements UserDetails {
                 .profileUrl(Base64.getDecoder().decode(request.getProfileUrl().split(",")[1]))
                 .gender(request.getGender())
                 .roles(Collections.singletonList(role))
+                .status(UserStatusEnum.USING)
                 .newMsgTotalCount(0L)
                 .newNotifyCount(0L)
                 .build();
