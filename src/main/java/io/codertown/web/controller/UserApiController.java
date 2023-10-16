@@ -348,13 +348,14 @@ public class UserApiController {
         }
     }
     /**
-     * 회원삭제시 검증할 참여중인 프로젝트 갯수 API
+     * 참여중인 프로젝트 갯수 API <br/>
+     * 회원삭제시 검증 - 참여중인 프로젝트중에 개인상태가 하차가 아닌경우
      * @param loginId
      * @return
      */
-    @ApiOperation(value="마이페이지 - 회원삭제시 프로젝트 갯수 조회 API", notes="프로젝트 갯수 출력에 필요한 JSON 데이터 반환")
+    @ApiOperation(value="마이페이지 - 회원 삭제시 프로젝트 갯수 조회 API", notes="프로젝트 갯수 출력에 필요한 JSON 데이터 반환")
     @ApiResponse(description = "프로젝트 목록 갯수 JSON 데이터",responseCode = "200")
-    @GetMapping(path = "/joined-project-count", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/joined-project-count", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> joinedProjectList(@RequestParam String loginId) {
         try {
             Long joinedProjectCount = userService.findJoinedProjectCount(loginId);
