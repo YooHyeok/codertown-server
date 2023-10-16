@@ -37,13 +37,13 @@ public class JwtTokenProvider extends CommonLoggerComponent {
 
     /**
      * createToken
-     * @param nickname
+     * @param email
      * @param roles
      * @return
      */
-    public String createToken(String nickname, List<String> roles) {
+    public String createToken(String email, List<String> roles) {
         LOGGER.info("[createToken] Start token createing");
-        Claims claims = Jwts.claims().setSubject(nickname);
+        Claims claims = Jwts.claims().setSubject(email);
         claims.put("roles", roles);
         Date now = new Date();
         String token = Jwts.builder()

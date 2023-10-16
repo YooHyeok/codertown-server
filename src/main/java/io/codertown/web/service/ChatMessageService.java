@@ -33,7 +33,6 @@ public class ChatMessageService {
         ChatRoom findChatRoom = chatRoomSRepository.findById(request.getRoomId()).orElseThrow();
         User sender = (User) userRepository.findByEmail(request.getSenderId());
 
-        System.out.println("request.getIsConnectedFriend() = " + request.getIsConnectedFriend());
 
         if(!request.getIsConnectedFriend()) {
             /* 채팅방회원에서 상대방의 신규 메시지 카운트 증가 */

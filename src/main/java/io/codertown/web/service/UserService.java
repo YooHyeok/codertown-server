@@ -129,8 +129,8 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             }
             signInInfo = SignInResult
                     .builder()
-                    .createToken(jwtTokenProvider.createToken(user.getNickname(), user.getRoles()))
-                    .refreshToken(jwtTokenProvider.refreshToken(user.getNickname(), user.getRoles()))
+                    .createToken(jwtTokenProvider.createToken(user.getEmail(), user.getRoles()))
+                    .refreshToken(jwtTokenProvider.refreshToken(user.getEmail(), user.getRoles()))
                     .email(user.getEmail())
                     .nickname(user.getNickname())
                     .build();
