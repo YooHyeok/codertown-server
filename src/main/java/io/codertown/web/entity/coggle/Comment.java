@@ -57,7 +57,7 @@ public class Comment extends BaseTimeStampEntity {
         this.content = request.getContent();
     }
 
-    public void deleteComment() {
-        this.status = true;
+    public void deleteComment(Boolean status) {
+        this.status = status;
     }
 }

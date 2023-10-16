@@ -347,6 +347,23 @@ public class UserApiController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
+    /**
+     * 회원삭제시 검증할 참여중인 프로젝트 갯수 API
+     * @param loginId
+     * @return
+     */
+    @ApiOperation(value="마이페이지 - 회원삭제시 프로젝트 갯수 조회 API", notes="프로젝트 갯수 출력에 필요한 JSON 데이터 반환")
+    @ApiResponse(description = "프로젝트 목록 갯수 JSON 데이터",responseCode = "200")
+    @GetMapping(path = "/joined-project-count", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> joinedProjectList(@RequestParam String loginId) {
+        try {
+            Long joinedProjectCount = userService.findJoinedProjectCount(loginId);
+            return ResponseEntity.ok(joinedProjectCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
 
     /**
      * 프로젝트 인원현황 상세보기 API

@@ -72,4 +72,8 @@ public abstract class Recruit extends BaseTimeStampEntity {
     public void deleteRecruit(Boolean status) {
         this.status = status;
     }
+
+    public void changeStatus(Boolean changeStatus) {
+        this.status = changeStatus;
+    }
 }

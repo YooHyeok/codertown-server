@@ -5,6 +5,7 @@ import io.codertown.support.base.CommonLoggerComponent;
 import io.codertown.support.jwt.JwtTokenProvider;
 import io.codertown.web.dto.*;
 import io.codertown.web.entity.coggle.Notification;
+import io.codertown.web.entity.project.TotalStatusEnum;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.SignInResult;
 import io.codertown.web.payload.SignStatus;
@@ -126,6 +127,9 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             /* 변경감지 구현 */
             User findUser = (User)userRepository.findByEmail(request.getLoginEmail());
             findUser.changeStatusAccount(request.getChangeStatus());
+            findUser.getRecruitUsers().forEach(recruit -> recruit.deleteRecruit(true));
+            findUser.getCoggleUsers().forEach(coggle -> coggle.deleteCoggle(true));
+            findUser.getCommentUsers().forEach(comment -> comment.deleteComment(true));
             return SuccessBooleanResult.builder().build().setResult(true);
         } catch (Exception e) {
             e.printStackTrace();
@@ -297,6 +301,28 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
                     .pageInfo(pageInfo)
                     .articleCount(pages.getTotalElements())
                     .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 참여중인 프로젝트 갯수 조회 메소드 <br/>
+     * @param loginEmail
+     * @return
+     */
+    public Long findJoinedProjectCount(String loginEmail) {
+        try {
+            User loginUser = (User)loadUserByUsername(loginEmail);
+            Long count = projectRepository.findJoinedProject(loginUser)
+                    .stream()
+                    .filter(joinedProjectDto ->
+//                            joinedProjectDto.getProject().getCokkiri().getStatus().equals(false) &&
+                            (joinedProjectDto.getProject().getProjectStatus().equals(TotalStatusEnum.RECURUIT)
+                                    || joinedProjectDto.getProject().getProjectStatus().equals(TotalStatusEnum.RUN))
+                    ).count();
+            return count;
         } catch (Exception e) {
             e.printStackTrace();
             return null;

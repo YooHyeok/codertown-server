@@ -312,7 +312,7 @@ public class CoggleService {
         if (oComment.isPresent()) {
             try {
                 Comment findComment = oComment.get();
-                findComment.deleteComment();
+                findComment.deleteComment(true);
                 return true;
             } catch (Exception e) {
                 e.printStackTrace();

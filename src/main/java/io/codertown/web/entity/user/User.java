@@ -3,11 +3,16 @@ package io.codertown.web.entity.user;
 import io.codertown.support.base.BaseTimeStampEntity;
 import io.codertown.web.entity.UserProject;
 import io.codertown.web.entity.chat.ChatRoomUser;
+import io.codertown.web.entity.coggle.Coggle;
+import io.codertown.web.entity.coggle.Comment;
 import io.codertown.web.entity.coggle.Notification;
 import io.codertown.web.entity.recruit.Recruit;
 import io.codertown.web.payload.request.SignUpRequest;
 import io.codertown.web.payload.request.UserUpdateRequest;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +32,7 @@ import java.util.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(exclude = {"projectUsers", "recruitUsers", "attachFile", "roles", "chatRoomUserList", "notifications"})
+//@ToString(exclude = {"projectUsers", "recruitUsers", "attachFile", "roles", "chatRoomUserList", "notifications"})
 @Entity
 public class User extends BaseTimeStampEntity implements UserDetails {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +59,12 @@ public class User extends BaseTimeStampEntity implements UserDetails {
 
     @OneToMany(mappedBy = "recruitUser")
     private List<Recruit> recruitUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "writer")
+    private List<Coggle> coggleUsers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "writer")
+    private List<Comment> commentUsers = new ArrayList<>();
 
     @OneToMany(mappedBy = "chatRoomUser")
     private List<ChatRoomUser> chatRoomUserList = new ArrayList<>();

@@ -65,4 +65,5 @@ public class Coggle extends BaseTimeStampEntity {
     public void deleteCoggle(Boolean status) {
         this.status = status;
     }
+
 }
