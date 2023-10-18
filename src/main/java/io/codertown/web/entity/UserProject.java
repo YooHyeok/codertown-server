@@ -50,8 +50,9 @@ public class UserProject {
     }
 
     public void removeProjectPart() {
-        this.projectPart.getUserProjects().remove(this);
-        this.getProjectUser().getProjectUsers().remove(this);
+        /*this.projectPart.getUserProjects().remove(this);
+        this.getProjectUser().getProjectUsers().remove(this);*/
+        this.personalStatus = PersonalStatusEnum.QUIT;
         this.projectPart.decreaseUserCount();
     }
 

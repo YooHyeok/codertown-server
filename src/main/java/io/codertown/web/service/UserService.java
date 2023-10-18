@@ -5,6 +5,7 @@ import io.codertown.support.base.CommonLoggerComponent;
 import io.codertown.support.jwt.JwtTokenProvider;
 import io.codertown.web.dto.*;
 import io.codertown.web.entity.coggle.Notification;
+import io.codertown.web.entity.project.PersonalStatusEnum;
 import io.codertown.web.entity.project.TotalStatusEnum;
 import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.SignInResult;
@@ -287,12 +288,14 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
             Page<JoinedProjectSimpleConvertDto> pages = projectRepository.findJoinedProject(loginUser, pageInfo.getPageRequest());
             pageInfo.setPageInfo(pages, pageInfo);
             List<JoinedProjectResponseDto> projectList = pages.getContent().stream().map(joinedProjectDto -> {
+                        PersonalStatusEnum personalStatus = joinedProjectDto.getUserProject().getPersonalStatus();
                         ProjectDto projectDto = ProjectDto.builder().build().entityToDto(joinedProjectDto.getProject(), null);
                         /* PartDto 변환 */
                         PartDto partDto = PartDto.builder()
                                 .partNo(joinedProjectDto.getProjectPart().getPart().getId())
                                 .partNmae(joinedProjectDto.getProjectPart().getPart().getPartName()).build();
-                        return JoinedProjectResponseDto.builder().projectDto(projectDto).partDto(partDto).build();
+                        return JoinedProjectResponseDto.builder().projectDto(projectDto).partDto(partDto).personalStatus(personalStatus)
+                                .build();
                     }
             ).collect(Collectors.toList());
 
