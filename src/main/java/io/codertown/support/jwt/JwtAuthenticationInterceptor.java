@@ -35,7 +35,10 @@ public class JwtAuthenticationInterceptor implements HandlerInterceptor {
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             //Security Context에 Authentication 객체를 저장한다.
-            return true;
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.getWriter().write("{\"validcode\": 200}");
+            response.getWriter().flush();
+//            return true; //통신이 발생하지 않도록 false처리
         } else if (tokens.length==1) {//3. accessToken을 가져왔는데 만료되었을 경우. refreshToken 요청
             System.out.println("3. refreshToken 요청");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

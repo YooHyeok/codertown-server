@@ -1,7 +1,6 @@
 package io.codertown.web.controller;
 
 import io.codertown.web.dto.UserDto;
-import io.codertown.web.entity.user.User;
 import io.codertown.web.payload.ExistsResult;
 import io.codertown.web.payload.SignStatus;
 import io.codertown.web.payload.SuccessBooleanResult;
@@ -246,14 +245,6 @@ public class UserApiController {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-    }
-
-
-    @PostMapping("/userInfo")
-    public ResponseEntity<UserDto> userInfo(String id) {
-        User user = (User)userService.loadUserByUsername(id); //findById 로 id에대한 user의 레코드 정보를 반환
-        UserDto userDto = UserDto.userEntityToDto(user);
-        return new ResponseEntity<UserDto>(userDto, HttpStatus.OK);
     }
 
     /**
