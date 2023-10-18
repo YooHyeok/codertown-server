@@ -12,6 +12,7 @@ import java.util.List;
 public class ChatRoomDetailResponse {
     private List<ChatMessageDto> chatMessageDtoList;
     private ProjectDto project;
+    private Long cokkiriNo;
     private ProjectPartDto projectPart;
     private Boolean isConfirm;
 

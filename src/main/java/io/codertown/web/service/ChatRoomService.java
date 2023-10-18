@@ -171,6 +171,7 @@ public class ChatRoomService {
             ChatRoomDetailResponse result = ChatRoomDetailResponse.builder()
                 .chatMessageDtoList(chatMessageDtoList)
                 .project(ProjectDto.entityToDto(findChatRoom.getProject(), null))
+                .cokkiriNo(findChatRoom.getProject().getCokkiri().getId())
                 .projectPart(ProjectPartDto.entityToDto(findChatRoom.getProjectPart()))
                 .isConfirm(findChatRoom.getIsConfirm())
                 .build();
