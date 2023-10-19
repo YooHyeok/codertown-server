@@ -18,24 +18,79 @@ import java.util.stream.Collectors;
 public class AddressCategoryDBController {
     @GetMapping("/address-api-collect")
     public void addressApiCollect() throws Exception {
+        long startTime = System.currentTimeMillis();
+
         final String accessToken = getAccessToken(); //액세스토큰 조회
         List<Map<String, Object>> firstAddressList = getFirstAddress(accessToken);
-        List<Map<String, Object>> secondAddressList = getSecondAddress(accessToken, firstAddressList);
+        getSecondAddress(accessToken, firstAddressList);
+
+        long endTime = System.currentTimeMillis();
+        long elapsedTime = endTime - startTime;
+        System.out.println("코드 실행 시간: " + elapsedTime + " 밀리초");
     }
 
-    /**
-     * 두번째 주소 조회 및 수집 <br/>
-     * 1. 주소명 <br/>
-     * 2. 주소코드
-     * @param accessToken
-     * @param firstAddressList
-     * @return MapList데이터
-     */
-    private static List<Map<String,Object>> getSecondAddress(String accessToken, List<Map<String, Object>> firstAddressList) {
+    private static void getThirdAddress(String accessToken, List<Map<String, Object>> secondAddressList) {
+        for (Map<String, Object> secondAddress : secondAddressList) {
+            System.out.println();
+            System.out.println();
+            System.out.println("secondAddressCd = " + secondAddress.get("secondAddressCd").toString());
+            System.out.println();
+            try {
+                /* accessToken */
+                StringBuilder urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json");
+                /* accessToken */
+                urlBuilder.append("?" + URLEncoder.encode("accessToken", "UTF-8") + "=" + accessToken); /*Service Key*/
+                urlBuilder.append("&" + URLEncoder.encode("cd", "UTF-8") + "=" + secondAddress.get("secondAddressCd").toString()); /*Service Key*/
+                URL url = new URL(urlBuilder.toString()); //URL 생성
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+//            conn.setRequestProperty("Content-type", "application/json");
+                conn.setRequestProperty("Accept", "application/json");
+                // 응답 읽기
+                BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+                String inputLine;
+                StringBuilder response = new StringBuilder();
+                while ((inputLine = br.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                br.close();
+                conn.disconnect();
+
+                // JSON 데이터 파싱
+                ObjectMapper objectMapper = new ObjectMapper();
+                Map<String, Object> data = objectMapper.readValue(response.toString(), Map.class);
+                List<Map<String, Object>> result = (List<Map<String, Object>>) data.get("result");
+
+                System.out.println();
+                result.forEach(stringObjectMap -> {
+                    System.out.println("변환전 세번째 주소 = " + stringObjectMap);
+                });
+                System.out.println();
+                /*창원시 하위 구에 대한 데이터 통합 코드 38111, 38112, 38113, 38114, 38115*/
+                List<Map<String, Object>> thirdAddressList = result.stream().map(resultMap -> {
+                    Map<String, Object> thirdAddress = new HashMap<>();
+                    thirdAddress.put("secondAddressName", resultMap.get("addr_name"));
+                    thirdAddress.put("secondAddressCd", resultMap.get("cd"));
+                    return thirdAddress;
+                }).collect(Collectors.toList());
+                System.out.println();
+                thirdAddressList.forEach(stringObjectMap -> {
+                    System.out.println("변환된 세번째 주소 = " + stringObjectMap);
+                });
+                System.out.println();
+                System.out.println("thirdAddressList.size() = " + thirdAddressList.size());
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException("두번째 주소 조회 오류 발생!");
+            }
+        }
+    }
+
+    private static void getSecondAddress(String accessToken, List<Map<String, Object>> firstAddressList) {
         for (Map<String, Object> firstAddress : firstAddressList) {
             System.out.println();
-            System.out.println();
             System.out.println("firstAddressCd = " + firstAddress.get("firstAddressCd").toString());
+            System.out.println();
             System.out.println();
             try {
                 /* accessToken */
@@ -80,9 +135,8 @@ public class AddressCategoryDBController {
                     System.out.println("변환된 두번째 주소 = " + stringObjectMap);
                 });
                 System.out.println();
-
-                return secondAddressList;
-
+                getThirdAddress(accessToken, secondAddressList); //세번째 주소 호출
+                System.out.println("secondAddressList.size() = " + secondAddressList.size());
             } catch (Exception e) {
                 e.printStackTrace();
                 throw new RuntimeException("두번째 주소 조회 오류 발생!");
@@ -95,8 +149,7 @@ public class AddressCategoryDBController {
      * 첫번째 주소 조회 및 수집 <br/>
      * 1. 주소명 <br/>
      * 2. 주소코드
-     * @param accessToken
-     * @return MapList데이터
+     * @return
      */
     private static List<Map<String,Object>> getFirstAddress(String accessToken) {
         StringBuilder urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json");
@@ -139,6 +192,7 @@ public class AddressCategoryDBController {
             firstAddressList.forEach(stringObjectMap -> {
                 System.out.println("변환된 첫번째 주소 = " + stringObjectMap);
             });
+            System.out.println("firstAddressList.size() = " + firstAddressList.size());
             System.out.println();
 
             return firstAddressList;
