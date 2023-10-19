@@ -16,10 +16,53 @@ import java.util.stream.Collectors;
 
 @RestController
 public class AddressCategoryDBController {
-    @GetMapping("/address-api")
-    public String getAddress() throws Exception {
+    @GetMapping("/address-api-collect")
+    public String addressApiCollect() throws Exception {
         final String accessToken = getAccessToken(); //액세스토큰 조회
+        List<Map<String, Object>> firstAddress = getFirstAddress(accessToken);
+    }
 
+
+    /**
+     * 첫번째 주소 조회 및 수집 <br/>
+     * 1. 주소명 <br/>
+     * 2. 주소코드
+     * @return
+     */
+    private static List<Map<String,Object>> getFirstAddress(String accessToken) {
+        StringBuilder urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json");
+        try {
+            /* accessToken */
+            urlBuilder.append("?" + URLEncoder.encode("accessToken","UTF-8") + "=" + accessToken); /*Service Key*/
+            URL url = new URL(urlBuilder.toString()); //URL 생성
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+//            conn.setRequestProperty("Content-type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            // 응답 읽기
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+            String inputLine;
+            StringBuilder response = new StringBuilder();
+            while ((inputLine = br.readLine()) != null) {
+                response.append(inputLine);
+            }
+            br.close();
+            // JSON 데이터 파싱
+            ObjectMapper objectMapper = new ObjectMapper();
+            Map<String, Object> data = objectMapper.readValue(response.toString(), Map.class);
+            List<Map<String,Object>> result = (List<Map<String,Object>>) data.get("result");
+            return result.stream().map(resultMap -> {
+                Map<String, Object> firstAddress = new HashMap<>();
+                firstAddress.put("firstAddressName",resultMap.get("addr_name"));
+                firstAddress.put("firstAddressCd",resultMap.get("cd"));
+                return firstAddress;
+            }).collect(Collectors.toList());
+            conn.disconnect();
+
+        }catch(Exception e) {
+            e.printStackTrace();
+            return e.getMessage();
+        }
     }
 
 
