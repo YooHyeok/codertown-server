@@ -50,6 +50,21 @@ public class AddressCategoryDBController {
                 ).collect(Collectors.toList());
     }
 
+    @GetMapping("/address-third")
+    public List<AddressResponse> addressThirdSearch(Long addrFirstNo, Long addrSecondNo) {
+
+        return addressRepository.findById(addrFirstNo).orElseThrow()
+                .getAddressSecondList().stream()
+                .filter(addressSecond -> addressSecond.getAddrSecondNo().equals(addrSecondNo))
+                .findAny().orElseThrow().getAddressThirdList().stream()
+                .map(addressThird ->
+                        AddressResponse.builder()
+                                .addressNo(addressThird.getAddrThirdNo())
+                                .addrName(addressThird.getAddrName())
+                                .build()
+                ).collect(Collectors.toList());
+    }
+
     @GetMapping("/address-api-collect")
     public void addressApiCollect() throws Exception {
         long startTime = System.currentTimeMillis();
@@ -69,7 +84,7 @@ public class AddressCategoryDBController {
             StringBuilder urlBuilder = new StringBuilder("https://sgisapi.kostat.go.kr/OpenAPI3/addr/stage.json");
             /* accessToken */
             urlBuilder.append("?" + URLEncoder.encode("accessToken", "UTF-8") + "=" + accessToken); /*Service Key*/
-            urlBuilder.append("&" + URLEncoder.encode("cd", "UTF-8") + "=" + addressFirst.getAddrCode().toString()); /*Service Key*/
+            urlBuilder.append("&" + URLEncoder.encode("cd", "UTF-8") + "=" + addressSecond.getAddrCode().toString()); /*Service Key*/
             URL url = new URL(urlBuilder.toString()); //URL 생성
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
@@ -102,9 +117,9 @@ public class AddressCategoryDBController {
                         .addrCode(resultMap.get("cd").toString())
                         .build();
                 addressSecond.getAddressThirdList().add(addressThird); //양방향 연관관계 추가
-                addressRepository.save(addressFirst);
-
             });
+            addressRepository.save(addressFirst);
+
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("두번째 주소 조회 오류 발생!");
