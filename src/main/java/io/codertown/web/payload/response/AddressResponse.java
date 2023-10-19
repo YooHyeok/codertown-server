@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class AddressFirstResponse {
-    private Long addrFirstNo;
+public class AddressResponse {
+    private Long addressNo;
     private String addrName;
 }

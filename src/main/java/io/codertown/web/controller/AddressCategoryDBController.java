@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codertown.web.entity.address.AddressFirst;
 import io.codertown.web.entity.address.AddressSecond;
 import io.codertown.web.entity.address.AddressThird;
-import io.codertown.web.payload.response.AddressFirstResponse;
+import io.codertown.web.payload.response.AddressResponse;
 import io.codertown.web.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,12 +28,26 @@ public class AddressCategoryDBController {
     private final AddressRepository addressRepository;
 
     @GetMapping("/address-first")
-    public List<AddressFirstResponse> addressFirstSearch() {
+    public List<AddressResponse> addressFirstSearch() {
         return addressRepository.findAll().stream()
-                .map(addressFirst -> AddressFirstResponse.builder()
-                        .addrFirstNo(addressFirst.getAddrFirstNo())
+                .map(addressFirst -> AddressResponse.builder()
+                        .addressNo(addressFirst.getAddrFirstNo())
                         .addrName(addressFirst.getAddrName())
-                        .build()).collect(Collectors.toList());
+                        .build()
+                ).collect(Collectors.toList());
+    }
+
+    @GetMapping("/address-second")
+    public List<AddressResponse> addressSecondSearch(Long addrFirstNo) {
+
+        return addressRepository.findById(addrFirstNo).orElseThrow()
+                        .getAddressSecondList().stream()
+                        .map(addressSecond ->
+                    AddressResponse.builder()
+                            .addressNo(addressSecond.getAddrSecondNo())
+                            .addrName(addressSecond.getAddrName())
+                            .build()
+                ).collect(Collectors.toList());
     }
 
     @GetMapping("/address-api-collect")
