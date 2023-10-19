@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.codertown.web.entity.address.AddressFirst;
 import io.codertown.web.entity.address.AddressSecond;
 import io.codertown.web.entity.address.AddressThird;
+import io.codertown.web.payload.response.AddressFirstResponse;
 import io.codertown.web.repository.AddressRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,6 +19,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +27,14 @@ public class AddressCategoryDBController {
 
     private final AddressRepository addressRepository;
 
+    @GetMapping("/address-first")
+    public List<AddressFirstResponse> addressFirstSearch() {
+        return addressRepository.findAll().stream()
+                .map(addressFirst -> AddressFirstResponse.builder()
+                        .addrFirstNo(addressFirst.getAddrFirstNo())
+                        .addrName(addressFirst.getAddrName())
+                        .build()).collect(Collectors.toList());
+    }
 
     @GetMapping("/address-api-collect")
     public void addressApiCollect() throws Exception {
