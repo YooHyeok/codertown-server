@@ -1,6 +1,7 @@
 package io.codertown.web.dto;
 
 import io.codertown.web.entity.recruit.Cokkiri;
+import io.codertown.web.entity.recruit.Location;
 import io.codertown.web.entity.recruit.Mammoth;
 import lombok.Builder;
 import lombok.Data;
@@ -17,7 +18,8 @@ public class RecruitDto {
     private String link;
     private Long views;
     private UserDto writer; //추후 writer정보 변경가능
-    private String location;
+//    private String location;
+    private Location location;
     private Boolean isBookmarked;
     private Integer isBookMarkedCount;
     private LocalDateTime firstRegDate;

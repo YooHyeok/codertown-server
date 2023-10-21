@@ -52,7 +52,6 @@ public class AddressCategoryDBController {
 
     @GetMapping("/address-third")
     public List<AddressResponse> addressThirdSearch(Long addrFirstNo, Long addrSecondNo) {
-
         return addressRepository.findById(addrFirstNo).orElseThrow()
                 .getAddressSecondList().stream()
                 .filter(addressSecond -> addressSecond.getAddrSecondNo().equals(addrSecondNo))
@@ -105,10 +104,6 @@ public class AddressCategoryDBController {
             Map<String, Object> data = objectMapper.readValue(response.toString(), Map.class);
             List<Map<String, Object>> result = (List<Map<String, Object>>) data.get("result");
 
-            System.out.println();
-            result.forEach(stringObjectMap -> {
-                System.out.println("변환전 세번째 주소 = " + stringObjectMap);
-            });
             /* 엔티티 생성 후 세번째 주소 메소드 호출 */
             result.forEach(resultMap -> {
                 AddressThird addressThird = AddressThird.builder()
@@ -155,11 +150,6 @@ public class AddressCategoryDBController {
             Map<String, Object> data = objectMapper.readValue(response.toString(), Map.class);
             List<Map<String, Object>> result = (List<Map<String, Object>>) data.get("result");
 
-            System.out.println();
-            result.forEach(stringObjectMap -> {
-                System.out.println("변환전 두번째 주소 = " + stringObjectMap);
-            });
-            System.out.println();
             /*창원시 하위 구에 대한 데이터 통합 코드 38111, 38112, 38113, 38114, 38115*/
             /* 엔티티 생성 후 두번째 주소 메소드 호출 */
             result.forEach(resultMap -> {
@@ -211,22 +201,6 @@ public class AddressCategoryDBController {
             ObjectMapper objectMapper = new ObjectMapper();
             Map<String, Object> data = objectMapper.readValue(response.toString(), Map.class);
             List<Map<String,Object>> result = (List<Map<String,Object>>) data.get("result");
-
-            System.out.println();
-            result.forEach(stringObjectMap -> {
-                System.out.println("변환전 첫번째 주소 = " + stringObjectMap);
-            });
-
-           /*List<Map<String,Object>> firstAddressList = result.stream().map(resultMap -> {
-                Map<String, Object> firstAddress = new HashMap<>();
-                firstAddress.put("firstAddressName",resultMap.get("addr_name"));
-                firstAddress.put("firstAddressCd",resultMap.get("cd"));
-                return firstAddress;
-            }).collect(Collectors.toList());
-            System.out.println();
-            firstAddressList.forEach(stringObjectMap -> {
-                System.out.println("변환된 첫번째 주소 = " + stringObjectMap);
-            });*/
 
             result.forEach(resultMap -> {
                 AddressFirst addrFirst = AddressFirst.builder()

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 
 @ToString(callSuper = true)
@@ -18,7 +19,9 @@ import javax.persistence.Entity;
 @Entity
 public class Mammoth extends Recruit {
 
-    private String location; // 위치
+//    private String location; // 위치
+    @Embedded
+    private Location location; // 위치
 
     /**
      * 저장을 위한 Mammoth 생성 메소드
@@ -26,13 +29,19 @@ public class Mammoth extends Recruit {
      * @return
      */
     public static Mammoth createMammoth(MammothSaveRequest request) {
+        Location location = Location.builder()
+                .sido(request.getSido())
+                .sigungu(request.getSigungu())
+                .dong(request.getDong())
+                .fullLocation(request.getFullLocation())
+                .build();
         Mammoth build = Mammoth.builder()
                 .recruitUser(request.getUser())
                 .title(request.getTitle())
                 .link(request.getLink())
                 .views(0L)
                 .content(request.getContent())
-                .location(request.getLocation())
+                .location(location)
                 .status(false)
                 .build();
         return build;
@@ -45,6 +54,13 @@ public class Mammoth extends Recruit {
      */
     public void updateMammoth(MammothUpdateRequest request) {
         updateRecruit(request.getTitle(), request.getLink(), request.getContent());
-        this.location = request.getLocation();
+        Location location = Location.builder()
+                .sido(request.getSido())
+                .sigungu(request.getSigungu())
+                .dong(request.getDong())
+                .fullLocation(request.getFullLocation())
+                .build();
+//        this.location = request.getLocation();
+        this.location = location;
     }
 }
