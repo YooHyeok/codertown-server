@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.codertown.web.entity.user.User;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Builder
+@ToString(exclude = {"profileUrl"})
 public class UserDto {
     private String email;
     @JsonIgnore

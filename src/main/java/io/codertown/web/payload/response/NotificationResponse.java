@@ -4,12 +4,13 @@ import io.codertown.web.dto.NotificationDto;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Builder
 public class NotificationResponse {
-    private List<NotificationDto> notificationDtoList;
+    private List<NotificationDto> notificationDtoList = new ArrayList<>();
     private Long newNotifyCount;
 
 }

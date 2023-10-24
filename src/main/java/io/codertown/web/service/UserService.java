@@ -366,9 +366,28 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
      * @param
      * @return
      */
-    public NotificationResponse myNotificationList(String loginId) throws Exception {
+    public NotificationResponse myNotificationList(String loginId, Integer page, Integer size) throws Exception {
         User findUser = (User)userRepository.findByEmail(loginId);
-        List<NotificationDto> notificationDtoList = findUser.getNotifications().stream().map(notification ->
+        page = page == null ? 1 : page;
+        PageInfo pageInfo = PageInfo.builder().build().createPageRequest(page, size, "firstRegDate", "DESC");
+        Page<Notification> notifyPagenation = notificationRepository.findByNotifyUser(findUser, pageInfo.getPageRequest());
+        List<NotificationDto> notificationDtoList = notifyPagenation.getContent().stream().map(notification ->
+                NotificationDto.builder()
+                        .notificationNo(notification.getId())
+                        .replyCondition(notification.getReplyCondition().name())
+                        .commentNo(notification.getComment().getId())
+                        .writerNickname(notification.getComment().getWriter().getNickname())
+                        .profileUrl(notification.getComment().getWriter().getProfileUrl())
+                        .mentionNickname(Optional.ofNullable(notification.getComment().getMention()).isEmpty() ? null :  notification.getComment().getMention().getNickname())
+                        .commentContent(notification.getComment().getContent())
+                        .firstRegDate(notification.getComment().getFirstRegDate())
+                        .coggleNo(notification.getCoggle().getId())
+                        .coggleTitle(notification.getCoggle().getTitle())
+                        .isClicked(notification.getIsCliked())
+                        .build()
+
+        ).collect(Collectors.toList());
+        /*List<NotificationDto> notificationDtoList = findUser.getNotifications().stream().map(notification ->
             NotificationDto.builder()
                     .notificationNo(notification.getId())
                     .replyCondition(notification.getReplyCondition().name())
@@ -383,7 +402,7 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
                     .isClicked(notification.getIsCliked())
                     .build()
 
-        ).collect(Collectors.toList());
+        ).collect(Collectors.toList());*/
         return NotificationResponse.builder()
                 .notificationDtoList(notificationDtoList)
                 .newNotifyCount(findUser.getNewNotifyCount())

@@ -35,7 +35,7 @@ public class Notification {
 
     @CreatedDate
     @Column
-    private LocalDateTime chatSendDate;
+    private LocalDateTime firstRegDate;
 
     public static Notification createNotification(User notifyUser, Coggle coggle, Comment comment, ReplyConditionEnum replyCondition) {
         Notification createdNotification = Notification.builder()

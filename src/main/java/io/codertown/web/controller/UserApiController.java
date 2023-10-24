@@ -396,9 +396,12 @@ public class UserApiController {
     @ApiOperation(value="헤더 Notification 푸시알림 리스트 조회 API", notes="회원정보 출력")
     @ApiResponse(description = "Notification리스트 조회 성공 결과",responseCode = "200")
     @PostMapping(path = "/my-notification-list", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NotificationResponse> myNotificationList(@RequestParam("loginEmail") String loginEmail) {
+    public ResponseEntity<NotificationResponse> myNotificationList(@RequestParam("loginEmail") String loginEmail,
+                                                                    @RequestParam(required = false) Integer page,
+                                                                   @RequestParam(required = false, defaultValue = "20") Integer size) {
         try {
-            NotificationResponse notificationListResponse = userService.myNotificationList(loginEmail);
+            System.out.println("loginEmail = " + loginEmail);
+            NotificationResponse notificationListResponse = userService.myNotificationList(loginEmail, page, size);
             return ResponseEntity.ok(notificationListResponse);
         } catch (Exception e) {
             e.printStackTrace();
