@@ -354,16 +354,32 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
 
     }
 
-
+    /**
+     * 로그인 후 단건 프로필 이미지 조회
+     * @param loginEmail
+     * @return 프로필 이미지 바이트배열 (바이너리)
+     * @throws Exception
+     */
     public byte[] profileImage(String loginEmail) throws Exception {
         User user = (User)loadUserByUsername(loginEmail);
         return user.getProfileUrl();
     }
 
     /**
-     * Notification-멘션목록 출력
-     *
-     * @param
+     * Notification-새소식 댓글 신규 카운트 조회
+     * @param loginEmail
+     * @return
+     */
+    public Long myNewNotifyCount(String loginEmail) {
+        User findUser = (User)userRepository.findByEmail(loginEmail);
+        return findUser.getNewNotifyCount();
+    }
+
+    /**
+     * Notification-새소식 댓글 목록 조회
+     * @param loginId
+     * @param page
+     * @param size
      * @return
      */
     public NotificationResponse myNotificationList(String loginId, Integer page, Integer size) throws Exception {
@@ -387,37 +403,31 @@ public class UserService extends CommonLoggerComponent implements UserDetailsSer
                         .build()
 
         ).collect(Collectors.toList());
-        /*List<NotificationDto> notificationDtoList = findUser.getNotifications().stream().map(notification ->
-            NotificationDto.builder()
-                    .notificationNo(notification.getId())
-                    .replyCondition(notification.getReplyCondition().name())
-                    .commentNo(notification.getComment().getId())
-                    .writerNickname(notification.getComment().getWriter().getNickname())
-                    .profileUrl(notification.getComment().getWriter().getProfileUrl())
-                    .mentionNickname(Optional.ofNullable(notification.getComment().getMention()).isEmpty() ? null :  notification.getComment().getMention().getNickname())
-                    .commentContent(notification.getComment().getContent())
-                    .firstRegDate(notification.getComment().getFirstRegDate())
-                    .coggleNo(notification.getCoggle().getId())
-                    .coggleTitle(notification.getCoggle().getTitle())
-                    .isClicked(notification.getIsCliked())
-                    .build()
-
-        ).collect(Collectors.toList());*/
         return NotificationResponse.builder()
                 .notificationDtoList(notificationDtoList)
-                .newNotifyCount(findUser.getNewNotifyCount())
                 .build();
     }
 
+    /**
+     * 새소식 카운트 초기화 <br/>
+     * 변경감지
+     * @param loginEmail
+     */
     @Transactional(readOnly = false)
     public void initNewNotifyCount(String loginEmail) {
         User findUser = (User)userRepository.findByEmail(loginEmail);
         findUser.initNewNotifyCount();
     }
 
+    /**
+     * 새소식 클릭 여부 <br/>
+     * 변경감지
+     * @param notificationNo
+     */
     @Transactional(readOnly = false)
     public void notifyChangeClicked(Long notificationNo) {
         Notification notification = notificationRepository.findById(notificationNo).orElseThrow();
         notification.notifyChangeClicked();
     }
+
 }

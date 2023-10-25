@@ -11,6 +11,5 @@ import java.util.List;
 @Builder
 public class NotificationResponse {
     private List<NotificationDto> notificationDtoList = new ArrayList<>();
-    private Long newNotifyCount;
 
 }

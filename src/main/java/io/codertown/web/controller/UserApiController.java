@@ -393,7 +393,21 @@ public class UserApiController {
         }
     }
 
-    @ApiOperation(value="헤더 Notification 푸시알림 리스트 조회 API", notes="회원정보 출력")
+    @ApiOperation(value="Notification 신규 푸시알림 갯수 조회 API", notes="회원정보 출력")
+    @ApiResponse(description = "Notification리스트 조회 성공 결과",responseCode = "200")
+    @PostMapping(path = "/my-notification-count", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Long> myNewNotifyCount(@RequestParam("loginEmail") String loginEmail) {
+        try {
+            System.out.println("loginEmail = " + loginEmail);
+            Long newNotifyCount = userService.myNewNotifyCount(loginEmail);
+            return ResponseEntity.ok(newNotifyCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @ApiOperation(value="Notification 푸시알림 리스트 조회 API", notes="회원정보 출력")
     @ApiResponse(description = "Notification리스트 조회 성공 결과",responseCode = "200")
     @PostMapping(path = "/my-notification-list", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<NotificationResponse> myNotificationList(@RequestParam("loginEmail") String loginEmail,
@@ -411,7 +425,7 @@ public class UserApiController {
 
     @ApiOperation(value="Notification 조회 후 count초기화 API", notes="회원정보 출력")
     @ApiResponse(description = "count초기화  결과",responseCode = "200")
-    @PostMapping(path = "/init-new-notify-count", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/init-new-notify-count", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void initNewNotifyCount(@RequestParam("loginEmail") String loginEmail) {
         try {
             userService.initNewNotifyCount(loginEmail);
@@ -422,7 +436,7 @@ public class UserApiController {
 
     @ApiOperation(value="Notification 클릭(확인) 여부 API", notes="회원정보 출력")
     @ApiResponse(description = "클릭여부  결과",responseCode = "200")
-    @PostMapping(path = "/notify-change-clicked", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/notify-change-clicked", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void notifyChangeClicked(@RequestParam("notificationNo") Long notificationNo) {
         try {
             userService.notifyChangeClicked(notificationNo);
