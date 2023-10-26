@@ -17,6 +17,7 @@ public class RecruitDto {
     private String content;
     private String link;
     private Long views;
+    private Boolean status;
     private UserDto writer; //추후 writer정보 변경가능
 //    private String location;
     private Location location;
@@ -38,6 +39,7 @@ public class RecruitDto {
                 .firstRegDate(cokkiri.getFirstRegDate())
                 .lastModDate(cokkiri.getLastModDate())
                 .writer(userDto) // 코끼리 글 작성자 (추후 String값으로 수정)
+                .status(cokkiri.getStatus())
 //                .objectWeek(cokkiri.getObjectWeek()) // 목표 기간(주)
                 .build();
     }
@@ -53,6 +55,7 @@ public class RecruitDto {
                 .firstRegDate(mammoth.getFirstRegDate())
                 .lastModDate(mammoth.getLastModDate())
                 .writer(userDto) // 맘모스 글 작성자 (추후 String값으로 수정)
+                .status(mammoth.getStatus())
                 .location(mammoth.getLocation())
                 .isBookmarked(isBookmarked)
                 .isBookMarkedCount(mammoth.getBookMarkList().size())
